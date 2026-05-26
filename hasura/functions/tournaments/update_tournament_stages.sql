@@ -144,11 +144,20 @@ BEGIN
         IF stage_type = 'Swiss' THEN
             RAISE NOTICE 'Stage % : Swiss detected, generating entire bracket', stage."order";
             
-            -- First round requires even number (all teams start at 0-0, same pool)
+            -- Swiss pairing requires an even count in round 1 (all teams 0-0,
+            -- same pool). Pre-Live the effective count is provisional and can
+            -- legitimately be odd between registrations — aborting the whole
+            -- tournament update would also tear down sibling stages. Skip
+            -- bracket generation instead; once Live, tournament_has_min_teams
+            -- enforces a valid count before the status flip.
             IF effective_teams % 2 != 0 THEN
-                RAISE EXCEPTION 'Swiss tournament first round must have an even number of teams. Current: %', effective_teams USING ERRCODE = '22000';
+                IF tournament_status IN ('Live', 'Finished') THEN
+                    RAISE EXCEPTION 'Swiss tournament first round must have an even number of teams. Current: %', effective_teams USING ERRCODE = '22000';
+                END IF;
+                RAISE NOTICE 'Stage % : Swiss needs even effective_teams, got %, skipping bracket generation', stage."order", effective_teams;
+                CONTINUE;
             END IF;
-            
+
             PERFORM generate_swiss_bracket(stage.id, effective_teams);
             
             CONTINUE;

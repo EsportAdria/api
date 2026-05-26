@@ -20,17 +20,6 @@ BEGIN
             SELECT COUNT(*) INTO effective_teams
                 FROM tournament_teams
                 WHERE tournament_id = _tournament_id AND eligible_at IS NOT NULL;
-
-            -- Downstream bracket math in update_tournament_stages takes
-            -- LOG(teams_per_group), which raises on 0 and produces an empty
-            -- bracket on 1. Before the tournament is Live/Finished the count
-            -- is not yet final, so fall back to max_teams when it can't form
-            -- a valid bracket — admins can still edit stages, and the
-            -- placeholder bracket renders. In Live/Finished we accept the
-            -- real count: those statuses are gated by tournament_has_min_teams.
-            IF effective_teams < 2 AND _tournament_status NOT IN ('Live', 'Finished') THEN
-                effective_teams := stage_max_teams;
-            END IF;
         ELSE
             -- Get the previous stage to check its type
             DECLARE
@@ -51,17 +40,32 @@ BEGIN
                     SELECT COUNT(*) INTO effective_teams
                     FROM tournament_brackets tb
                     JOIN tournament_stages ts ON tb.tournament_stage_id = ts.id
-                    WHERE ts.tournament_id = _tournament_id 
-                      AND ts."order" = _stage_order - 1 
+                    WHERE ts.tournament_id = _tournament_id
+                      AND ts."order" = _stage_order - 1
                       AND tb.round = (
-                          SELECT MAX(tb2.round) 
-                          FROM tournament_brackets tb2 
-                          JOIN tournament_stages ts2 ON tb2.tournament_stage_id = ts2.id 
-                          WHERE ts2.tournament_id = _tournament_id 
+                          SELECT MAX(tb2.round)
+                          FROM tournament_brackets tb2
+                          JOIN tournament_stages ts2 ON tb2.tournament_stage_id = ts2.id
+                          WHERE ts2.tournament_id = _tournament_id
                             AND ts2."order" = _stage_order - 1
                       );
                 END IF;
             END;
+        END IF;
+
+        -- Downstream bracket math in update_tournament_stages takes
+        -- LOG(teams_per_group), which raises on 0 and produces an empty
+        -- bracket on 1. Before the tournament is Live/Finished the count
+        -- is not yet final, so fall back to max_teams when it can't form
+        -- a valid bracket — admins can still edit stages, and the
+        -- placeholder bracket renders. In Live/Finished we accept the
+        -- real count: those statuses are gated by tournament_has_min_teams.
+        -- This applies to every stage_order: e.g. a Swiss stage skipped
+        -- because of an odd pre-Live registration count leaves zero
+        -- brackets, and the next stage would otherwise read 0 from the
+        -- last-round count.
+        IF effective_teams < 2 AND _tournament_status NOT IN ('Live', 'Finished') THEN
+            effective_teams := stage_max_teams;
         END IF;
     END IF;
 
