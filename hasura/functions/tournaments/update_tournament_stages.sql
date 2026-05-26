@@ -199,8 +199,13 @@ BEGIN
         -- Ensure round 1 has full bracket count based on next power-of-2 per group
         stage_target_size := POWER(2, CEIL(LOG(teams_per_group::numeric) / LOG(2)))::int;
 
-        IF effective_teams = next_stage_max_teams THEN
-            RAISE NOTICE 'Stage % : effective_teams = next_stage_max_teams, skipping', stage."order";
+        -- Skip stages that don't narrow the field: when this stage's capacity
+        -- already matches the next stage's capacity, there are no matches to
+        -- generate here. Compare capacity-to-capacity (not the actual filled
+        -- count) so a coincidence where the registered team count happens to
+        -- equal the next stage's size doesn't drop a real stage from play.
+        IF stage_max_teams = next_stage_max_teams THEN
+            RAISE NOTICE 'Stage % : stage_max_teams (%) = next_stage_max_teams (%), skipping', stage."order", stage_max_teams, next_stage_max_teams;
             skipped_stage_effective_teams = effective_teams;
             CONTINUE;
         END IF;
