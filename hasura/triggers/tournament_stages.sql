@@ -199,7 +199,11 @@ BEGIN
     FROM tournaments t
     WHERE t.id = NEW.tournament_id;
 
-    IF tournament_status = 'Live' OR tournament_status = 'Finished' THEN
+    -- Block stage edits once the tournament is mid-event. Paused is included
+    -- because taiu_tournament_stages -> update_tournament_stages calls
+    -- delete_tournament_brackets_and_matches, which would wipe in-progress
+    -- match data that resume needs to restore.
+    IF tournament_status IN ('Live', 'Finished', 'Paused') THEN
         RAISE EXCEPTION 'Unable to modify stage since the tournament has been started' USING ERRCODE = '22000';
     END IF;
 
@@ -248,7 +252,20 @@ CREATE TRIGGER tbu_tournament_stages BEFORE UPDATE ON public.tournament_stages F
 CREATE OR REPLACE FUNCTION public.tbd_tournament_stages() RETURNS TRIGGER
     LANGUAGE plpgsql
     AS $$
+DECLARE
+    tournament_status text;
 BEGIN
+    SELECT status INTO tournament_status
+    FROM tournaments t
+    WHERE t.id = OLD.tournament_id;
+
+    -- Match the BEFORE UPDATE guard: deleting a stage mid-event triggers
+    -- tad_tournament_stages -> update_tournament_stages, which wipes every
+    -- bracket and match for the tournament. Resume cannot restore them.
+    IF tournament_status IN ('Live', 'Finished', 'Paused') THEN
+        RAISE EXCEPTION 'Unable to delete stage since the tournament has been started' USING ERRCODE = '22000';
+    END IF;
+
     DELETE FROM tournament_brackets
         WHERE tournament_stage_id = OLD.id;
 
@@ -261,6 +278,34 @@ CREATE TRIGGER tbd_tournament_stages
     BEFORE DELETE ON public.tournament_stages
     FOR EACH ROW
     EXECUTE FUNCTION public.tbd_tournament_stages();
+
+CREATE OR REPLACE FUNCTION public.tbi_tournament_stages() RETURNS TRIGGER
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    tournament_status text;
+BEGIN
+    SELECT status INTO tournament_status
+    FROM tournaments t
+    WHERE t.id = NEW.tournament_id;
+
+    -- Same reason as the BEFORE UPDATE / BEFORE DELETE guards: inserting a
+    -- new stage fires taiu_tournament_stages -> update_tournament_stages,
+    -- which calls delete_tournament_brackets_and_matches and tears down
+    -- every running match.
+    IF tournament_status IN ('Live', 'Finished', 'Paused') THEN
+        RAISE EXCEPTION 'Unable to add stage since the tournament has been started' USING ERRCODE = '22000';
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS tbi_tournament_stages ON public.tournament_stages;
+CREATE TRIGGER tbi_tournament_stages
+    BEFORE INSERT ON public.tournament_stages
+    FOR EACH ROW
+    EXECUTE FUNCTION public.tbi_tournament_stages();
 
 
 CREATE OR REPLACE FUNCTION public.tad_tournament_stages() RETURNS TRIGGER
