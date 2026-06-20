@@ -32,6 +32,7 @@ describe("GameStreamerService — spec-server token", () => {
       {} as any,
       {} as any,
       { resolveEnabled: jest.fn(), bundleUrl: jest.fn() } as any,
+      {} as any,
     );
 
   let service: GameStreamerService;
