@@ -252,6 +252,37 @@ export class MapAssetsService {
     return `${MapAssetsService.MAPS_HOST}/${MapAssetsService.PINNED_BUILD}/${map}${suffix}`;
   }
 
+  public static manifestKey(buildId: string, revision: number): string {
+    return revision === 1
+      ? `${buildId}/manifest.json`
+      : `${buildId}/manifest.r${revision}.json`;
+  }
+
+  public static manifestRevision(key: string, buildId: string): number | null {
+    const match = /^([^/]+)\/manifest(?:\.r(\d+))?\.json$/.exec(key);
+    return match && match[1] === buildId ? Number(match[2] ?? 1) : null;
+  }
+
+  // Each manifest.rN.json is published on top of the one before it, so the
+  // first revision missing from `revision` on ends the probe. Revisions are
+  // immutable and a missing key is never served from the edge cache, unlike
+  // latest.json, which the edge holds for a minute.
+  public static async newestManifest(
+    buildId: string,
+    revision = 1,
+  ): Promise<{ key: string; manifest: MapAssetsManifest } | null> {
+    let newest: { key: string; manifest: MapAssetsManifest } | null = null;
+    for (let next = revision; ; next++) {
+      const key = MapAssetsService.manifestKey(buildId, next);
+      const manifest =
+        await MapAssetsService.fetchIndex<MapAssetsManifest>(key);
+      if (!manifest) {
+        return newest;
+      }
+      newest = { key, manifest };
+    }
+  }
+
   // B2 has no ListBucket grant on these keys, so a missing object can arrive as
   // 403 as well as 404; both mean "not published".
   public static async fetchIndex<T>(key: string): Promise<T | null> {
@@ -949,18 +980,27 @@ export class MapAssetsService {
     });
   }
 
-  // Only maps with a row are built and published. Every instance seeds the
-  // same maps, so this instance's table speaks for all of them. A row with a
+  // Every instance seeds the same maps and reads the assets built here, so a
+  // seeded map is always built, whatever this instance's modes enable. Any
+  // other map is built only while some mode enables it: one disabled in every
+  // mode, like a prophunt overlay that only a public server's rotation loads,
+  // is never played as a match and so never rendered. A row with a
   // workshop_map_id is built from the node's workshop downloads when the
-  // install does not carry it; one the node never downloaded keeps whatever
-  // is already published.
+  // install does not carry it; one the node never downloaded keeps whatever is
+  // already published.
   private async knownMaps(): Promise<{
     names: Array<string>;
     workshop: Array<MapAssetsWorkshopMap>;
   }> {
     const rows = await this.postgres.query<
       Array<{ name: string; workshop_map_id: string | null }>
-    >(`SELECT DISTINCT name, workshop_map_id FROM public.maps ORDER BY name`);
+    >(
+      `SELECT name, workshop_map_id
+         FROM public.maps
+        WHERE seeded
+           OR (enabled AND deleted_at IS NULL)
+        ORDER BY name, enabled DESC`,
+    );
 
     const names = [...new Set(rows.map(({ name }) => name))];
     const workshop = new Map<string, string>();
@@ -1022,36 +1062,29 @@ export class MapAssetsService {
     );
   }
 
-  // A rebuild of a Partial build publishes a new manifest revision
-  // (<build>/manifest.rN.json) and repoints latest.json at it, so latest.json
-  // is the authority whenever it names this build.
+  // A retry or a forced rebuild publishes the build's next manifest revision,
+  // so the newest one is what the run published. latest.json cannot say: a
+  // job that has just moved it still reads as the revision before, and it
+  // never names a build that is no longer the newest.
   private async publishedManifest(
     buildId: string,
   ): Promise<
     Pick<MapAssetBuildOutcome, "manifest" | "maps" | "failed" | "failed_view">
   > {
     try {
-      const pointer =
-        await MapAssetsService.fetchIndex<MapAssetsPointer>("latest.json");
-      const key =
-        pointer?.build === buildId &&
-        MapAssetsService.isSafeKey(pointer.manifest)
-          ? pointer.manifest
-          : `${buildId}/manifest.json`;
-      const manifest =
-        await MapAssetsService.fetchIndex<MapAssetsManifest>(key);
+      const newest = await MapAssetsService.newestManifest(buildId);
 
-      if (manifest) {
+      if (newest) {
         return {
-          manifest: key,
-          maps: manifest.maps ?? null,
-          failed: manifest.failed ?? [],
-          failed_view: manifest.failed_view ?? [],
+          manifest: newest.key,
+          maps: newest.manifest.maps ?? null,
+          failed: newest.manifest.failed ?? [],
+          failed_view: newest.manifest.failed_view ?? [],
         };
       }
 
       this.logger.warn(
-        `[map-assets] build ${buildId} finished but ${key} is not published`,
+        `[map-assets] build ${buildId} finished but ${buildId}/manifest.json is not published`,
       );
     } catch (error) {
       this.logger.warn(
