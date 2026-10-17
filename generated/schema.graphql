@@ -27974,6 +27974,7 @@ type game_server_nodes {
   ): jsonb
   gpu_rendering_enabled: Boolean!
   gpu_streaming_enabled: Boolean!
+  gpu_vendor: String
   id: String!
   label: String
   lan_ip: inet
@@ -28258,6 +28259,7 @@ input game_server_nodes_bool_exp {
   gpu_info: jsonb_comparison_exp
   gpu_rendering_enabled: Boolean_comparison_exp
   gpu_streaming_enabled: Boolean_comparison_exp
+  gpu_vendor: String_comparison_exp
   id: String_comparison_exp
   label: String_comparison_exp
   lan_ip: inet_comparison_exp
@@ -28381,6 +28383,7 @@ input game_server_nodes_insert_input {
   gpu_info: jsonb
   gpu_rendering_enabled: Boolean
   gpu_streaming_enabled: Boolean
+  gpu_vendor: String
   id: String
   label: String
   lan_ip: inet
@@ -28429,6 +28432,7 @@ type game_server_nodes_max_fields {
   disk_available_gb: Int
   disk_used_percent: Int
   end_port_range: Int
+  gpu_vendor: String
   id: String
   label: String
   offline_at: timestamptz
@@ -28464,6 +28468,7 @@ input game_server_nodes_max_order_by {
   disk_available_gb: order_by
   disk_used_percent: order_by
   end_port_range: order_by
+  gpu_vendor: order_by
   id: order_by
   label: order_by
   offline_at: order_by
@@ -28501,6 +28506,7 @@ type game_server_nodes_min_fields {
   disk_available_gb: Int
   disk_used_percent: Int
   end_port_range: Int
+  gpu_vendor: String
   id: String
   label: String
   offline_at: timestamptz
@@ -28536,6 +28542,7 @@ input game_server_nodes_min_order_by {
   disk_available_gb: order_by
   disk_used_percent: order_by
   end_port_range: order_by
+  gpu_vendor: order_by
   id: order_by
   label: order_by
   offline_at: order_by
@@ -28610,6 +28617,7 @@ input game_server_nodes_order_by {
   gpu_info: order_by
   gpu_rendering_enabled: order_by
   gpu_streaming_enabled: order_by
+  gpu_vendor: order_by
   id: order_by
   label: order_by
   lan_ip: order_by
@@ -28721,6 +28729,9 @@ enum game_server_nodes_select_column {
 
   """column name"""
   gpu_streaming_enabled
+
+  """column name"""
+  gpu_vendor
 
   """column name"""
   id
@@ -28878,6 +28889,7 @@ input game_server_nodes_set_input {
   gpu_info: jsonb
   gpu_rendering_enabled: Boolean
   gpu_streaming_enabled: Boolean
+  gpu_vendor: String
   id: String
   label: String
   lan_ip: inet
@@ -29080,6 +29092,7 @@ input game_server_nodes_stream_cursor_value_input {
   gpu_info: jsonb
   gpu_rendering_enabled: Boolean
   gpu_streaming_enabled: Boolean
+  gpu_vendor: String
   id: String
   label: String
   lan_ip: inet
@@ -29218,6 +29231,9 @@ enum game_server_nodes_update_column {
 
   """column name"""
   gpu_streaming_enabled
+
+  """column name"""
+  gpu_vendor
 
   """column name"""
   id
