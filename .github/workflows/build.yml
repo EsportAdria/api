@@ -4,12 +4,16 @@ on:
   push:
     branches:
       - "main"
+      - "test/amd-panel-security-20261017"
   workflow_dispatch:
 
 concurrency:
   group: build
   cancel-in-progress: true
   
+env:
+  CHANNEL: ${{ github.ref_name == 'main' && 'latest' || 'amd-panel-security' }}
+
 jobs:
   tests:
     uses: ./.github/workflows/tests.yml
@@ -39,11 +43,14 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
           platforms: linux/amd64
           cache-from: type=registry,ref=ghcr.io/${{ env.OWNER }}/api:buildcache-amd64
           cache-to: type=registry,ref=ghcr.io/${{ env.OWNER }}/api:buildcache-amd64,mode=max
           tags: |
-            ghcr.io/${{ env.OWNER }}/api:latest-amd64
+            ghcr.io/${{ env.OWNER }}/api:${{ env.CHANNEL }}-amd64
             ghcr.io/${{ env.OWNER }}/api:${{ github.sha }}-amd64
   build-arm64:
     needs: tests
@@ -70,11 +77,14 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
           platforms: linux/arm64
           cache-from: type=registry,ref=ghcr.io/${{ env.OWNER }}/api:buildcache-arm64
           cache-to: type=registry,ref=ghcr.io/${{ env.OWNER }}/api:buildcache-arm64,mode=max
           tags: |
-            ghcr.io/${{ env.OWNER }}/api:latest-arm64
+            ghcr.io/${{ env.OWNER }}/api:${{ env.CHANNEL }}-arm64
             ghcr.io/${{ env.OWNER }}/api:${{ github.sha }}-arm64
   merge:
     needs: [build-amd64, build-arm64]
@@ -93,9 +103,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Create manifest list and push
         run: |
-          docker buildx imagetools create -t ghcr.io/${{ env.OWNER }}/api:latest \
-            ghcr.io/${{ env.OWNER }}/api:latest-amd64 \
-            ghcr.io/${{ env.OWNER }}/api:latest-arm64
+          docker buildx imagetools create -t ghcr.io/${{ env.OWNER }}/api:${{ env.CHANNEL }} \
+            ghcr.io/${{ env.OWNER }}/api:${{ env.CHANNEL }}-amd64 \
+            ghcr.io/${{ env.OWNER }}/api:${{ env.CHANNEL }}-arm64
           docker buildx imagetools create -t ghcr.io/${{ env.OWNER }}/api:${{ github.sha }} \
             ghcr.io/${{ env.OWNER }}/api:${{ github.sha }}-amd64 \
             ghcr.io/${{ env.OWNER }}/api:${{ github.sha }}-arm64
