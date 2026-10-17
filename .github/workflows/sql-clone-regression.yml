@@ -41,7 +41,7 @@ jobs:
           set -e
           cp "$RUNNER_TEMP/sql-helper-fixed.ts" test/utils/sql-test-db.ts
           test "$result" -ne 0
-          rg -i "terminating connection|connection terminated|not queryable|connection closed" "$RUNNER_TEMP/baseline.log"
+          grep -Ei "terminating connection|connection terminated|not queryable|connection closed" "$RUNNER_TEMP/baseline.log"
       - name: Fixed cleanup preserves the other connection
         run: yarn test:sql --runInBand --testPathPatterns sql-clone-cleanup.spec.ts
       - uses: actions/upload-artifact@v4
