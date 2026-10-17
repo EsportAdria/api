@@ -252,8 +252,8 @@ export class GameServerNodeService {
     nodeIP: string,
     lanIP: string,
     publicIP: string,
-    csBulid: number,
-    csgoBuildId: number,
+    csBulid: number | undefined,
+    csgoBuildId: number | undefined,
     supportsCpuPinning: boolean,
     supportsLowLatency: boolean,
     cpuInfo: {
@@ -279,6 +279,22 @@ export class GameServerNodeService {
     rootDisk?: NodeDisk,
     cpuWarnings: Array<string> = [],
   ) {
+    // The connector leaves a build out when its manifest is gone: CS2 is not on
+    // disk. Left undefined it drops out of the update below, and the node kept
+    // showing the build it used to have, which also made the unforced update
+    // skip it as already current.
+    const installedBuild = csBulid ?? null;
+    const installedCsgoBuild = csgoBuildId ?? null;
+    const diskAvailableGb = rootDisk
+      ? Number.isNaN(parseInt(rootDisk.available))
+        ? null
+        : Math.round(parseInt(rootDisk.available) / (1024 * 1024))
+      : null;
+    const diskUsedPercent = rootDisk
+      ? Number.isNaN(parseInt(rootDisk.usedPercent))
+        ? null
+        : parseInt(rootDisk.usedPercent)
+      : null;
     const gpuDevicesAll = gpu?.devices ?? null;
     const hasGpu = (gpu?.count ?? 0) > 0 || (gpuDevicesAll?.length ?? 0) > 0;
     const gpuDevices = gpuDevicesAll
@@ -315,6 +331,8 @@ export class GameServerNodeService {
         cpu_governor_info: true,
         cpu_frequency_info: true,
         cpu_warnings: true,
+        disk_available_gb: true,
+        disk_used_percent: true,
         update_status: true,
       },
     });
@@ -363,12 +381,17 @@ export class GameServerNodeService {
         storedStatus === "Offline" && cameUp.length === 1;
     }
 
+    // Every column the update writes has to be compared here, or it only gets
+    // written when something else happens to change.
     if (
       game_server_nodes_by_pk.lan_ip !== lanIP ||
+      game_server_nodes_by_pk.node_ip !== nodeIP ||
       game_server_nodes_by_pk.public_ip !== publicIP ||
-      (game_server_nodes_by_pk.build_id !== csBulid &&
+      game_server_nodes_by_pk.disk_available_gb !== diskAvailableGb ||
+      game_server_nodes_by_pk.disk_used_percent !== diskUsedPercent ||
+      (game_server_nodes_by_pk.build_id !== installedBuild &&
         game_server_nodes_by_pk.update_status === null) ||
-      (game_server_nodes_by_pk.csgo_build_id !== csgoBuildId &&
+      (game_server_nodes_by_pk.csgo_build_id !== installedCsgoBuild &&
         game_server_nodes_by_pk.update_status === null) ||
       game_server_nodes_by_pk.supports_cpu_pinning !== supportsCpuPinning ||
       game_server_nodes_by_pk.supports_low_latency !== supportsLowLatency ||
@@ -401,10 +424,10 @@ export class GameServerNodeService {
               supports_low_latency: supportsLowLatency,
               supports_cpu_pinning: supportsCpuPinning,
               ...(game_server_nodes_by_pk.update_status === null
-                ? { build_id: csBulid }
+                ? { build_id: installedBuild }
                 : {}),
               ...(game_server_nodes_by_pk.update_status === null
-                ? { csgo_build_id: csgoBuildId }
+                ? { csgo_build_id: installedCsgoBuild }
                 : {}),
               gpu: hasGpu,
               gpu_info: gpuDevices,
@@ -414,16 +437,8 @@ export class GameServerNodeService {
               cpu_governor_info: cpuGovernorInfo,
               cpu_frequency_info: cpuFrequencyInfo,
               cpu_warnings: cpuWarnings,
-              disk_available_gb: rootDisk
-                ? Number.isNaN(parseInt(rootDisk.available))
-                  ? null
-                  : Math.round(parseInt(rootDisk.available) / (1024 * 1024))
-                : null,
-              disk_used_percent: rootDisk
-                ? Number.isNaN(parseInt(rootDisk.usedPercent))
-                  ? null
-                  : parseInt(rootDisk.usedPercent)
-                : null,
+              disk_available_gb: diskAvailableGb,
+              disk_used_percent: diskUsedPercent,
               ...(game_server_nodes_by_pk.token ? { token: null } : {}),
             },
           },
