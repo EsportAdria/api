@@ -1,0 +1,52 @@
+name: SQL clone cleanup regression
+
+on:
+  push:
+    branches:
+      - test/sql-clone-regression-20261017
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SQL_TEST_FRESH: "1"
+      TESTCONTAINERS_RYUK_DISABLED: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: actions/cache@v4
+        id: modules
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('yarn.lock', 'patches/**') }}
+      - if: steps.modules.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+      - name: Original cleanup fails the real connection regression
+        shell: bash
+        run: |
+          cp test/utils/sql-test-db.ts "$RUNNER_TEMP/sql-helper-fixed.ts"
+          git show 7b167936c213b5ce559bef479187c2d2c6833ff0:test/utils/sql-test-db.ts > test/utils/sql-test-db.ts
+          set +e
+          yarn test:sql --runInBand --testPathPatterns sql-clone-cleanup.spec.ts > "$RUNNER_TEMP/baseline.log" 2>&1
+          result=$?
+          set -e
+          cp "$RUNNER_TEMP/sql-helper-fixed.ts" test/utils/sql-test-db.ts
+          test "$result" -ne 0
+          rg -i "terminating connection|connection terminated|not queryable|connection closed" "$RUNNER_TEMP/baseline.log"
+      - name: Fixed cleanup preserves the other connection
+        run: yarn test:sql --runInBand --testPathPatterns sql-clone-cleanup.spec.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clone-cleanup-baseline-log
+          path: ${{ runner.temp }}/baseline.log
+          retention-days: 14
