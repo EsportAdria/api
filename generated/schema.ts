@@ -1315,9 +1315,39 @@ export interface UtilityRemineOutput {
     __typename: 'UtilityRemineOutput'
 }
 
+export interface UtilityRenderBulkOutput {
+    queued: Scalars['Int']
+    skipped: Scalars['Int']
+    __typename: 'UtilityRenderBulkOutput'
+}
+
 export interface UtilityRenderClearOutput {
     cleared: Scalars['Int']
     __typename: 'UtilityRenderClearOutput'
+}
+
+export interface UtilityRenderCoverageOutput {
+    current: Scalars['Int']
+    lineups: UtilityRenderGap[]
+    missing: Scalars['Int']
+    outdated: Scalars['Int']
+    pipeline_version: (Scalars['Int'] | null)
+    queued: Scalars['Int']
+    total: Scalars['Int']
+    unrenderable: Scalars['Int']
+    version: Scalars['Int']
+    __typename: 'UtilityRenderCoverageOutput'
+}
+
+export interface UtilityRenderGap {
+    id: Scalars['uuid']
+    map_name: Scalars['String']
+    name: (Scalars['String'] | null)
+    preview_version: (Scalars['Int'] | null)
+    reason: (Scalars['String'] | null)
+    state: Scalars['String']
+    utility_type: Scalars['String']
+    __typename: 'UtilityRenderGap'
 }
 
 export interface UtilityRenderQueueOutput {
@@ -3760,7 +3790,7 @@ export interface draft_game_picks_avg_fields {
 
 
 /** unique or primary key constraints on table "draft_game_picks" */
-export type draft_game_picks_constraint = 'draft_game_picks_pkey'
+export type draft_game_picks_constraint = 'draft_game_picks_draft_game_id_picked_steam_id_key' | 'draft_game_picks_pkey'
 
 
 /** aggregate max on columns */
@@ -3933,7 +3963,7 @@ export interface draft_game_players_avg_fields {
 
 
 /** unique or primary key constraints on table "draft_game_players" */
-export type draft_game_players_constraint = 'draft_game_players_pkey'
+export type draft_game_players_constraint = 'draft_game_players_captain_lineup_key' | 'draft_game_players_pkey'
 
 
 /** aggregate max on columns */
@@ -4107,7 +4137,6 @@ export interface draft_games {
     players_aggregate: draft_game_players_aggregate
     regions: Scalars['String'][]
     require_approval: Scalars['Boolean']
-    scheduled_at: (Scalars['timestamptz'] | null)
     status: e_draft_game_status_enum
     /** An object relationship */
     team_1: (teams | null)
@@ -4158,7 +4187,7 @@ export interface draft_games_avg_fields {
 
 
 /** unique or primary key constraints on table "draft_games" */
-export type draft_games_constraint = 'draft_games_pkey'
+export type draft_games_constraint = 'draft_games_invite_code_key' | 'draft_games_pkey'
 
 
 /** aggregate max on columns */
@@ -4177,7 +4206,6 @@ export interface draft_games_max_fields {
     min_elo: (Scalars['Int'] | null)
     pick_deadline: (Scalars['timestamptz'] | null)
     regions: (Scalars['String'][] | null)
-    scheduled_at: (Scalars['timestamptz'] | null)
     team_1_id: (Scalars['uuid'] | null)
     team_2_id: (Scalars['uuid'] | null)
     updated_at: (Scalars['timestamptz'] | null)
@@ -4201,7 +4229,6 @@ export interface draft_games_min_fields {
     min_elo: (Scalars['Int'] | null)
     pick_deadline: (Scalars['timestamptz'] | null)
     regions: (Scalars['String'][] | null)
-    scheduled_at: (Scalars['timestamptz'] | null)
     team_1_id: (Scalars['uuid'] | null)
     team_2_id: (Scalars['uuid'] | null)
     updated_at: (Scalars['timestamptz'] | null)
@@ -4220,7 +4247,7 @@ export interface draft_games_mutation_response {
 
 
 /** select columns of table "draft_games" */
-export type draft_games_select_column = 'access' | 'capacity' | 'captain_selection' | 'created_at' | 'current_pick_lineup' | 'draft_order' | 'expires_at' | 'host_steam_id' | 'id' | 'inner_squad' | 'invite_code' | 'map_pool_id' | 'match_id' | 'match_options_id' | 'max_elo' | 'min_elo' | 'mode' | 'pick_deadline' | 'regions' | 'require_approval' | 'scheduled_at' | 'status' | 'team_1_id' | 'team_2_id' | 'type' | 'updated_at'
+export type draft_games_select_column = 'access' | 'capacity' | 'captain_selection' | 'created_at' | 'current_pick_lineup' | 'draft_order' | 'expires_at' | 'host_steam_id' | 'id' | 'inner_squad' | 'invite_code' | 'map_pool_id' | 'match_id' | 'match_options_id' | 'max_elo' | 'min_elo' | 'mode' | 'pick_deadline' | 'regions' | 'require_approval' | 'status' | 'team_1_id' | 'team_2_id' | 'type' | 'updated_at'
 
 
 /** select "draft_games_aggregate_bool_exp_bool_and_arguments_columns" columns of table "draft_games" */
@@ -4276,7 +4303,7 @@ export interface draft_games_sum_fields {
 
 
 /** update columns of table "draft_games" */
-export type draft_games_update_column = 'access' | 'capacity' | 'captain_selection' | 'created_at' | 'current_pick_lineup' | 'draft_order' | 'expires_at' | 'host_steam_id' | 'id' | 'inner_squad' | 'invite_code' | 'map_pool_id' | 'match_id' | 'match_options_id' | 'max_elo' | 'min_elo' | 'mode' | 'pick_deadline' | 'regions' | 'require_approval' | 'scheduled_at' | 'status' | 'team_1_id' | 'team_2_id' | 'type' | 'updated_at'
+export type draft_games_update_column = 'access' | 'capacity' | 'captain_selection' | 'created_at' | 'current_pick_lineup' | 'draft_order' | 'expires_at' | 'host_steam_id' | 'id' | 'inner_squad' | 'invite_code' | 'map_pool_id' | 'match_id' | 'match_options_id' | 'max_elo' | 'min_elo' | 'mode' | 'pick_deadline' | 'regions' | 'require_approval' | 'status' | 'team_1_id' | 'team_2_id' | 'type' | 'updated_at'
 
 
 /** aggregate var_pop on columns */
@@ -6042,7 +6069,7 @@ export interface e_match_party_sources_aggregate_fields {
 /** unique or primary key constraints on table "e_match_party_sources" */
 export type e_match_party_sources_constraint = 'e_match_party_sources_pkey'
 
-export type e_match_party_sources_enum = 'faceit' | 'lobby' | 'valve'
+export type e_match_party_sources_enum = 'lobby' | 'valve'
 
 
 /** aggregate max on columns */
@@ -6245,7 +6272,7 @@ export interface e_notification_types_aggregate_fields {
 /** unique or primary key constraints on table "e_notification_types" */
 export type e_notification_types_constraint = 'e_notification_types_pkey'
 
-export type e_notification_types_enum = 'AdminCall' | 'AwardGranted' | 'ChatMessage' | 'ClipReady' | 'DedicatedServerRconStatus' | 'DedicatedServerStatus' | 'DraftInvite' | 'EloRecompute' | 'EventReminder' | 'FormTeamSuggestion' | 'GameNodeStatus' | 'GameUpdate' | 'LeagueMatchUnscheduled' | 'LeagueProposalAccepted' | 'LeagueProposalDeclined' | 'LeagueProposalReceived' | 'LeagueRegistrationDecision' | 'LeagueRosterUndersized' | 'MatchAbandoned' | 'MatchChatMessage' | 'MatchFound' | 'MatchImported' | 'MatchStatsReady' | 'MatchStatusChange' | 'MatchSupport' | 'NadeDriftScanFinished' | 'NadePracticeInvite' | 'NadePracticeReady' | 'NameChangeApproved' | 'NameChangeDenied' | 'NameChangeRequest' | 'NewsPublished' | 'PlayerReindex' | 'PlayerSanctioned' | 'PlayerWarning' | 'ScrimAlertMatch' | 'ScrimMatchCanceled' | 'ScrimMatchScheduled' | 'ScrimRequestAccepted' | 'ScrimRequestCountered' | 'ScrimRequestDeclined' | 'ScrimRequestExpired' | 'ScrimRequestReceived' | 'ScrimTimeChanged' | 'SeasonEnded' | 'StorageScan' | 'TeamInvite' | 'TeammateBanned' | 'TournamentCheckInClosing' | 'TournamentCheckInMissed' | 'TournamentCheckInOpen' | 'TournamentCreated' | 'TournamentInvite' | 'TournamentPartySignup' | 'TournamentReminder' | 'TournamentTeamInvite' | 'UtilityDriftScanFinished' | 'UtilityPracticeInvite' | 'UtilityPracticeReady'
+export type e_notification_types_enum = 'AdminCall' | 'AwardGranted' | 'ChatMessage' | 'ClipReady' | 'DedicatedServerRconStatus' | 'DedicatedServerStatus' | 'DraftInvite' | 'EloRecompute' | 'EventReminder' | 'FormTeamSuggestion' | 'GameNodeStatus' | 'GameUpdate' | 'LeagueMatchUnscheduled' | 'LeagueProposalAccepted' | 'LeagueProposalDeclined' | 'LeagueProposalReceived' | 'LeagueRegistrationDecision' | 'LeagueRosterUndersized' | 'MatchAbandoned' | 'MatchChatMessage' | 'MatchFound' | 'MatchImported' | 'MatchStatsReady' | 'MatchStatusChange' | 'MatchSupport' | 'NameChangeApproved' | 'NameChangeDenied' | 'NameChangeRequest' | 'NewsPublished' | 'PlayerReindex' | 'PlayerSanctioned' | 'PlayerWarning' | 'ScrimAlertMatch' | 'ScrimMatchCanceled' | 'ScrimMatchScheduled' | 'ScrimRequestAccepted' | 'ScrimRequestCountered' | 'ScrimRequestDeclined' | 'ScrimRequestExpired' | 'ScrimRequestReceived' | 'ScrimTimeChanged' | 'SeasonEnded' | 'StorageScan' | 'TeamInvite' | 'TeammateBanned' | 'TournamentCheckInClosing' | 'TournamentCheckInMissed' | 'TournamentCheckInOpen' | 'TournamentCreated' | 'TournamentInvite' | 'TournamentPartySignup' | 'TournamentReminder' | 'TournamentTeamInvite' | 'UtilityDriftScanFinished' | 'UtilityPracticeInvite' | 'UtilityPracticeReady'
 
 
 /** aggregate max on columns */
@@ -10368,7 +10395,6 @@ export interface game_server_nodes {
     cpu_sockets: (Scalars['Int'] | null)
     cpu_threads_per_core: (Scalars['Int'] | null)
     cpu_warnings: (Scalars['jsonb'] | null)
-    cs2_launch_options: Scalars['jsonb']
     cs2_video_settings: Scalars['jsonb']
     csgo_build_id: (Scalars['Int'] | null)
     demo_network_limiter: (Scalars['Int'] | null)
@@ -10564,7 +10590,7 @@ export interface game_server_nodes_mutation_response {
 
 
 /** select columns of table "game_server_nodes" */
-export type game_server_nodes_select_column = 'accepting_new_matches' | 'build_id' | 'cpu_cores_per_socket' | 'cpu_frequency_info' | 'cpu_governor_info' | 'cpu_sockets' | 'cpu_threads_per_core' | 'cpu_warnings' | 'cs2_launch_options' | 'cs2_video_settings' | 'csgo_build_id' | 'demo_network_limiter' | 'disk_available_gb' | 'disk_used_percent' | 'enabled' | 'enabled_for_match_making' | 'end_port_range' | 'gpu' | 'gpu_demos_enabled' | 'gpu_info' | 'gpu_rendering_enabled' | 'gpu_streaming_enabled' | 'id' | 'label' | 'lan_ip' | 'node_ip' | 'offline_at' | 'pin_build_id' | 'pin_plugin_runtime' | 'pin_plugin_version' | 'plugins_synced_at' | 'public_ip' | 'region' | 'shader_bake_progress' | 'shader_bake_progress_stage' | 'shader_bake_status' | 'shader_bake_status_history' | 'start_port_range' | 'status' | 'supports_cpu_pinning' | 'supports_low_latency' | 'token' | 'update_failed_at' | 'update_status'
+export type game_server_nodes_select_column = 'accepting_new_matches' | 'build_id' | 'cpu_cores_per_socket' | 'cpu_frequency_info' | 'cpu_governor_info' | 'cpu_sockets' | 'cpu_threads_per_core' | 'cpu_warnings' | 'cs2_video_settings' | 'csgo_build_id' | 'demo_network_limiter' | 'disk_available_gb' | 'disk_used_percent' | 'enabled' | 'enabled_for_match_making' | 'end_port_range' | 'gpu' | 'gpu_demos_enabled' | 'gpu_info' | 'gpu_rendering_enabled' | 'gpu_streaming_enabled' | 'id' | 'label' | 'lan_ip' | 'node_ip' | 'offline_at' | 'pin_build_id' | 'pin_plugin_runtime' | 'pin_plugin_version' | 'plugins_synced_at' | 'public_ip' | 'region' | 'shader_bake_progress' | 'shader_bake_progress_stage' | 'shader_bake_status' | 'shader_bake_status_history' | 'start_port_range' | 'status' | 'supports_cpu_pinning' | 'supports_low_latency' | 'token' | 'update_failed_at' | 'update_status'
 
 
 /** select "game_server_nodes_aggregate_bool_exp_bool_and_arguments_columns" columns of table "game_server_nodes" */
@@ -10672,7 +10698,7 @@ export interface game_server_nodes_sum_fields {
 
 
 /** update columns of table "game_server_nodes" */
-export type game_server_nodes_update_column = 'accepting_new_matches' | 'build_id' | 'cpu_cores_per_socket' | 'cpu_frequency_info' | 'cpu_governor_info' | 'cpu_sockets' | 'cpu_threads_per_core' | 'cpu_warnings' | 'cs2_launch_options' | 'cs2_video_settings' | 'csgo_build_id' | 'demo_network_limiter' | 'disk_available_gb' | 'disk_used_percent' | 'enabled' | 'enabled_for_match_making' | 'end_port_range' | 'gpu' | 'gpu_demos_enabled' | 'gpu_info' | 'gpu_rendering_enabled' | 'gpu_streaming_enabled' | 'id' | 'label' | 'lan_ip' | 'node_ip' | 'offline_at' | 'pin_build_id' | 'pin_plugin_runtime' | 'pin_plugin_version' | 'plugins_synced_at' | 'public_ip' | 'region' | 'shader_bake_progress' | 'shader_bake_progress_stage' | 'shader_bake_status' | 'shader_bake_status_history' | 'start_port_range' | 'status' | 'supports_cpu_pinning' | 'supports_low_latency' | 'token' | 'update_failed_at' | 'update_status'
+export type game_server_nodes_update_column = 'accepting_new_matches' | 'build_id' | 'cpu_cores_per_socket' | 'cpu_frequency_info' | 'cpu_governor_info' | 'cpu_sockets' | 'cpu_threads_per_core' | 'cpu_warnings' | 'cs2_video_settings' | 'csgo_build_id' | 'demo_network_limiter' | 'disk_available_gb' | 'disk_used_percent' | 'enabled' | 'enabled_for_match_making' | 'end_port_range' | 'gpu' | 'gpu_demos_enabled' | 'gpu_info' | 'gpu_rendering_enabled' | 'gpu_streaming_enabled' | 'id' | 'label' | 'lan_ip' | 'node_ip' | 'offline_at' | 'pin_build_id' | 'pin_plugin_runtime' | 'pin_plugin_version' | 'plugins_synced_at' | 'public_ip' | 'region' | 'shader_bake_progress' | 'shader_bake_progress_stage' | 'shader_bake_status' | 'shader_bake_status_history' | 'start_port_range' | 'status' | 'supports_cpu_pinning' | 'supports_low_latency' | 'token' | 'update_failed_at' | 'update_status'
 
 
 /** aggregate var_pop on columns */
@@ -11948,9 +11974,7 @@ export interface league_seasons {
     playoff_seats: Scalars['Int']
     playoff_stage_type: e_tournament_stage_types_enum
     playoff_third_place_match: Scalars['Boolean']
-    promote_count: Scalars['Int']
     regular_season_stage_type: e_tournament_stage_types_enum
-    relegate_count: Scalars['Int']
     relegation_down_count: Scalars['Int']
     /** An array relationship */
     relegation_playoffs: league_relegation_playoffs[]
@@ -12017,8 +12041,6 @@ export interface league_seasons_avg_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -12046,8 +12068,6 @@ export interface league_seasons_max_fields {
     name: (Scalars['String'] | null)
     playoff_best_of: (Scalars['Int'] | null)
     playoff_seats: (Scalars['Int'] | null)
-    promote_count: (Scalars['Int'] | null)
-    relegate_count: (Scalars['Int'] | null)
     relegation_down_count: (Scalars['Int'] | null)
     relegation_up_count: (Scalars['Int'] | null)
     roster_lock_at: (Scalars['timestamptz'] | null)
@@ -12075,8 +12095,6 @@ export interface league_seasons_min_fields {
     name: (Scalars['String'] | null)
     playoff_best_of: (Scalars['Int'] | null)
     playoff_seats: (Scalars['Int'] | null)
-    promote_count: (Scalars['Int'] | null)
-    relegate_count: (Scalars['Int'] | null)
     relegation_down_count: (Scalars['Int'] | null)
     relegation_up_count: (Scalars['Int'] | null)
     roster_lock_at: (Scalars['timestamptz'] | null)
@@ -12099,7 +12117,7 @@ export interface league_seasons_mutation_response {
 
 
 /** select columns of table "league_seasons" */
-export type league_seasons_select_column = 'auto_regular_season_format' | 'created_at' | 'created_by_steam_id' | 'default_best_of' | 'direct_promote_count' | 'direct_relegate_count' | 'games_per_week' | 'id' | 'match_options_id' | 'match_weeks_count' | 'max_roster_size' | 'min_roster_size' | 'name' | 'playoff_best_of' | 'playoff_round_best_of' | 'playoff_seats' | 'playoff_stage_type' | 'playoff_third_place_match' | 'promote_count' | 'regular_season_stage_type' | 'relegate_count' | 'relegation_down_count' | 'relegation_up_count' | 'roster_lock_at' | 'season_number' | 'signup_closes_at' | 'signup_opens_at' | 'starts_at' | 'status' | 'week_best_of'
+export type league_seasons_select_column = 'auto_regular_season_format' | 'created_at' | 'created_by_steam_id' | 'default_best_of' | 'direct_promote_count' | 'direct_relegate_count' | 'games_per_week' | 'id' | 'match_options_id' | 'match_weeks_count' | 'max_roster_size' | 'min_roster_size' | 'name' | 'playoff_best_of' | 'playoff_round_best_of' | 'playoff_seats' | 'playoff_stage_type' | 'playoff_third_place_match' | 'regular_season_stage_type' | 'relegation_down_count' | 'relegation_up_count' | 'roster_lock_at' | 'season_number' | 'signup_closes_at' | 'signup_opens_at' | 'starts_at' | 'status' | 'week_best_of'
 
 
 /** aggregate stddev on columns */
@@ -12114,8 +12132,6 @@ export interface league_seasons_stddev_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -12135,8 +12151,6 @@ export interface league_seasons_stddev_pop_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -12156,8 +12170,6 @@ export interface league_seasons_stddev_samp_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -12177,8 +12189,6 @@ export interface league_seasons_sum_fields {
     min_roster_size: (Scalars['Int'] | null)
     playoff_best_of: (Scalars['Int'] | null)
     playoff_seats: (Scalars['Int'] | null)
-    promote_count: (Scalars['Int'] | null)
-    relegate_count: (Scalars['Int'] | null)
     relegation_down_count: (Scalars['Int'] | null)
     relegation_up_count: (Scalars['Int'] | null)
     season_number: (Scalars['Int'] | null)
@@ -12187,7 +12197,7 @@ export interface league_seasons_sum_fields {
 
 
 /** update columns of table "league_seasons" */
-export type league_seasons_update_column = 'auto_regular_season_format' | 'created_at' | 'created_by_steam_id' | 'default_best_of' | 'direct_promote_count' | 'direct_relegate_count' | 'games_per_week' | 'id' | 'match_options_id' | 'match_weeks_count' | 'max_roster_size' | 'min_roster_size' | 'name' | 'playoff_best_of' | 'playoff_round_best_of' | 'playoff_seats' | 'playoff_stage_type' | 'playoff_third_place_match' | 'promote_count' | 'regular_season_stage_type' | 'relegate_count' | 'relegation_down_count' | 'relegation_up_count' | 'roster_lock_at' | 'season_number' | 'signup_closes_at' | 'signup_opens_at' | 'starts_at' | 'status' | 'week_best_of'
+export type league_seasons_update_column = 'auto_regular_season_format' | 'created_at' | 'created_by_steam_id' | 'default_best_of' | 'direct_promote_count' | 'direct_relegate_count' | 'games_per_week' | 'id' | 'match_options_id' | 'match_weeks_count' | 'max_roster_size' | 'min_roster_size' | 'name' | 'playoff_best_of' | 'playoff_round_best_of' | 'playoff_seats' | 'playoff_stage_type' | 'playoff_third_place_match' | 'regular_season_stage_type' | 'relegation_down_count' | 'relegation_up_count' | 'roster_lock_at' | 'season_number' | 'signup_closes_at' | 'signup_opens_at' | 'starts_at' | 'status' | 'week_best_of'
 
 
 /** aggregate var_pop on columns */
@@ -12202,8 +12212,6 @@ export interface league_seasons_var_pop_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -12223,8 +12231,6 @@ export interface league_seasons_var_samp_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -12244,8 +12250,6 @@ export interface league_seasons_variance_fields {
     min_roster_size: (Scalars['Float'] | null)
     playoff_best_of: (Scalars['Float'] | null)
     playoff_seats: (Scalars['Float'] | null)
-    promote_count: (Scalars['Float'] | null)
-    relegate_count: (Scalars['Float'] | null)
     relegation_down_count: (Scalars['Float'] | null)
     relegation_up_count: (Scalars['Float'] | null)
     season_number: (Scalars['Float'] | null)
@@ -18140,6 +18144,8 @@ export interface mutation_root {
     renameServerItem: (SuccessOutput | null)
     /** Re-film a public lineup's preview clip */
     renderUtilityLineupPreview: (UtilityRenderQueueOutput | null)
+    /** Queue a preview render for every public lineup that is missing one or has an outdated one */
+    renderUtilityLineupPreviews: (UtilityRenderBulkOutput | null)
     /** execute VOLATILE function "reorder_league_divisions" which returns "league_divisions" */
     reorder_league_divisions: league_divisions[]
     /** Re-solve a lineup a drift scan says the map moved */
@@ -19600,6 +19606,7 @@ export interface mutation_root {
 
 /** columns and relationships of "v_my_friends" */
 export interface my_friends {
+    allow_message_requests: (Scalars['Boolean'] | null)
     avatar_url: (Scalars['String'] | null)
     country: (Scalars['String'] | null)
     created_at: (Scalars['timestamptz'] | null)
@@ -19611,6 +19618,7 @@ export interface my_friends {
     faceit_nickname: (Scalars['String'] | null)
     faceit_player_id: (Scalars['String'] | null)
     faceit_skill_level: (Scalars['Int'] | null)
+    faceit_synced_at: (Scalars['timestamptz'] | null)
     faceit_updated_at: (Scalars['timestamptz'] | null)
     faceit_url: (Scalars['String'] | null)
     friend_steam_id: (Scalars['bigint'] | null)
@@ -19695,6 +19703,7 @@ export interface my_friends_max_fields {
     faceit_nickname: (Scalars['String'] | null)
     faceit_player_id: (Scalars['String'] | null)
     faceit_skill_level: (Scalars['Int'] | null)
+    faceit_synced_at: (Scalars['timestamptz'] | null)
     faceit_updated_at: (Scalars['timestamptz'] | null)
     faceit_url: (Scalars['String'] | null)
     friend_steam_id: (Scalars['bigint'] | null)
@@ -19731,6 +19740,7 @@ export interface my_friends_min_fields {
     faceit_nickname: (Scalars['String'] | null)
     faceit_player_id: (Scalars['String'] | null)
     faceit_skill_level: (Scalars['Int'] | null)
+    faceit_synced_at: (Scalars['timestamptz'] | null)
     faceit_updated_at: (Scalars['timestamptz'] | null)
     faceit_url: (Scalars['String'] | null)
     friend_steam_id: (Scalars['bigint'] | null)
@@ -19766,15 +19776,15 @@ export interface my_friends_mutation_response {
 
 
 /** select columns of table "v_my_friends" */
-export type my_friends_select_column = 'avatar_url' | 'country' | 'created_at' | 'custom_avatar_url' | 'days_since_last_ban' | 'discord_id' | 'elo' | 'faceit_elo' | 'faceit_nickname' | 'faceit_player_id' | 'faceit_skill_level' | 'faceit_updated_at' | 'faceit_url' | 'friend_steam_id' | 'game_ban_count' | 'invited_by_steam_id' | 'language' | 'last_presence_state' | 'last_read_news_at' | 'last_sign_in_at' | 'name' | 'name_registered' | 'notification_timezone' | 'premier_rank' | 'premier_rank_updated_at' | 'presence_updated_at' | 'profile_url' | 'quiet_hours_end' | 'quiet_hours_start' | 'role' | 'roster_image_url' | 'show_match_ready_modal' | 'status' | 'steam_bans_checked_at' | 'steam_id' | 'vac_ban_count' | 'vac_banned'
+export type my_friends_select_column = 'allow_message_requests' | 'avatar_url' | 'country' | 'created_at' | 'custom_avatar_url' | 'days_since_last_ban' | 'discord_id' | 'elo' | 'faceit_elo' | 'faceit_nickname' | 'faceit_player_id' | 'faceit_skill_level' | 'faceit_synced_at' | 'faceit_updated_at' | 'faceit_url' | 'friend_steam_id' | 'game_ban_count' | 'invited_by_steam_id' | 'language' | 'last_presence_state' | 'last_read_news_at' | 'last_sign_in_at' | 'name' | 'name_registered' | 'notification_timezone' | 'premier_rank' | 'premier_rank_updated_at' | 'presence_updated_at' | 'profile_url' | 'quiet_hours_end' | 'quiet_hours_start' | 'role' | 'roster_image_url' | 'show_match_ready_modal' | 'status' | 'steam_bans_checked_at' | 'steam_id' | 'vac_ban_count' | 'vac_banned'
 
 
 /** select "my_friends_aggregate_bool_exp_bool_and_arguments_columns" columns of table "v_my_friends" */
-export type my_friends_select_column_my_friends_aggregate_bool_exp_bool_and_arguments_columns = 'name_registered' | 'show_match_ready_modal' | 'vac_banned'
+export type my_friends_select_column_my_friends_aggregate_bool_exp_bool_and_arguments_columns = 'allow_message_requests' | 'name_registered' | 'show_match_ready_modal' | 'vac_banned'
 
 
 /** select "my_friends_aggregate_bool_exp_bool_or_arguments_columns" columns of table "v_my_friends" */
-export type my_friends_select_column_my_friends_aggregate_bool_exp_bool_or_arguments_columns = 'name_registered' | 'show_match_ready_modal' | 'vac_banned'
+export type my_friends_select_column_my_friends_aggregate_bool_exp_bool_or_arguments_columns = 'allow_message_requests' | 'name_registered' | 'show_match_ready_modal' | 'vac_banned'
 
 
 /** aggregate stddev on columns */
@@ -22494,7 +22504,7 @@ export interface player_elo_variance_fields {
 
 /** columns and relationships of "player_faceit_rank_history" */
 export interface player_faceit_rank_history {
-    elo: (Scalars['Int'] | null)
+    elo: Scalars['Int']
     id: Scalars['uuid']
     /** An object relationship */
     match: matches
@@ -22503,7 +22513,7 @@ export interface player_faceit_rank_history {
     /** An object relationship */
     player: players
     previous_rank: (Scalars['Int'] | null)
-    skill_level: Scalars['Int']
+    skill_level: (Scalars['Int'] | null)
     steam_id: Scalars['bigint']
     __typename: 'player_faceit_rank_history'
 }
@@ -27732,6 +27742,7 @@ export interface players {
     /** An aggregate relationship */
     faceit_rank_history_aggregate: player_faceit_rank_history_aggregate
     faceit_skill_level: (Scalars['Int'] | null)
+    faceit_synced_at: (Scalars['timestamptz'] | null)
     faceit_updated_at: (Scalars['timestamptz'] | null)
     faceit_url: (Scalars['String'] | null)
     /** An array relationship */
@@ -27995,6 +28006,7 @@ export interface players_max_fields {
     faceit_nickname: (Scalars['String'] | null)
     faceit_player_id: (Scalars['String'] | null)
     faceit_skill_level: (Scalars['Int'] | null)
+    faceit_synced_at: (Scalars['timestamptz'] | null)
     faceit_updated_at: (Scalars['timestamptz'] | null)
     faceit_url: (Scalars['String'] | null)
     game_ban_count: (Scalars['Int'] | null)
@@ -28056,6 +28068,7 @@ export interface players_min_fields {
     faceit_nickname: (Scalars['String'] | null)
     faceit_player_id: (Scalars['String'] | null)
     faceit_skill_level: (Scalars['Int'] | null)
+    faceit_synced_at: (Scalars['timestamptz'] | null)
     faceit_updated_at: (Scalars['timestamptz'] | null)
     faceit_url: (Scalars['String'] | null)
     game_ban_count: (Scalars['Int'] | null)
@@ -28112,7 +28125,7 @@ export interface players_mutation_response {
 
 
 /** select columns of table "players" */
-export type players_select_column = 'allow_message_requests' | 'avatar_url' | 'country' | 'created_at' | 'custom_avatar_url' | 'days_since_last_ban' | 'discord_id' | 'faceit_elo' | 'faceit_nickname' | 'faceit_player_id' | 'faceit_skill_level' | 'faceit_updated_at' | 'faceit_url' | 'game_ban_count' | 'language' | 'last_read_news_at' | 'last_sign_in_at' | 'name' | 'name_registered' | 'notification_timezone' | 'premier_rank' | 'premier_rank_updated_at' | 'profile_url' | 'quiet_hours_end' | 'quiet_hours_start' | 'role' | 'roster_image_url' | 'show_match_ready_modal' | 'steam_bans_checked_at' | 'steam_id' | 'vac_ban_count' | 'vac_banned'
+export type players_select_column = 'allow_message_requests' | 'avatar_url' | 'country' | 'created_at' | 'custom_avatar_url' | 'days_since_last_ban' | 'discord_id' | 'faceit_elo' | 'faceit_nickname' | 'faceit_player_id' | 'faceit_skill_level' | 'faceit_synced_at' | 'faceit_updated_at' | 'faceit_url' | 'game_ban_count' | 'language' | 'last_read_news_at' | 'last_sign_in_at' | 'name' | 'name_registered' | 'notification_timezone' | 'premier_rank' | 'premier_rank_updated_at' | 'profile_url' | 'quiet_hours_end' | 'quiet_hours_start' | 'role' | 'roster_image_url' | 'show_match_ready_modal' | 'steam_bans_checked_at' | 'steam_id' | 'vac_ban_count' | 'vac_banned'
 
 
 /** aggregate stddev on columns */
@@ -28256,7 +28269,7 @@ export interface players_sum_fields {
 
 
 /** update columns of table "players" */
-export type players_update_column = 'allow_message_requests' | 'avatar_url' | 'country' | 'created_at' | 'custom_avatar_url' | 'days_since_last_ban' | 'discord_id' | 'faceit_elo' | 'faceit_nickname' | 'faceit_player_id' | 'faceit_skill_level' | 'faceit_updated_at' | 'faceit_url' | 'game_ban_count' | 'language' | 'last_read_news_at' | 'last_sign_in_at' | 'name' | 'name_registered' | 'notification_timezone' | 'premier_rank' | 'premier_rank_updated_at' | 'profile_url' | 'quiet_hours_end' | 'quiet_hours_start' | 'role' | 'roster_image_url' | 'show_match_ready_modal' | 'steam_bans_checked_at' | 'steam_id' | 'vac_ban_count' | 'vac_banned'
+export type players_update_column = 'allow_message_requests' | 'avatar_url' | 'country' | 'created_at' | 'custom_avatar_url' | 'days_since_last_ban' | 'discord_id' | 'faceit_elo' | 'faceit_nickname' | 'faceit_player_id' | 'faceit_skill_level' | 'faceit_synced_at' | 'faceit_updated_at' | 'faceit_url' | 'game_ban_count' | 'language' | 'last_read_news_at' | 'last_sign_in_at' | 'name' | 'name_registered' | 'notification_timezone' | 'premier_rank' | 'premier_rank_updated_at' | 'profile_url' | 'quiet_hours_end' | 'quiet_hours_start' | 'role' | 'roster_image_url' | 'show_match_ready_modal' | 'steam_bans_checked_at' | 'steam_id' | 'vac_ban_count' | 'vac_banned'
 
 
 /** aggregate var_pop on columns */
@@ -29953,6 +29966,8 @@ export interface query_root {
     tournaments_by_pk: (tournaments | null)
     /** Which way everybody misses one lineup, from their practice throws */
     utilityLineupMissPattern: (UtilityMissPatternOutput | null)
+    /** Which public lineups have no preview, or one filmed by an older render version */
+    utilityLineupRenderCoverage: (UtilityRenderCoverageOutput | null)
     /** Report a player's mined utility throws for a match */
     utilityMatchUtilityReport: (UtilityUtilityReportOutput | null)
     /** Rank what to practise next on a map from the mined meta */
@@ -38744,7 +38759,6 @@ export interface tournaments {
     homepage: (Scalars['String'] | null)
     id: Scalars['uuid']
     invite_only: Scalars['Boolean']
-    is_league: Scalars['Boolean']
     /** A computed field, executes function "is_tournament_organizer" */
     is_organizer: (Scalars['Boolean'] | null)
     /** A computed field, executes function "joined_tournament" */
@@ -38960,7 +38974,7 @@ export interface tournaments_mutation_response {
 
 
 /** select columns of table "tournaments" */
-export type tournaments_select_column = 'auto_start' | 'awards_enabled' | 'banner' | 'check_in_closed_for' | 'check_in_closes_before_minutes' | 'check_in_closing_notified_for' | 'check_in_ends_at' | 'check_in_opens_before_minutes' | 'check_in_required' | 'check_in_setting' | 'created_at' | 'description' | 'discord_guild_id' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_role_id' | 'discord_voice_enabled' | 'discord_webhook' | 'finished_at' | 'homepage' | 'id' | 'invite_only' | 'is_league' | 'latitude' | 'location' | 'logo' | 'longitude' | 'match_options_id' | 'max_elo' | 'min_elo' | 'min_role' | 'name' | 'organizer_steam_id' | 'registration_type' | 'scheduling_mode' | 'start' | 'status' | 'substitutes_enabled'
+export type tournaments_select_column = 'auto_start' | 'awards_enabled' | 'banner' | 'check_in_closed_for' | 'check_in_closes_before_minutes' | 'check_in_closing_notified_for' | 'check_in_ends_at' | 'check_in_opens_before_minutes' | 'check_in_required' | 'check_in_setting' | 'created_at' | 'description' | 'discord_guild_id' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_role_id' | 'discord_voice_enabled' | 'discord_webhook' | 'finished_at' | 'homepage' | 'id' | 'invite_only' | 'latitude' | 'location' | 'logo' | 'longitude' | 'match_options_id' | 'max_elo' | 'min_elo' | 'min_role' | 'name' | 'organizer_steam_id' | 'registration_type' | 'scheduling_mode' | 'start' | 'status' | 'substitutes_enabled'
 
 
 /** select "tournaments_aggregate_bool_exp_avg_arguments_columns" columns of table "tournaments" */
@@ -38968,11 +38982,11 @@ export type tournaments_select_column_tournaments_aggregate_bool_exp_avg_argumen
 
 
 /** select "tournaments_aggregate_bool_exp_bool_and_arguments_columns" columns of table "tournaments" */
-export type tournaments_select_column_tournaments_aggregate_bool_exp_bool_and_arguments_columns = 'auto_start' | 'awards_enabled' | 'check_in_required' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_voice_enabled' | 'invite_only' | 'is_league' | 'substitutes_enabled'
+export type tournaments_select_column_tournaments_aggregate_bool_exp_bool_and_arguments_columns = 'auto_start' | 'awards_enabled' | 'check_in_required' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_voice_enabled' | 'invite_only' | 'substitutes_enabled'
 
 
 /** select "tournaments_aggregate_bool_exp_bool_or_arguments_columns" columns of table "tournaments" */
-export type tournaments_select_column_tournaments_aggregate_bool_exp_bool_or_arguments_columns = 'auto_start' | 'awards_enabled' | 'check_in_required' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_voice_enabled' | 'invite_only' | 'is_league' | 'substitutes_enabled'
+export type tournaments_select_column_tournaments_aggregate_bool_exp_bool_or_arguments_columns = 'auto_start' | 'awards_enabled' | 'check_in_required' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_voice_enabled' | 'invite_only' | 'substitutes_enabled'
 
 
 /** select "tournaments_aggregate_bool_exp_corr_arguments_columns" columns of table "tournaments" */
@@ -39088,7 +39102,7 @@ export interface tournaments_sum_fields {
 
 
 /** update columns of table "tournaments" */
-export type tournaments_update_column = 'auto_start' | 'awards_enabled' | 'banner' | 'check_in_closed_for' | 'check_in_closes_before_minutes' | 'check_in_closing_notified_for' | 'check_in_ends_at' | 'check_in_opens_before_minutes' | 'check_in_required' | 'check_in_setting' | 'created_at' | 'description' | 'discord_guild_id' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_role_id' | 'discord_voice_enabled' | 'discord_webhook' | 'finished_at' | 'homepage' | 'id' | 'invite_only' | 'is_league' | 'latitude' | 'location' | 'logo' | 'longitude' | 'match_options_id' | 'max_elo' | 'min_elo' | 'min_role' | 'name' | 'organizer_steam_id' | 'registration_type' | 'scheduling_mode' | 'start' | 'status' | 'substitutes_enabled'
+export type tournaments_update_column = 'auto_start' | 'awards_enabled' | 'banner' | 'check_in_closed_for' | 'check_in_closes_before_minutes' | 'check_in_closing_notified_for' | 'check_in_ends_at' | 'check_in_opens_before_minutes' | 'check_in_required' | 'check_in_setting' | 'created_at' | 'description' | 'discord_guild_id' | 'discord_notifications_enabled' | 'discord_notify_Canceled' | 'discord_notify_Finished' | 'discord_notify_Forfeit' | 'discord_notify_Live' | 'discord_notify_MapPaused' | 'discord_notify_PickingPlayers' | 'discord_notify_Scheduled' | 'discord_notify_Surrendered' | 'discord_notify_Tie' | 'discord_notify_Veto' | 'discord_notify_WaitingForCheckIn' | 'discord_notify_WaitingForServer' | 'discord_role_id' | 'discord_voice_enabled' | 'discord_webhook' | 'finished_at' | 'homepage' | 'id' | 'invite_only' | 'latitude' | 'location' | 'logo' | 'longitude' | 'match_options_id' | 'max_elo' | 'min_elo' | 'min_role' | 'name' | 'organizer_steam_id' | 'registration_type' | 'scheduling_mode' | 'start' | 'status' | 'substitutes_enabled'
 
 
 /** aggregate var_pop on columns */
@@ -40728,6 +40742,7 @@ export interface utility_lineup_renders {
     /** An object relationship */
     practice_session: (utility_practice_sessions | null)
     progress: (Scalars['numeric'] | null)
+    render_version: (Scalars['Int'] | null)
     /** An object relationship */
     requested_by: (players | null)
     requested_by_steam_id: (Scalars['bigint'] | null)
@@ -40772,6 +40787,7 @@ export interface utility_lineup_renders_aggregate_fields {
 export interface utility_lineup_renders_avg_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_avg_fields'
@@ -40793,6 +40809,7 @@ export interface utility_lineup_renders_max_fields {
     last_status_at: (Scalars['timestamptz'] | null)
     map_name: (Scalars['String'] | null)
     progress: (Scalars['numeric'] | null)
+    render_version: (Scalars['Int'] | null)
     requested_by_steam_id: (Scalars['bigint'] | null)
     session_token: (Scalars['String'] | null)
     skip_reason: (Scalars['String'] | null)
@@ -40815,6 +40832,7 @@ export interface utility_lineup_renders_min_fields {
     last_status_at: (Scalars['timestamptz'] | null)
     map_name: (Scalars['String'] | null)
     progress: (Scalars['numeric'] | null)
+    render_version: (Scalars['Int'] | null)
     requested_by_steam_id: (Scalars['bigint'] | null)
     session_token: (Scalars['String'] | null)
     skip_reason: (Scalars['String'] | null)
@@ -40837,7 +40855,7 @@ export interface utility_lineup_renders_mutation_response {
 
 
 /** select columns of table "utility_lineup_renders" */
-export type utility_lineup_renders_select_column = 'created_at' | 'duration_ms' | 'error_message' | 'game_server_node_id' | 'id' | 'k8s_job_name' | 'last_status_at' | 'map_name' | 'paused' | 'progress' | 'requested_by_steam_id' | 'session_token' | 'skip_reason' | 'sort_index' | 'spec' | 'status' | 'status_history' | 'utility_lineup_id' | 'utility_practice_session_id'
+export type utility_lineup_renders_select_column = 'created_at' | 'duration_ms' | 'error_message' | 'game_server_node_id' | 'id' | 'k8s_job_name' | 'last_status_at' | 'map_name' | 'paused' | 'progress' | 'render_version' | 'requested_by_steam_id' | 'session_token' | 'skip_reason' | 'sort_index' | 'spec' | 'status' | 'status_history' | 'utility_lineup_id' | 'utility_practice_session_id'
 
 
 /** select "utility_lineup_renders_aggregate_bool_exp_bool_and_arguments_columns" columns of table "utility_lineup_renders" */
@@ -40852,6 +40870,7 @@ export type utility_lineup_renders_select_column_utility_lineup_renders_aggregat
 export interface utility_lineup_renders_stddev_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_stddev_fields'
@@ -40862,6 +40881,7 @@ export interface utility_lineup_renders_stddev_fields {
 export interface utility_lineup_renders_stddev_pop_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_stddev_pop_fields'
@@ -40872,6 +40892,7 @@ export interface utility_lineup_renders_stddev_pop_fields {
 export interface utility_lineup_renders_stddev_samp_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_stddev_samp_fields'
@@ -40882,6 +40903,7 @@ export interface utility_lineup_renders_stddev_samp_fields {
 export interface utility_lineup_renders_sum_fields {
     duration_ms: (Scalars['Int'] | null)
     progress: (Scalars['numeric'] | null)
+    render_version: (Scalars['Int'] | null)
     requested_by_steam_id: (Scalars['bigint'] | null)
     sort_index: (Scalars['Int'] | null)
     __typename: 'utility_lineup_renders_sum_fields'
@@ -40889,13 +40911,14 @@ export interface utility_lineup_renders_sum_fields {
 
 
 /** update columns of table "utility_lineup_renders" */
-export type utility_lineup_renders_update_column = 'created_at' | 'duration_ms' | 'error_message' | 'game_server_node_id' | 'id' | 'k8s_job_name' | 'last_status_at' | 'map_name' | 'paused' | 'progress' | 'requested_by_steam_id' | 'session_token' | 'skip_reason' | 'sort_index' | 'spec' | 'status' | 'status_history' | 'utility_lineup_id' | 'utility_practice_session_id'
+export type utility_lineup_renders_update_column = 'created_at' | 'duration_ms' | 'error_message' | 'game_server_node_id' | 'id' | 'k8s_job_name' | 'last_status_at' | 'map_name' | 'paused' | 'progress' | 'render_version' | 'requested_by_steam_id' | 'session_token' | 'skip_reason' | 'sort_index' | 'spec' | 'status' | 'status_history' | 'utility_lineup_id' | 'utility_practice_session_id'
 
 
 /** aggregate var_pop on columns */
 export interface utility_lineup_renders_var_pop_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_var_pop_fields'
@@ -40906,6 +40929,7 @@ export interface utility_lineup_renders_var_pop_fields {
 export interface utility_lineup_renders_var_samp_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_var_samp_fields'
@@ -40916,6 +40940,7 @@ export interface utility_lineup_renders_var_samp_fields {
 export interface utility_lineup_renders_variance_fields {
     duration_ms: (Scalars['Float'] | null)
     progress: (Scalars['Float'] | null)
+    render_version: (Scalars['Float'] | null)
     requested_by_steam_id: (Scalars['Float'] | null)
     sort_index: (Scalars['Float'] | null)
     __typename: 'utility_lineup_renders_variance_fields'
@@ -41340,6 +41365,7 @@ export interface utility_lineups {
     preview_thumbnail_url: (Scalars['String'] | null)
     /** A computed field, executes function "utility_lineup_preview_url" */
     preview_url: (Scalars['String'] | null)
+    preview_version: (Scalars['Int'] | null)
     /** An array relationship */
     progress: utility_lineup_progress[]
     /** An aggregate relationship */
@@ -41443,6 +41469,7 @@ export interface utility_lineups_avg_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -41504,6 +41531,7 @@ export interface utility_lineups_max_fields {
     preview_thumbnail_url: (Scalars['String'] | null)
     /** A computed field, executes function "utility_lineup_preview_url" */
     preview_url: (Scalars['String'] | null)
+    preview_version: (Scalars['Int'] | null)
     public_requested_at: (Scalars['timestamptz'] | null)
     public_review_note: (Scalars['String'] | null)
     public_reviewed_at: (Scalars['timestamptz'] | null)
@@ -41573,6 +41601,7 @@ export interface utility_lineups_min_fields {
     preview_thumbnail_url: (Scalars['String'] | null)
     /** A computed field, executes function "utility_lineup_preview_url" */
     preview_url: (Scalars['String'] | null)
+    preview_version: (Scalars['Int'] | null)
     public_requested_at: (Scalars['timestamptz'] | null)
     public_review_note: (Scalars['String'] | null)
     public_reviewed_at: (Scalars['timestamptz'] | null)
@@ -41608,7 +41637,7 @@ export interface utility_lineups_mutation_response {
 
 
 /** select columns of table "utility_lineups" */
-export type utility_lineups_select_column = 'aim_tolerance' | 'approach' | 'archived_at' | 'author_steam_id' | 'confidence' | 'created_at' | 'description' | 'downvotes' | 'external_id' | 'eye_z' | 'favorites' | 'flight_time_ms' | 'forked_from_utility_lineup_id' | 'id' | 'initial_pos_x' | 'initial_pos_y' | 'initial_pos_z' | 'initial_vel_x' | 'initial_vel_y' | 'initial_vel_z' | 'jump_throw_bind' | 'land_x' | 'land_y' | 'land_z' | 'lineup_bucket' | 'map_name' | 'name' | 'origin_source' | 'origin_x' | 'origin_y' | 'origin_z' | 'practice_attempts' | 'practice_players' | 'practice_successes' | 'preview_duration_ms' | 'preview_file' | 'preview_rendered_at' | 'preview_stills' | 'preview_thumbnail' | 'public_requested_at' | 'public_review_note' | 'public_reviewed_at' | 'public_reviewed_by' | 'side' | 'source_grenade_id' | 'source_match_id' | 'source_match_map_id' | 'source_url' | 'tags' | 'team_id' | 'technique' | 'throw_strength' | 'trajectory_file' | 'trajectory_preview' | 'trajectory_size' | 'updated_at' | 'upvotes' | 'utility_type' | 'verified_at' | 'view_pitch' | 'view_pitch_delta' | 'view_yaw' | 'view_yaw_delta' | 'visibility' | 'workshop_map_id'
+export type utility_lineups_select_column = 'aim_tolerance' | 'approach' | 'archived_at' | 'author_steam_id' | 'confidence' | 'created_at' | 'description' | 'downvotes' | 'external_id' | 'eye_z' | 'favorites' | 'flight_time_ms' | 'forked_from_utility_lineup_id' | 'id' | 'initial_pos_x' | 'initial_pos_y' | 'initial_pos_z' | 'initial_vel_x' | 'initial_vel_y' | 'initial_vel_z' | 'jump_throw_bind' | 'land_x' | 'land_y' | 'land_z' | 'lineup_bucket' | 'map_name' | 'name' | 'origin_source' | 'origin_x' | 'origin_y' | 'origin_z' | 'practice_attempts' | 'practice_players' | 'practice_successes' | 'preview_duration_ms' | 'preview_file' | 'preview_rendered_at' | 'preview_stills' | 'preview_thumbnail' | 'preview_version' | 'public_requested_at' | 'public_review_note' | 'public_reviewed_at' | 'public_reviewed_by' | 'side' | 'source_grenade_id' | 'source_match_id' | 'source_match_map_id' | 'source_url' | 'tags' | 'team_id' | 'technique' | 'throw_strength' | 'trajectory_file' | 'trajectory_preview' | 'trajectory_size' | 'updated_at' | 'upvotes' | 'utility_type' | 'verified_at' | 'view_pitch' | 'view_pitch_delta' | 'view_yaw' | 'view_yaw_delta' | 'visibility' | 'workshop_map_id'
 
 
 /** select "utility_lineups_aggregate_bool_exp_avg_arguments_columns" columns of table "utility_lineups" */
@@ -41677,6 +41706,7 @@ export interface utility_lineups_stddev_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -41715,6 +41745,7 @@ export interface utility_lineups_stddev_pop_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -41753,6 +41784,7 @@ export interface utility_lineups_stddev_samp_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -41791,6 +41823,7 @@ export interface utility_lineups_sum_fields {
     practice_players: (Scalars['Int'] | null)
     practice_successes: (Scalars['Int'] | null)
     preview_duration_ms: (Scalars['Int'] | null)
+    preview_version: (Scalars['Int'] | null)
     public_reviewed_by: (Scalars['bigint'] | null)
     source_grenade_id: (Scalars['Int'] | null)
     trajectory_size: (Scalars['Int'] | null)
@@ -41804,7 +41837,7 @@ export interface utility_lineups_sum_fields {
 
 
 /** update columns of table "utility_lineups" */
-export type utility_lineups_update_column = 'aim_tolerance' | 'approach' | 'archived_at' | 'author_steam_id' | 'confidence' | 'created_at' | 'description' | 'downvotes' | 'external_id' | 'eye_z' | 'favorites' | 'flight_time_ms' | 'forked_from_utility_lineup_id' | 'id' | 'initial_pos_x' | 'initial_pos_y' | 'initial_pos_z' | 'initial_vel_x' | 'initial_vel_y' | 'initial_vel_z' | 'jump_throw_bind' | 'land_x' | 'land_y' | 'land_z' | 'map_name' | 'name' | 'origin_source' | 'origin_x' | 'origin_y' | 'origin_z' | 'practice_attempts' | 'practice_players' | 'practice_successes' | 'preview_duration_ms' | 'preview_file' | 'preview_rendered_at' | 'preview_stills' | 'preview_thumbnail' | 'public_requested_at' | 'public_review_note' | 'public_reviewed_at' | 'public_reviewed_by' | 'side' | 'source_grenade_id' | 'source_match_id' | 'source_match_map_id' | 'source_url' | 'tags' | 'team_id' | 'technique' | 'throw_strength' | 'trajectory_file' | 'trajectory_preview' | 'trajectory_size' | 'updated_at' | 'upvotes' | 'utility_type' | 'verified_at' | 'view_pitch' | 'view_pitch_delta' | 'view_yaw' | 'view_yaw_delta' | 'visibility' | 'workshop_map_id'
+export type utility_lineups_update_column = 'aim_tolerance' | 'approach' | 'archived_at' | 'author_steam_id' | 'confidence' | 'created_at' | 'description' | 'downvotes' | 'external_id' | 'eye_z' | 'favorites' | 'flight_time_ms' | 'forked_from_utility_lineup_id' | 'id' | 'initial_pos_x' | 'initial_pos_y' | 'initial_pos_z' | 'initial_vel_x' | 'initial_vel_y' | 'initial_vel_z' | 'jump_throw_bind' | 'land_x' | 'land_y' | 'land_z' | 'map_name' | 'name' | 'origin_source' | 'origin_x' | 'origin_y' | 'origin_z' | 'practice_attempts' | 'practice_players' | 'practice_successes' | 'preview_duration_ms' | 'preview_file' | 'preview_rendered_at' | 'preview_stills' | 'preview_thumbnail' | 'preview_version' | 'public_requested_at' | 'public_review_note' | 'public_reviewed_at' | 'public_reviewed_by' | 'side' | 'source_grenade_id' | 'source_match_id' | 'source_match_map_id' | 'source_url' | 'tags' | 'team_id' | 'technique' | 'throw_strength' | 'trajectory_file' | 'trajectory_preview' | 'trajectory_size' | 'updated_at' | 'upvotes' | 'utility_type' | 'verified_at' | 'view_pitch' | 'view_pitch_delta' | 'view_yaw' | 'view_yaw_delta' | 'visibility' | 'workshop_map_id'
 
 
 /** aggregate var_pop on columns */
@@ -41833,6 +41866,7 @@ export interface utility_lineups_var_pop_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -41871,6 +41905,7 @@ export interface utility_lineups_var_samp_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -41909,6 +41944,7 @@ export interface utility_lineups_variance_fields {
     practice_players: (Scalars['Float'] | null)
     practice_successes: (Scalars['Float'] | null)
     preview_duration_ms: (Scalars['Float'] | null)
+    preview_version: (Scalars['Float'] | null)
     public_reviewed_by: (Scalars['Float'] | null)
     source_grenade_id: (Scalars['Float'] | null)
     trajectory_size: (Scalars['Float'] | null)
@@ -42705,6 +42741,8 @@ export interface utility_practice_sessions {
     playbook: (utility_playbooks | null)
     playbook_id: (Scalars['uuid'] | null)
     region: (Scalars['String'] | null)
+    render_job_name: (Scalars['String'] | null)
+    render_seen_at: (Scalars['timestamptz'] | null)
     status: e_utility_practice_statuses_enum
     /** An object relationship */
     team: (teams | null)
@@ -42771,6 +42809,8 @@ export interface utility_practice_sessions_max_fields {
     match_id: (Scalars['uuid'] | null)
     playbook_id: (Scalars['uuid'] | null)
     region: (Scalars['String'] | null)
+    render_job_name: (Scalars['String'] | null)
+    render_seen_at: (Scalars['timestamptz'] | null)
     team_id: (Scalars['uuid'] | null)
     updated_at: (Scalars['timestamptz'] | null)
     __typename: 'utility_practice_sessions_max_fields'
@@ -42798,6 +42838,8 @@ export interface utility_practice_sessions_min_fields {
     match_id: (Scalars['uuid'] | null)
     playbook_id: (Scalars['uuid'] | null)
     region: (Scalars['String'] | null)
+    render_job_name: (Scalars['String'] | null)
+    render_seen_at: (Scalars['timestamptz'] | null)
     team_id: (Scalars['uuid'] | null)
     updated_at: (Scalars['timestamptz'] | null)
     __typename: 'utility_practice_sessions_min_fields'
@@ -42815,7 +42857,7 @@ export interface utility_practice_sessions_mutation_response {
 
 
 /** select columns of table "utility_practice_sessions" */
-export type utility_practice_sessions_select_column = 'access' | 'collection_id' | 'created_at' | 'empty_since' | 'expires_at' | 'failure_reason' | 'first_joined_at' | 'host_steam_id' | 'id' | 'invite_code' | 'is_open' | 'is_render' | 'last_occupied_at' | 'map_changing_at' | 'map_name' | 'match_id' | 'notify_when_ready' | 'playbook_id' | 'region' | 'status' | 'team_id' | 'updated_at'
+export type utility_practice_sessions_select_column = 'access' | 'collection_id' | 'created_at' | 'empty_since' | 'expires_at' | 'failure_reason' | 'first_joined_at' | 'host_steam_id' | 'id' | 'invite_code' | 'is_open' | 'is_render' | 'last_occupied_at' | 'map_changing_at' | 'map_name' | 'match_id' | 'notify_when_ready' | 'playbook_id' | 'region' | 'render_job_name' | 'render_seen_at' | 'status' | 'team_id' | 'updated_at'
 
 
 /** select "utility_practice_sessions_aggregate_bool_exp_bool_and_arguments_columns" columns of table "utility_practice_sessions" */
@@ -42855,7 +42897,7 @@ export interface utility_practice_sessions_sum_fields {
 
 
 /** update columns of table "utility_practice_sessions" */
-export type utility_practice_sessions_update_column = 'access' | 'collection_id' | 'created_at' | 'empty_since' | 'expires_at' | 'failure_reason' | 'first_joined_at' | 'host_steam_id' | 'id' | 'invite_code' | 'is_open' | 'is_render' | 'last_occupied_at' | 'map_changing_at' | 'map_name' | 'match_id' | 'notify_when_ready' | 'playbook_id' | 'region' | 'status' | 'team_id' | 'updated_at'
+export type utility_practice_sessions_update_column = 'access' | 'collection_id' | 'created_at' | 'empty_since' | 'expires_at' | 'failure_reason' | 'first_joined_at' | 'host_steam_id' | 'id' | 'invite_code' | 'is_open' | 'is_render' | 'last_occupied_at' | 'map_changing_at' | 'map_name' | 'match_id' | 'notify_when_ready' | 'playbook_id' | 'region' | 'render_job_name' | 'render_seen_at' | 'status' | 'team_id' | 'updated_at'
 
 
 /** aggregate var_pop on columns */
@@ -50651,8 +50693,41 @@ export interface UtilityRemineOutputGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface UtilityRenderBulkOutputGenqlSelection{
+    queued?: boolean | number
+    skipped?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface UtilityRenderClearOutputGenqlSelection{
     cleared?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface UtilityRenderCoverageOutputGenqlSelection{
+    current?: boolean | number
+    lineups?: UtilityRenderGapGenqlSelection
+    missing?: boolean | number
+    outdated?: boolean | number
+    pipeline_version?: boolean | number
+    queued?: boolean | number
+    total?: boolean | number
+    unrenderable?: boolean | number
+    version?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface UtilityRenderGapGenqlSelection{
+    id?: boolean | number
+    map_name?: boolean | number
+    name?: boolean | number
+    preview_version?: boolean | number
+    reason?: boolean | number
+    state?: boolean | number
+    utility_type?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -54823,7 +54898,6 @@ export interface draft_gamesGenqlSelection{
     where?: (draft_game_players_bool_exp | null)} })
     regions?: boolean | number
     require_approval?: boolean | number
-    scheduled_at?: boolean | number
     status?: boolean | number
     /** An object relationship */
     team_1?: teamsGenqlSelection
@@ -54900,7 +54974,7 @@ export interface draft_games_avg_order_by {capacity?: (order_by | null),current_
 
 
 /** Boolean expression to filter rows from the table "draft_games". All fields are combined with a logical 'AND'. */
-export interface draft_games_bool_exp {_and?: (draft_games_bool_exp[] | null),_not?: (draft_games_bool_exp | null),_or?: (draft_games_bool_exp[] | null),access?: (e_lobby_access_enum_comparison_exp | null),capacity?: (Int_comparison_exp | null),captain_selection?: (e_draft_game_captain_selection_enum_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),current_pick_lineup?: (Int_comparison_exp | null),draft_order?: (e_draft_game_draft_order_enum_comparison_exp | null),e_draft_game_captain_selection?: (e_draft_game_captain_selection_bool_exp | null),e_draft_game_draft_order?: (e_draft_game_draft_order_bool_exp | null),e_draft_game_mode?: (e_draft_game_mode_bool_exp | null),e_draft_game_status?: (e_draft_game_status_bool_exp | null),e_lobby_access?: (e_lobby_access_bool_exp | null),expires_at?: (timestamptz_comparison_exp | null),host?: (players_bool_exp | null),host_steam_id?: (bigint_comparison_exp | null),id?: (uuid_comparison_exp | null),inner_squad?: (Boolean_comparison_exp | null),invite_code?: (uuid_comparison_exp | null),is_organizer?: (Boolean_comparison_exp | null),map_pool?: (map_pools_bool_exp | null),map_pool_id?: (uuid_comparison_exp | null),match?: (matches_bool_exp | null),match_id?: (uuid_comparison_exp | null),match_options_id?: (uuid_comparison_exp | null),max_elo?: (Int_comparison_exp | null),min_elo?: (Int_comparison_exp | null),mode?: (e_draft_game_mode_enum_comparison_exp | null),options?: (match_options_bool_exp | null),pattern?: (jsonb_comparison_exp | null),pick_deadline?: (timestamptz_comparison_exp | null),picks?: (draft_game_picks_bool_exp | null),picks_aggregate?: (draft_game_picks_aggregate_bool_exp | null),players?: (draft_game_players_bool_exp | null),players_aggregate?: (draft_game_players_aggregate_bool_exp | null),regions?: (String_array_comparison_exp | null),require_approval?: (Boolean_comparison_exp | null),scheduled_at?: (timestamptz_comparison_exp | null),status?: (e_draft_game_status_enum_comparison_exp | null),team_1?: (teams_bool_exp | null),team_1_id?: (uuid_comparison_exp | null),team_2?: (teams_bool_exp | null),team_2_id?: (uuid_comparison_exp | null),type?: (e_match_types_enum_comparison_exp | null),updated_at?: (timestamptz_comparison_exp | null)}
+export interface draft_games_bool_exp {_and?: (draft_games_bool_exp[] | null),_not?: (draft_games_bool_exp | null),_or?: (draft_games_bool_exp[] | null),access?: (e_lobby_access_enum_comparison_exp | null),capacity?: (Int_comparison_exp | null),captain_selection?: (e_draft_game_captain_selection_enum_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),current_pick_lineup?: (Int_comparison_exp | null),draft_order?: (e_draft_game_draft_order_enum_comparison_exp | null),e_draft_game_captain_selection?: (e_draft_game_captain_selection_bool_exp | null),e_draft_game_draft_order?: (e_draft_game_draft_order_bool_exp | null),e_draft_game_mode?: (e_draft_game_mode_bool_exp | null),e_draft_game_status?: (e_draft_game_status_bool_exp | null),e_lobby_access?: (e_lobby_access_bool_exp | null),expires_at?: (timestamptz_comparison_exp | null),host?: (players_bool_exp | null),host_steam_id?: (bigint_comparison_exp | null),id?: (uuid_comparison_exp | null),inner_squad?: (Boolean_comparison_exp | null),invite_code?: (uuid_comparison_exp | null),is_organizer?: (Boolean_comparison_exp | null),map_pool?: (map_pools_bool_exp | null),map_pool_id?: (uuid_comparison_exp | null),match?: (matches_bool_exp | null),match_id?: (uuid_comparison_exp | null),match_options_id?: (uuid_comparison_exp | null),max_elo?: (Int_comparison_exp | null),min_elo?: (Int_comparison_exp | null),mode?: (e_draft_game_mode_enum_comparison_exp | null),options?: (match_options_bool_exp | null),pattern?: (jsonb_comparison_exp | null),pick_deadline?: (timestamptz_comparison_exp | null),picks?: (draft_game_picks_bool_exp | null),picks_aggregate?: (draft_game_picks_aggregate_bool_exp | null),players?: (draft_game_players_bool_exp | null),players_aggregate?: (draft_game_players_aggregate_bool_exp | null),regions?: (String_array_comparison_exp | null),require_approval?: (Boolean_comparison_exp | null),status?: (e_draft_game_status_enum_comparison_exp | null),team_1?: (teams_bool_exp | null),team_1_id?: (uuid_comparison_exp | null),team_2?: (teams_bool_exp | null),team_2_id?: (uuid_comparison_exp | null),type?: (e_match_types_enum_comparison_exp | null),updated_at?: (timestamptz_comparison_exp | null)}
 
 
 /** input type for incrementing numeric columns in table "draft_games" */
@@ -54908,7 +54982,7 @@ export interface draft_games_inc_input {capacity?: (Scalars['Int'] | null),curre
 
 
 /** input type for inserting data into table "draft_games" */
-export interface draft_games_insert_input {access?: (e_lobby_access_enum | null),capacity?: (Scalars['Int'] | null),captain_selection?: (e_draft_game_captain_selection_enum | null),created_at?: (Scalars['timestamptz'] | null),current_pick_lineup?: (Scalars['Int'] | null),draft_order?: (e_draft_game_draft_order_enum | null),e_draft_game_captain_selection?: (e_draft_game_captain_selection_obj_rel_insert_input | null),e_draft_game_draft_order?: (e_draft_game_draft_order_obj_rel_insert_input | null),e_draft_game_mode?: (e_draft_game_mode_obj_rel_insert_input | null),e_draft_game_status?: (e_draft_game_status_obj_rel_insert_input | null),e_lobby_access?: (e_lobby_access_obj_rel_insert_input | null),expires_at?: (Scalars['timestamptz'] | null),host?: (players_obj_rel_insert_input | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),inner_squad?: (Scalars['Boolean'] | null),invite_code?: (Scalars['uuid'] | null),map_pool?: (map_pools_obj_rel_insert_input | null),map_pool_id?: (Scalars['uuid'] | null),match?: (matches_obj_rel_insert_input | null),match_id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),mode?: (e_draft_game_mode_enum | null),options?: (match_options_obj_rel_insert_input | null),pick_deadline?: (Scalars['timestamptz'] | null),picks?: (draft_game_picks_arr_rel_insert_input | null),players?: (draft_game_players_arr_rel_insert_input | null),regions?: (Scalars['String'][] | null),require_approval?: (Scalars['Boolean'] | null),scheduled_at?: (Scalars['timestamptz'] | null),status?: (e_draft_game_status_enum | null),team_1?: (teams_obj_rel_insert_input | null),team_1_id?: (Scalars['uuid'] | null),team_2?: (teams_obj_rel_insert_input | null),team_2_id?: (Scalars['uuid'] | null),type?: (e_match_types_enum | null),updated_at?: (Scalars['timestamptz'] | null)}
+export interface draft_games_insert_input {access?: (e_lobby_access_enum | null),capacity?: (Scalars['Int'] | null),captain_selection?: (e_draft_game_captain_selection_enum | null),created_at?: (Scalars['timestamptz'] | null),current_pick_lineup?: (Scalars['Int'] | null),draft_order?: (e_draft_game_draft_order_enum | null),e_draft_game_captain_selection?: (e_draft_game_captain_selection_obj_rel_insert_input | null),e_draft_game_draft_order?: (e_draft_game_draft_order_obj_rel_insert_input | null),e_draft_game_mode?: (e_draft_game_mode_obj_rel_insert_input | null),e_draft_game_status?: (e_draft_game_status_obj_rel_insert_input | null),e_lobby_access?: (e_lobby_access_obj_rel_insert_input | null),expires_at?: (Scalars['timestamptz'] | null),host?: (players_obj_rel_insert_input | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),inner_squad?: (Scalars['Boolean'] | null),invite_code?: (Scalars['uuid'] | null),map_pool?: (map_pools_obj_rel_insert_input | null),map_pool_id?: (Scalars['uuid'] | null),match?: (matches_obj_rel_insert_input | null),match_id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),mode?: (e_draft_game_mode_enum | null),options?: (match_options_obj_rel_insert_input | null),pick_deadline?: (Scalars['timestamptz'] | null),picks?: (draft_game_picks_arr_rel_insert_input | null),players?: (draft_game_players_arr_rel_insert_input | null),regions?: (Scalars['String'][] | null),require_approval?: (Scalars['Boolean'] | null),status?: (e_draft_game_status_enum | null),team_1?: (teams_obj_rel_insert_input | null),team_1_id?: (Scalars['uuid'] | null),team_2?: (teams_obj_rel_insert_input | null),team_2_id?: (Scalars['uuid'] | null),type?: (e_match_types_enum | null),updated_at?: (Scalars['timestamptz'] | null)}
 
 
 /** aggregate max on columns */
@@ -54927,7 +55001,6 @@ export interface draft_games_max_fieldsGenqlSelection{
     min_elo?: boolean | number
     pick_deadline?: boolean | number
     regions?: boolean | number
-    scheduled_at?: boolean | number
     team_1_id?: boolean | number
     team_2_id?: boolean | number
     updated_at?: boolean | number
@@ -54937,7 +55010,7 @@ export interface draft_games_max_fieldsGenqlSelection{
 
 
 /** order by max() on columns of table "draft_games" */
-export interface draft_games_max_order_by {capacity?: (order_by | null),created_at?: (order_by | null),current_pick_lineup?: (order_by | null),expires_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),map_pool_id?: (order_by | null),match_id?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),min_elo?: (order_by | null),pick_deadline?: (order_by | null),regions?: (order_by | null),scheduled_at?: (order_by | null),team_1_id?: (order_by | null),team_2_id?: (order_by | null),updated_at?: (order_by | null)}
+export interface draft_games_max_order_by {capacity?: (order_by | null),created_at?: (order_by | null),current_pick_lineup?: (order_by | null),expires_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),map_pool_id?: (order_by | null),match_id?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),min_elo?: (order_by | null),pick_deadline?: (order_by | null),regions?: (order_by | null),team_1_id?: (order_by | null),team_2_id?: (order_by | null),updated_at?: (order_by | null)}
 
 
 /** aggregate min on columns */
@@ -54956,7 +55029,6 @@ export interface draft_games_min_fieldsGenqlSelection{
     min_elo?: boolean | number
     pick_deadline?: boolean | number
     regions?: boolean | number
-    scheduled_at?: boolean | number
     team_1_id?: boolean | number
     team_2_id?: boolean | number
     updated_at?: boolean | number
@@ -54966,7 +55038,7 @@ export interface draft_games_min_fieldsGenqlSelection{
 
 
 /** order by min() on columns of table "draft_games" */
-export interface draft_games_min_order_by {capacity?: (order_by | null),created_at?: (order_by | null),current_pick_lineup?: (order_by | null),expires_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),map_pool_id?: (order_by | null),match_id?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),min_elo?: (order_by | null),pick_deadline?: (order_by | null),regions?: (order_by | null),scheduled_at?: (order_by | null),team_1_id?: (order_by | null),team_2_id?: (order_by | null),updated_at?: (order_by | null)}
+export interface draft_games_min_order_by {capacity?: (order_by | null),created_at?: (order_by | null),current_pick_lineup?: (order_by | null),expires_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),map_pool_id?: (order_by | null),match_id?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),min_elo?: (order_by | null),pick_deadline?: (order_by | null),regions?: (order_by | null),team_1_id?: (order_by | null),team_2_id?: (order_by | null),updated_at?: (order_by | null)}
 
 
 /** response of any mutation on the table "draft_games" */
@@ -54991,7 +55063,7 @@ export interface draft_games_on_conflict {constraint: draft_games_constraint,upd
 
 
 /** Ordering options when selecting data from "draft_games". */
-export interface draft_games_order_by {access?: (order_by | null),capacity?: (order_by | null),captain_selection?: (order_by | null),created_at?: (order_by | null),current_pick_lineup?: (order_by | null),draft_order?: (order_by | null),e_draft_game_captain_selection?: (e_draft_game_captain_selection_order_by | null),e_draft_game_draft_order?: (e_draft_game_draft_order_order_by | null),e_draft_game_mode?: (e_draft_game_mode_order_by | null),e_draft_game_status?: (e_draft_game_status_order_by | null),e_lobby_access?: (e_lobby_access_order_by | null),expires_at?: (order_by | null),host?: (players_order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),inner_squad?: (order_by | null),invite_code?: (order_by | null),is_organizer?: (order_by | null),map_pool?: (map_pools_order_by | null),map_pool_id?: (order_by | null),match?: (matches_order_by | null),match_id?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),min_elo?: (order_by | null),mode?: (order_by | null),options?: (match_options_order_by | null),pattern?: (order_by | null),pick_deadline?: (order_by | null),picks_aggregate?: (draft_game_picks_aggregate_order_by | null),players_aggregate?: (draft_game_players_aggregate_order_by | null),regions?: (order_by | null),require_approval?: (order_by | null),scheduled_at?: (order_by | null),status?: (order_by | null),team_1?: (teams_order_by | null),team_1_id?: (order_by | null),team_2?: (teams_order_by | null),team_2_id?: (order_by | null),type?: (order_by | null),updated_at?: (order_by | null)}
+export interface draft_games_order_by {access?: (order_by | null),capacity?: (order_by | null),captain_selection?: (order_by | null),created_at?: (order_by | null),current_pick_lineup?: (order_by | null),draft_order?: (order_by | null),e_draft_game_captain_selection?: (e_draft_game_captain_selection_order_by | null),e_draft_game_draft_order?: (e_draft_game_draft_order_order_by | null),e_draft_game_mode?: (e_draft_game_mode_order_by | null),e_draft_game_status?: (e_draft_game_status_order_by | null),e_lobby_access?: (e_lobby_access_order_by | null),expires_at?: (order_by | null),host?: (players_order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),inner_squad?: (order_by | null),invite_code?: (order_by | null),is_organizer?: (order_by | null),map_pool?: (map_pools_order_by | null),map_pool_id?: (order_by | null),match?: (matches_order_by | null),match_id?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),min_elo?: (order_by | null),mode?: (order_by | null),options?: (match_options_order_by | null),pattern?: (order_by | null),pick_deadline?: (order_by | null),picks_aggregate?: (draft_game_picks_aggregate_order_by | null),players_aggregate?: (draft_game_players_aggregate_order_by | null),regions?: (order_by | null),require_approval?: (order_by | null),status?: (order_by | null),team_1?: (teams_order_by | null),team_1_id?: (order_by | null),team_2?: (teams_order_by | null),team_2_id?: (order_by | null),type?: (order_by | null),updated_at?: (order_by | null)}
 
 
 /** primary key columns input for table: draft_games */
@@ -54999,7 +55071,7 @@ export interface draft_games_pk_columns_input {id: Scalars['uuid']}
 
 
 /** input type for updating data in table "draft_games" */
-export interface draft_games_set_input {access?: (e_lobby_access_enum | null),capacity?: (Scalars['Int'] | null),captain_selection?: (e_draft_game_captain_selection_enum | null),created_at?: (Scalars['timestamptz'] | null),current_pick_lineup?: (Scalars['Int'] | null),draft_order?: (e_draft_game_draft_order_enum | null),expires_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),inner_squad?: (Scalars['Boolean'] | null),invite_code?: (Scalars['uuid'] | null),map_pool_id?: (Scalars['uuid'] | null),match_id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),mode?: (e_draft_game_mode_enum | null),pick_deadline?: (Scalars['timestamptz'] | null),regions?: (Scalars['String'][] | null),require_approval?: (Scalars['Boolean'] | null),scheduled_at?: (Scalars['timestamptz'] | null),status?: (e_draft_game_status_enum | null),team_1_id?: (Scalars['uuid'] | null),team_2_id?: (Scalars['uuid'] | null),type?: (e_match_types_enum | null),updated_at?: (Scalars['timestamptz'] | null)}
+export interface draft_games_set_input {access?: (e_lobby_access_enum | null),capacity?: (Scalars['Int'] | null),captain_selection?: (e_draft_game_captain_selection_enum | null),created_at?: (Scalars['timestamptz'] | null),current_pick_lineup?: (Scalars['Int'] | null),draft_order?: (e_draft_game_draft_order_enum | null),expires_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),inner_squad?: (Scalars['Boolean'] | null),invite_code?: (Scalars['uuid'] | null),map_pool_id?: (Scalars['uuid'] | null),match_id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),mode?: (e_draft_game_mode_enum | null),pick_deadline?: (Scalars['timestamptz'] | null),regions?: (Scalars['String'][] | null),require_approval?: (Scalars['Boolean'] | null),status?: (e_draft_game_status_enum | null),team_1_id?: (Scalars['uuid'] | null),team_2_id?: (Scalars['uuid'] | null),type?: (e_match_types_enum | null),updated_at?: (Scalars['timestamptz'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -55059,7 +55131,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface draft_games_stream_cursor_value_input {access?: (e_lobby_access_enum | null),capacity?: (Scalars['Int'] | null),captain_selection?: (e_draft_game_captain_selection_enum | null),created_at?: (Scalars['timestamptz'] | null),current_pick_lineup?: (Scalars['Int'] | null),draft_order?: (e_draft_game_draft_order_enum | null),expires_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),inner_squad?: (Scalars['Boolean'] | null),invite_code?: (Scalars['uuid'] | null),map_pool_id?: (Scalars['uuid'] | null),match_id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),mode?: (e_draft_game_mode_enum | null),pick_deadline?: (Scalars['timestamptz'] | null),regions?: (Scalars['String'][] | null),require_approval?: (Scalars['Boolean'] | null),scheduled_at?: (Scalars['timestamptz'] | null),status?: (e_draft_game_status_enum | null),team_1_id?: (Scalars['uuid'] | null),team_2_id?: (Scalars['uuid'] | null),type?: (e_match_types_enum | null),updated_at?: (Scalars['timestamptz'] | null)}
+export interface draft_games_stream_cursor_value_input {access?: (e_lobby_access_enum | null),capacity?: (Scalars['Int'] | null),captain_selection?: (e_draft_game_captain_selection_enum | null),created_at?: (Scalars['timestamptz'] | null),current_pick_lineup?: (Scalars['Int'] | null),draft_order?: (e_draft_game_draft_order_enum | null),expires_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),inner_squad?: (Scalars['Boolean'] | null),invite_code?: (Scalars['uuid'] | null),map_pool_id?: (Scalars['uuid'] | null),match_id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),mode?: (e_draft_game_mode_enum | null),pick_deadline?: (Scalars['timestamptz'] | null),regions?: (Scalars['String'][] | null),require_approval?: (Scalars['Boolean'] | null),status?: (e_draft_game_status_enum | null),team_1_id?: (Scalars['uuid'] | null),team_2_id?: (Scalars['uuid'] | null),type?: (e_match_types_enum | null),updated_at?: (Scalars['timestamptz'] | null)}
 
 
 /** aggregate sum on columns */
@@ -65652,9 +65724,6 @@ export interface game_server_nodesGenqlSelection{
     cpu_warnings?: { __args: {
     /** JSON select path */
     path?: (Scalars['String'] | null)} } | boolean | number
-    cs2_launch_options?: { __args: {
-    /** JSON select path */
-    path?: (Scalars['String'] | null)} } | boolean | number
     cs2_video_settings?: { __args: {
     /** JSON select path */
     path?: (Scalars['String'] | null)} } | boolean | number
@@ -65801,7 +65870,7 @@ export interface game_server_nodes_aggregate_order_by {avg?: (game_server_nodes_
 
 
 /** append existing jsonb value of filtered columns with new jsonb value */
-export interface game_server_nodes_append_input {cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_launch_options?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),gpu_info?: (Scalars['jsonb'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null)}
+export interface game_server_nodes_append_input {cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),gpu_info?: (Scalars['jsonb'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null)}
 
 
 /** input type for inserting array relation for remote table "game_server_nodes" */
@@ -65840,19 +65909,19 @@ export interface game_server_nodes_avg_order_by {build_id?: (order_by | null),cp
 
 
 /** Boolean expression to filter rows from the table "game_server_nodes". All fields are combined with a logical 'AND'. */
-export interface game_server_nodes_bool_exp {_and?: (game_server_nodes_bool_exp[] | null),_not?: (game_server_nodes_bool_exp | null),_or?: (game_server_nodes_bool_exp[] | null),accepting_new_matches?: (Boolean_comparison_exp | null),available_dedicated_slot_count?: (Int_comparison_exp | null),available_server_count?: (Int_comparison_exp | null),build_id?: (Int_comparison_exp | null),cpu_cores_per_socket?: (Int_comparison_exp | null),cpu_frequency_info?: (jsonb_comparison_exp | null),cpu_governor_info?: (jsonb_comparison_exp | null),cpu_sockets?: (Int_comparison_exp | null),cpu_threads_per_core?: (Int_comparison_exp | null),cpu_warnings?: (jsonb_comparison_exp | null),cs2_launch_options?: (jsonb_comparison_exp | null),cs2_video_settings?: (jsonb_comparison_exp | null),csgo_build_id?: (Int_comparison_exp | null),demo_network_limiter?: (Int_comparison_exp | null),disk_available_gb?: (Int_comparison_exp | null),disk_used_percent?: (Int_comparison_exp | null),e_region?: (server_regions_bool_exp | null),e_status?: (e_game_server_node_statuses_bool_exp | null),enabled?: (Boolean_comparison_exp | null),enabled_for_match_making?: (Boolean_comparison_exp | null),end_port_range?: (Int_comparison_exp | null),gpu?: (Boolean_comparison_exp | null),gpu_demos_enabled?: (Boolean_comparison_exp | null),gpu_info?: (jsonb_comparison_exp | null),gpu_rendering_enabled?: (Boolean_comparison_exp | null),gpu_streaming_enabled?: (Boolean_comparison_exp | null),id?: (String_comparison_exp | null),label?: (String_comparison_exp | null),lan_ip?: (inet_comparison_exp | null),node_ip?: (inet_comparison_exp | null),offline_at?: (timestamptz_comparison_exp | null),pin_build_id?: (Int_comparison_exp | null),pin_plugin_runtime?: (String_comparison_exp | null),pin_plugin_version?: (String_comparison_exp | null),pinned_version?: (game_versions_bool_exp | null),plugin_supported?: (Boolean_comparison_exp | null),plugins?: (game_server_node_plugins_bool_exp | null),plugins_aggregate?: (game_server_node_plugins_aggregate_bool_exp | null),plugins_synced_at?: (timestamptz_comparison_exp | null),public_ip?: (inet_comparison_exp | null),region?: (String_comparison_exp | null),servers?: (servers_bool_exp | null),servers_aggregate?: (servers_aggregate_bool_exp | null),shader_bake_progress?: (numeric_comparison_exp | null),shader_bake_progress_stage?: (String_comparison_exp | null),shader_bake_status?: (String_comparison_exp | null),shader_bake_status_history?: (jsonb_comparison_exp | null),start_port_range?: (Int_comparison_exp | null),status?: (e_game_server_node_statuses_enum_comparison_exp | null),supports_cpu_pinning?: (Boolean_comparison_exp | null),supports_low_latency?: (Boolean_comparison_exp | null),token?: (String_comparison_exp | null),total_server_count?: (Int_comparison_exp | null),update_failed_at?: (timestamptz_comparison_exp | null),update_status?: (String_comparison_exp | null),version?: (game_versions_bool_exp | null)}
+export interface game_server_nodes_bool_exp {_and?: (game_server_nodes_bool_exp[] | null),_not?: (game_server_nodes_bool_exp | null),_or?: (game_server_nodes_bool_exp[] | null),accepting_new_matches?: (Boolean_comparison_exp | null),available_dedicated_slot_count?: (Int_comparison_exp | null),available_server_count?: (Int_comparison_exp | null),build_id?: (Int_comparison_exp | null),cpu_cores_per_socket?: (Int_comparison_exp | null),cpu_frequency_info?: (jsonb_comparison_exp | null),cpu_governor_info?: (jsonb_comparison_exp | null),cpu_sockets?: (Int_comparison_exp | null),cpu_threads_per_core?: (Int_comparison_exp | null),cpu_warnings?: (jsonb_comparison_exp | null),cs2_video_settings?: (jsonb_comparison_exp | null),csgo_build_id?: (Int_comparison_exp | null),demo_network_limiter?: (Int_comparison_exp | null),disk_available_gb?: (Int_comparison_exp | null),disk_used_percent?: (Int_comparison_exp | null),e_region?: (server_regions_bool_exp | null),e_status?: (e_game_server_node_statuses_bool_exp | null),enabled?: (Boolean_comparison_exp | null),enabled_for_match_making?: (Boolean_comparison_exp | null),end_port_range?: (Int_comparison_exp | null),gpu?: (Boolean_comparison_exp | null),gpu_demos_enabled?: (Boolean_comparison_exp | null),gpu_info?: (jsonb_comparison_exp | null),gpu_rendering_enabled?: (Boolean_comparison_exp | null),gpu_streaming_enabled?: (Boolean_comparison_exp | null),id?: (String_comparison_exp | null),label?: (String_comparison_exp | null),lan_ip?: (inet_comparison_exp | null),node_ip?: (inet_comparison_exp | null),offline_at?: (timestamptz_comparison_exp | null),pin_build_id?: (Int_comparison_exp | null),pin_plugin_runtime?: (String_comparison_exp | null),pin_plugin_version?: (String_comparison_exp | null),pinned_version?: (game_versions_bool_exp | null),plugin_supported?: (Boolean_comparison_exp | null),plugins?: (game_server_node_plugins_bool_exp | null),plugins_aggregate?: (game_server_node_plugins_aggregate_bool_exp | null),plugins_synced_at?: (timestamptz_comparison_exp | null),public_ip?: (inet_comparison_exp | null),region?: (String_comparison_exp | null),servers?: (servers_bool_exp | null),servers_aggregate?: (servers_aggregate_bool_exp | null),shader_bake_progress?: (numeric_comparison_exp | null),shader_bake_progress_stage?: (String_comparison_exp | null),shader_bake_status?: (String_comparison_exp | null),shader_bake_status_history?: (jsonb_comparison_exp | null),start_port_range?: (Int_comparison_exp | null),status?: (e_game_server_node_statuses_enum_comparison_exp | null),supports_cpu_pinning?: (Boolean_comparison_exp | null),supports_low_latency?: (Boolean_comparison_exp | null),token?: (String_comparison_exp | null),total_server_count?: (Int_comparison_exp | null),update_failed_at?: (timestamptz_comparison_exp | null),update_status?: (String_comparison_exp | null),version?: (game_versions_bool_exp | null)}
 
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export interface game_server_nodes_delete_at_path_input {cpu_frequency_info?: (Scalars['String'][] | null),cpu_governor_info?: (Scalars['String'][] | null),cpu_warnings?: (Scalars['String'][] | null),cs2_launch_options?: (Scalars['String'][] | null),cs2_video_settings?: (Scalars['String'][] | null),gpu_info?: (Scalars['String'][] | null),shader_bake_status_history?: (Scalars['String'][] | null)}
+export interface game_server_nodes_delete_at_path_input {cpu_frequency_info?: (Scalars['String'][] | null),cpu_governor_info?: (Scalars['String'][] | null),cpu_warnings?: (Scalars['String'][] | null),cs2_video_settings?: (Scalars['String'][] | null),gpu_info?: (Scalars['String'][] | null),shader_bake_status_history?: (Scalars['String'][] | null)}
 
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export interface game_server_nodes_delete_elem_input {cpu_frequency_info?: (Scalars['Int'] | null),cpu_governor_info?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['Int'] | null),cs2_launch_options?: (Scalars['Int'] | null),cs2_video_settings?: (Scalars['Int'] | null),gpu_info?: (Scalars['Int'] | null),shader_bake_status_history?: (Scalars['Int'] | null)}
+export interface game_server_nodes_delete_elem_input {cpu_frequency_info?: (Scalars['Int'] | null),cpu_governor_info?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['Int'] | null),cs2_video_settings?: (Scalars['Int'] | null),gpu_info?: (Scalars['Int'] | null),shader_bake_status_history?: (Scalars['Int'] | null)}
 
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export interface game_server_nodes_delete_key_input {cpu_frequency_info?: (Scalars['String'] | null),cpu_governor_info?: (Scalars['String'] | null),cpu_warnings?: (Scalars['String'] | null),cs2_launch_options?: (Scalars['String'] | null),cs2_video_settings?: (Scalars['String'] | null),gpu_info?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['String'] | null)}
+export interface game_server_nodes_delete_key_input {cpu_frequency_info?: (Scalars['String'] | null),cpu_governor_info?: (Scalars['String'] | null),cpu_warnings?: (Scalars['String'] | null),cs2_video_settings?: (Scalars['String'] | null),gpu_info?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['String'] | null)}
 
 
 /** input type for incrementing numeric columns in table "game_server_nodes" */
@@ -65860,7 +65929,7 @@ export interface game_server_nodes_inc_input {build_id?: (Scalars['Int'] | null)
 
 
 /** input type for inserting data into table "game_server_nodes" */
-export interface game_server_nodes_insert_input {accepting_new_matches?: (Scalars['Boolean'] | null),build_id?: (Scalars['Int'] | null),cpu_cores_per_socket?: (Scalars['Int'] | null),cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_sockets?: (Scalars['Int'] | null),cpu_threads_per_core?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_launch_options?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),csgo_build_id?: (Scalars['Int'] | null),demo_network_limiter?: (Scalars['Int'] | null),disk_available_gb?: (Scalars['Int'] | null),disk_used_percent?: (Scalars['Int'] | null),e_region?: (server_regions_obj_rel_insert_input | null),e_status?: (e_game_server_node_statuses_obj_rel_insert_input | null),enabled?: (Scalars['Boolean'] | null),enabled_for_match_making?: (Scalars['Boolean'] | null),end_port_range?: (Scalars['Int'] | null),gpu?: (Scalars['Boolean'] | null),gpu_demos_enabled?: (Scalars['Boolean'] | null),gpu_info?: (Scalars['jsonb'] | null),gpu_rendering_enabled?: (Scalars['Boolean'] | null),gpu_streaming_enabled?: (Scalars['Boolean'] | null),id?: (Scalars['String'] | null),label?: (Scalars['String'] | null),lan_ip?: (Scalars['inet'] | null),node_ip?: (Scalars['inet'] | null),offline_at?: (Scalars['timestamptz'] | null),pin_build_id?: (Scalars['Int'] | null),pin_plugin_runtime?: (Scalars['String'] | null),pin_plugin_version?: (Scalars['String'] | null),pinned_version?: (game_versions_obj_rel_insert_input | null),plugins?: (game_server_node_plugins_arr_rel_insert_input | null),plugins_synced_at?: (Scalars['timestamptz'] | null),public_ip?: (Scalars['inet'] | null),region?: (Scalars['String'] | null),servers?: (servers_arr_rel_insert_input | null),shader_bake_progress?: (Scalars['numeric'] | null),shader_bake_progress_stage?: (Scalars['String'] | null),shader_bake_status?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null),start_port_range?: (Scalars['Int'] | null),status?: (e_game_server_node_statuses_enum | null),supports_cpu_pinning?: (Scalars['Boolean'] | null),supports_low_latency?: (Scalars['Boolean'] | null),token?: (Scalars['String'] | null),update_failed_at?: (Scalars['timestamptz'] | null),update_status?: (Scalars['String'] | null),version?: (game_versions_obj_rel_insert_input | null)}
+export interface game_server_nodes_insert_input {accepting_new_matches?: (Scalars['Boolean'] | null),build_id?: (Scalars['Int'] | null),cpu_cores_per_socket?: (Scalars['Int'] | null),cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_sockets?: (Scalars['Int'] | null),cpu_threads_per_core?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),csgo_build_id?: (Scalars['Int'] | null),demo_network_limiter?: (Scalars['Int'] | null),disk_available_gb?: (Scalars['Int'] | null),disk_used_percent?: (Scalars['Int'] | null),e_region?: (server_regions_obj_rel_insert_input | null),e_status?: (e_game_server_node_statuses_obj_rel_insert_input | null),enabled?: (Scalars['Boolean'] | null),enabled_for_match_making?: (Scalars['Boolean'] | null),end_port_range?: (Scalars['Int'] | null),gpu?: (Scalars['Boolean'] | null),gpu_demos_enabled?: (Scalars['Boolean'] | null),gpu_info?: (Scalars['jsonb'] | null),gpu_rendering_enabled?: (Scalars['Boolean'] | null),gpu_streaming_enabled?: (Scalars['Boolean'] | null),id?: (Scalars['String'] | null),label?: (Scalars['String'] | null),lan_ip?: (Scalars['inet'] | null),node_ip?: (Scalars['inet'] | null),offline_at?: (Scalars['timestamptz'] | null),pin_build_id?: (Scalars['Int'] | null),pin_plugin_runtime?: (Scalars['String'] | null),pin_plugin_version?: (Scalars['String'] | null),pinned_version?: (game_versions_obj_rel_insert_input | null),plugins?: (game_server_node_plugins_arr_rel_insert_input | null),plugins_synced_at?: (Scalars['timestamptz'] | null),public_ip?: (Scalars['inet'] | null),region?: (Scalars['String'] | null),servers?: (servers_arr_rel_insert_input | null),shader_bake_progress?: (Scalars['numeric'] | null),shader_bake_progress_stage?: (Scalars['String'] | null),shader_bake_status?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null),start_port_range?: (Scalars['Int'] | null),status?: (e_game_server_node_statuses_enum | null),supports_cpu_pinning?: (Scalars['Boolean'] | null),supports_low_latency?: (Scalars['Boolean'] | null),token?: (Scalars['String'] | null),update_failed_at?: (Scalars['timestamptz'] | null),update_status?: (Scalars['String'] | null),version?: (game_versions_obj_rel_insert_input | null)}
 
 
 /** aggregate max on columns */
@@ -65967,7 +66036,7 @@ export interface game_server_nodes_on_conflict {constraint: game_server_nodes_co
 
 
 /** Ordering options when selecting data from "game_server_nodes". */
-export interface game_server_nodes_order_by {accepting_new_matches?: (order_by | null),available_dedicated_slot_count?: (order_by | null),available_server_count?: (order_by | null),build_id?: (order_by | null),cpu_cores_per_socket?: (order_by | null),cpu_frequency_info?: (order_by | null),cpu_governor_info?: (order_by | null),cpu_sockets?: (order_by | null),cpu_threads_per_core?: (order_by | null),cpu_warnings?: (order_by | null),cs2_launch_options?: (order_by | null),cs2_video_settings?: (order_by | null),csgo_build_id?: (order_by | null),demo_network_limiter?: (order_by | null),disk_available_gb?: (order_by | null),disk_used_percent?: (order_by | null),e_region?: (server_regions_order_by | null),e_status?: (e_game_server_node_statuses_order_by | null),enabled?: (order_by | null),enabled_for_match_making?: (order_by | null),end_port_range?: (order_by | null),gpu?: (order_by | null),gpu_demos_enabled?: (order_by | null),gpu_info?: (order_by | null),gpu_rendering_enabled?: (order_by | null),gpu_streaming_enabled?: (order_by | null),id?: (order_by | null),label?: (order_by | null),lan_ip?: (order_by | null),node_ip?: (order_by | null),offline_at?: (order_by | null),pin_build_id?: (order_by | null),pin_plugin_runtime?: (order_by | null),pin_plugin_version?: (order_by | null),pinned_version?: (game_versions_order_by | null),plugin_supported?: (order_by | null),plugins_aggregate?: (game_server_node_plugins_aggregate_order_by | null),plugins_synced_at?: (order_by | null),public_ip?: (order_by | null),region?: (order_by | null),servers_aggregate?: (servers_aggregate_order_by | null),shader_bake_progress?: (order_by | null),shader_bake_progress_stage?: (order_by | null),shader_bake_status?: (order_by | null),shader_bake_status_history?: (order_by | null),start_port_range?: (order_by | null),status?: (order_by | null),supports_cpu_pinning?: (order_by | null),supports_low_latency?: (order_by | null),token?: (order_by | null),total_server_count?: (order_by | null),update_failed_at?: (order_by | null),update_status?: (order_by | null),version?: (game_versions_order_by | null)}
+export interface game_server_nodes_order_by {accepting_new_matches?: (order_by | null),available_dedicated_slot_count?: (order_by | null),available_server_count?: (order_by | null),build_id?: (order_by | null),cpu_cores_per_socket?: (order_by | null),cpu_frequency_info?: (order_by | null),cpu_governor_info?: (order_by | null),cpu_sockets?: (order_by | null),cpu_threads_per_core?: (order_by | null),cpu_warnings?: (order_by | null),cs2_video_settings?: (order_by | null),csgo_build_id?: (order_by | null),demo_network_limiter?: (order_by | null),disk_available_gb?: (order_by | null),disk_used_percent?: (order_by | null),e_region?: (server_regions_order_by | null),e_status?: (e_game_server_node_statuses_order_by | null),enabled?: (order_by | null),enabled_for_match_making?: (order_by | null),end_port_range?: (order_by | null),gpu?: (order_by | null),gpu_demos_enabled?: (order_by | null),gpu_info?: (order_by | null),gpu_rendering_enabled?: (order_by | null),gpu_streaming_enabled?: (order_by | null),id?: (order_by | null),label?: (order_by | null),lan_ip?: (order_by | null),node_ip?: (order_by | null),offline_at?: (order_by | null),pin_build_id?: (order_by | null),pin_plugin_runtime?: (order_by | null),pin_plugin_version?: (order_by | null),pinned_version?: (game_versions_order_by | null),plugin_supported?: (order_by | null),plugins_aggregate?: (game_server_node_plugins_aggregate_order_by | null),plugins_synced_at?: (order_by | null),public_ip?: (order_by | null),region?: (order_by | null),servers_aggregate?: (servers_aggregate_order_by | null),shader_bake_progress?: (order_by | null),shader_bake_progress_stage?: (order_by | null),shader_bake_status?: (order_by | null),shader_bake_status_history?: (order_by | null),start_port_range?: (order_by | null),status?: (order_by | null),supports_cpu_pinning?: (order_by | null),supports_low_latency?: (order_by | null),token?: (order_by | null),total_server_count?: (order_by | null),update_failed_at?: (order_by | null),update_status?: (order_by | null),version?: (game_versions_order_by | null)}
 
 
 /** primary key columns input for table: game_server_nodes */
@@ -65975,11 +66044,11 @@ export interface game_server_nodes_pk_columns_input {id: Scalars['String']}
 
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
-export interface game_server_nodes_prepend_input {cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_launch_options?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),gpu_info?: (Scalars['jsonb'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null)}
+export interface game_server_nodes_prepend_input {cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),gpu_info?: (Scalars['jsonb'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null)}
 
 
 /** input type for updating data in table "game_server_nodes" */
-export interface game_server_nodes_set_input {accepting_new_matches?: (Scalars['Boolean'] | null),build_id?: (Scalars['Int'] | null),cpu_cores_per_socket?: (Scalars['Int'] | null),cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_sockets?: (Scalars['Int'] | null),cpu_threads_per_core?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_launch_options?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),csgo_build_id?: (Scalars['Int'] | null),demo_network_limiter?: (Scalars['Int'] | null),disk_available_gb?: (Scalars['Int'] | null),disk_used_percent?: (Scalars['Int'] | null),enabled?: (Scalars['Boolean'] | null),enabled_for_match_making?: (Scalars['Boolean'] | null),end_port_range?: (Scalars['Int'] | null),gpu?: (Scalars['Boolean'] | null),gpu_demos_enabled?: (Scalars['Boolean'] | null),gpu_info?: (Scalars['jsonb'] | null),gpu_rendering_enabled?: (Scalars['Boolean'] | null),gpu_streaming_enabled?: (Scalars['Boolean'] | null),id?: (Scalars['String'] | null),label?: (Scalars['String'] | null),lan_ip?: (Scalars['inet'] | null),node_ip?: (Scalars['inet'] | null),offline_at?: (Scalars['timestamptz'] | null),pin_build_id?: (Scalars['Int'] | null),pin_plugin_runtime?: (Scalars['String'] | null),pin_plugin_version?: (Scalars['String'] | null),plugins_synced_at?: (Scalars['timestamptz'] | null),public_ip?: (Scalars['inet'] | null),region?: (Scalars['String'] | null),shader_bake_progress?: (Scalars['numeric'] | null),shader_bake_progress_stage?: (Scalars['String'] | null),shader_bake_status?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null),start_port_range?: (Scalars['Int'] | null),status?: (e_game_server_node_statuses_enum | null),supports_cpu_pinning?: (Scalars['Boolean'] | null),supports_low_latency?: (Scalars['Boolean'] | null),token?: (Scalars['String'] | null),update_failed_at?: (Scalars['timestamptz'] | null),update_status?: (Scalars['String'] | null)}
+export interface game_server_nodes_set_input {accepting_new_matches?: (Scalars['Boolean'] | null),build_id?: (Scalars['Int'] | null),cpu_cores_per_socket?: (Scalars['Int'] | null),cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_sockets?: (Scalars['Int'] | null),cpu_threads_per_core?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),csgo_build_id?: (Scalars['Int'] | null),demo_network_limiter?: (Scalars['Int'] | null),disk_available_gb?: (Scalars['Int'] | null),disk_used_percent?: (Scalars['Int'] | null),enabled?: (Scalars['Boolean'] | null),enabled_for_match_making?: (Scalars['Boolean'] | null),end_port_range?: (Scalars['Int'] | null),gpu?: (Scalars['Boolean'] | null),gpu_demos_enabled?: (Scalars['Boolean'] | null),gpu_info?: (Scalars['jsonb'] | null),gpu_rendering_enabled?: (Scalars['Boolean'] | null),gpu_streaming_enabled?: (Scalars['Boolean'] | null),id?: (Scalars['String'] | null),label?: (Scalars['String'] | null),lan_ip?: (Scalars['inet'] | null),node_ip?: (Scalars['inet'] | null),offline_at?: (Scalars['timestamptz'] | null),pin_build_id?: (Scalars['Int'] | null),pin_plugin_runtime?: (Scalars['String'] | null),pin_plugin_version?: (Scalars['String'] | null),plugins_synced_at?: (Scalars['timestamptz'] | null),public_ip?: (Scalars['inet'] | null),region?: (Scalars['String'] | null),shader_bake_progress?: (Scalars['numeric'] | null),shader_bake_progress_stage?: (Scalars['String'] | null),shader_bake_status?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null),start_port_range?: (Scalars['Int'] | null),status?: (e_game_server_node_statuses_enum | null),supports_cpu_pinning?: (Scalars['Boolean'] | null),supports_low_latency?: (Scalars['Boolean'] | null),token?: (Scalars['String'] | null),update_failed_at?: (Scalars['timestamptz'] | null),update_status?: (Scalars['String'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -66078,7 +66147,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface game_server_nodes_stream_cursor_value_input {accepting_new_matches?: (Scalars['Boolean'] | null),build_id?: (Scalars['Int'] | null),cpu_cores_per_socket?: (Scalars['Int'] | null),cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_sockets?: (Scalars['Int'] | null),cpu_threads_per_core?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_launch_options?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),csgo_build_id?: (Scalars['Int'] | null),demo_network_limiter?: (Scalars['Int'] | null),disk_available_gb?: (Scalars['Int'] | null),disk_used_percent?: (Scalars['Int'] | null),enabled?: (Scalars['Boolean'] | null),enabled_for_match_making?: (Scalars['Boolean'] | null),end_port_range?: (Scalars['Int'] | null),gpu?: (Scalars['Boolean'] | null),gpu_demos_enabled?: (Scalars['Boolean'] | null),gpu_info?: (Scalars['jsonb'] | null),gpu_rendering_enabled?: (Scalars['Boolean'] | null),gpu_streaming_enabled?: (Scalars['Boolean'] | null),id?: (Scalars['String'] | null),label?: (Scalars['String'] | null),lan_ip?: (Scalars['inet'] | null),node_ip?: (Scalars['inet'] | null),offline_at?: (Scalars['timestamptz'] | null),pin_build_id?: (Scalars['Int'] | null),pin_plugin_runtime?: (Scalars['String'] | null),pin_plugin_version?: (Scalars['String'] | null),plugins_synced_at?: (Scalars['timestamptz'] | null),public_ip?: (Scalars['inet'] | null),region?: (Scalars['String'] | null),shader_bake_progress?: (Scalars['numeric'] | null),shader_bake_progress_stage?: (Scalars['String'] | null),shader_bake_status?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null),start_port_range?: (Scalars['Int'] | null),status?: (e_game_server_node_statuses_enum | null),supports_cpu_pinning?: (Scalars['Boolean'] | null),supports_low_latency?: (Scalars['Boolean'] | null),token?: (Scalars['String'] | null),update_failed_at?: (Scalars['timestamptz'] | null),update_status?: (Scalars['String'] | null)}
+export interface game_server_nodes_stream_cursor_value_input {accepting_new_matches?: (Scalars['Boolean'] | null),build_id?: (Scalars['Int'] | null),cpu_cores_per_socket?: (Scalars['Int'] | null),cpu_frequency_info?: (Scalars['jsonb'] | null),cpu_governor_info?: (Scalars['jsonb'] | null),cpu_sockets?: (Scalars['Int'] | null),cpu_threads_per_core?: (Scalars['Int'] | null),cpu_warnings?: (Scalars['jsonb'] | null),cs2_video_settings?: (Scalars['jsonb'] | null),csgo_build_id?: (Scalars['Int'] | null),demo_network_limiter?: (Scalars['Int'] | null),disk_available_gb?: (Scalars['Int'] | null),disk_used_percent?: (Scalars['Int'] | null),enabled?: (Scalars['Boolean'] | null),enabled_for_match_making?: (Scalars['Boolean'] | null),end_port_range?: (Scalars['Int'] | null),gpu?: (Scalars['Boolean'] | null),gpu_demos_enabled?: (Scalars['Boolean'] | null),gpu_info?: (Scalars['jsonb'] | null),gpu_rendering_enabled?: (Scalars['Boolean'] | null),gpu_streaming_enabled?: (Scalars['Boolean'] | null),id?: (Scalars['String'] | null),label?: (Scalars['String'] | null),lan_ip?: (Scalars['inet'] | null),node_ip?: (Scalars['inet'] | null),offline_at?: (Scalars['timestamptz'] | null),pin_build_id?: (Scalars['Int'] | null),pin_plugin_runtime?: (Scalars['String'] | null),pin_plugin_version?: (Scalars['String'] | null),plugins_synced_at?: (Scalars['timestamptz'] | null),public_ip?: (Scalars['inet'] | null),region?: (Scalars['String'] | null),shader_bake_progress?: (Scalars['numeric'] | null),shader_bake_progress_stage?: (Scalars['String'] | null),shader_bake_status?: (Scalars['String'] | null),shader_bake_status_history?: (Scalars['jsonb'] | null),start_port_range?: (Scalars['Int'] | null),status?: (e_game_server_node_statuses_enum | null),supports_cpu_pinning?: (Scalars['Boolean'] | null),supports_low_latency?: (Scalars['Boolean'] | null),token?: (Scalars['String'] | null),update_failed_at?: (Scalars['timestamptz'] | null),update_status?: (Scalars['String'] | null)}
 
 
 /** aggregate sum on columns */
@@ -68242,9 +68311,7 @@ export interface league_seasonsGenqlSelection{
     playoff_seats?: boolean | number
     playoff_stage_type?: boolean | number
     playoff_third_place_match?: boolean | number
-    promote_count?: boolean | number
     regular_season_stage_type?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     /** An array relationship */
     relegation_playoffs?: (league_relegation_playoffsGenqlSelection & { __args?: {
@@ -68400,8 +68467,6 @@ export interface league_seasons_avg_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68411,7 +68476,7 @@ export interface league_seasons_avg_fieldsGenqlSelection{
 
 
 /** Boolean expression to filter rows from the table "league_seasons". All fields are combined with a logical 'AND'. */
-export interface league_seasons_bool_exp {_and?: (league_seasons_bool_exp[] | null),_not?: (league_seasons_bool_exp | null),_or?: (league_seasons_bool_exp[] | null),auto_regular_season_format?: (Boolean_comparison_exp | null),awards?: (award_recipients_bool_exp | null),awards_aggregate?: (award_recipients_aggregate_bool_exp | null),can_register?: (Boolean_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),created_by_steam_id?: (bigint_comparison_exp | null),default_best_of?: (Int_comparison_exp | null),direct_promote_count?: (Int_comparison_exp | null),direct_relegate_count?: (Int_comparison_exp | null),e_league_season_status?: (e_league_season_statuses_bool_exp | null),games_per_week?: (Int_comparison_exp | null),id?: (uuid_comparison_exp | null),is_league_admin?: (Boolean_comparison_exp | null),is_roster_locked?: (Boolean_comparison_exp | null),match_options_id?: (uuid_comparison_exp | null),match_weeks?: (league_match_weeks_bool_exp | null),match_weeks_aggregate?: (league_match_weeks_aggregate_bool_exp | null),match_weeks_count?: (Int_comparison_exp | null),max_roster_size?: (Int_comparison_exp | null),min_roster_size?: (Int_comparison_exp | null),movements?: (league_team_movements_bool_exp | null),movements_aggregate?: (league_team_movements_aggregate_bool_exp | null),my_registration?: (league_team_seasons_bool_exp | null),name?: (String_comparison_exp | null),options?: (match_options_bool_exp | null),player_stats?: (v_league_season_player_stats_bool_exp | null),player_stats_aggregate?: (v_league_season_player_stats_aggregate_bool_exp | null),playoff_best_of?: (Int_comparison_exp | null),playoff_round_best_of?: (jsonb_comparison_exp | null),playoff_seats?: (Int_comparison_exp | null),playoff_stage_type?: (e_tournament_stage_types_enum_comparison_exp | null),playoff_third_place_match?: (Boolean_comparison_exp | null),promote_count?: (Int_comparison_exp | null),regular_season_stage_type?: (e_tournament_stage_types_enum_comparison_exp | null),relegate_count?: (Int_comparison_exp | null),relegation_down_count?: (Int_comparison_exp | null),relegation_playoffs?: (league_relegation_playoffs_bool_exp | null),relegation_playoffs_aggregate?: (league_relegation_playoffs_aggregate_bool_exp | null),relegation_up_count?: (Int_comparison_exp | null),roster_lock_at?: (timestamptz_comparison_exp | null),season_divisions?: (league_season_divisions_bool_exp | null),season_divisions_aggregate?: (league_season_divisions_aggregate_bool_exp | null),season_number?: (Int_comparison_exp | null),signup_closes_at?: (timestamptz_comparison_exp | null),signup_opens_at?: (timestamptz_comparison_exp | null),standings?: (v_league_division_standings_bool_exp | null),standings_aggregate?: (v_league_division_standings_aggregate_bool_exp | null),starts_at?: (timestamptz_comparison_exp | null),status?: (e_league_season_statuses_enum_comparison_exp | null),team_seasons?: (league_team_seasons_bool_exp | null),team_seasons_aggregate?: (league_team_seasons_aggregate_bool_exp | null),week_best_of?: (jsonb_comparison_exp | null)}
+export interface league_seasons_bool_exp {_and?: (league_seasons_bool_exp[] | null),_not?: (league_seasons_bool_exp | null),_or?: (league_seasons_bool_exp[] | null),auto_regular_season_format?: (Boolean_comparison_exp | null),awards?: (award_recipients_bool_exp | null),awards_aggregate?: (award_recipients_aggregate_bool_exp | null),can_register?: (Boolean_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),created_by_steam_id?: (bigint_comparison_exp | null),default_best_of?: (Int_comparison_exp | null),direct_promote_count?: (Int_comparison_exp | null),direct_relegate_count?: (Int_comparison_exp | null),e_league_season_status?: (e_league_season_statuses_bool_exp | null),games_per_week?: (Int_comparison_exp | null),id?: (uuid_comparison_exp | null),is_league_admin?: (Boolean_comparison_exp | null),is_roster_locked?: (Boolean_comparison_exp | null),match_options_id?: (uuid_comparison_exp | null),match_weeks?: (league_match_weeks_bool_exp | null),match_weeks_aggregate?: (league_match_weeks_aggregate_bool_exp | null),match_weeks_count?: (Int_comparison_exp | null),max_roster_size?: (Int_comparison_exp | null),min_roster_size?: (Int_comparison_exp | null),movements?: (league_team_movements_bool_exp | null),movements_aggregate?: (league_team_movements_aggregate_bool_exp | null),my_registration?: (league_team_seasons_bool_exp | null),name?: (String_comparison_exp | null),options?: (match_options_bool_exp | null),player_stats?: (v_league_season_player_stats_bool_exp | null),player_stats_aggregate?: (v_league_season_player_stats_aggregate_bool_exp | null),playoff_best_of?: (Int_comparison_exp | null),playoff_round_best_of?: (jsonb_comparison_exp | null),playoff_seats?: (Int_comparison_exp | null),playoff_stage_type?: (e_tournament_stage_types_enum_comparison_exp | null),playoff_third_place_match?: (Boolean_comparison_exp | null),regular_season_stage_type?: (e_tournament_stage_types_enum_comparison_exp | null),relegation_down_count?: (Int_comparison_exp | null),relegation_playoffs?: (league_relegation_playoffs_bool_exp | null),relegation_playoffs_aggregate?: (league_relegation_playoffs_aggregate_bool_exp | null),relegation_up_count?: (Int_comparison_exp | null),roster_lock_at?: (timestamptz_comparison_exp | null),season_divisions?: (league_season_divisions_bool_exp | null),season_divisions_aggregate?: (league_season_divisions_aggregate_bool_exp | null),season_number?: (Int_comparison_exp | null),signup_closes_at?: (timestamptz_comparison_exp | null),signup_opens_at?: (timestamptz_comparison_exp | null),standings?: (v_league_division_standings_bool_exp | null),standings_aggregate?: (v_league_division_standings_aggregate_bool_exp | null),starts_at?: (timestamptz_comparison_exp | null),status?: (e_league_season_statuses_enum_comparison_exp | null),team_seasons?: (league_team_seasons_bool_exp | null),team_seasons_aggregate?: (league_team_seasons_aggregate_bool_exp | null),week_best_of?: (jsonb_comparison_exp | null)}
 
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -68427,11 +68492,11 @@ export interface league_seasons_delete_key_input {playoff_round_best_of?: (Scala
 
 
 /** input type for incrementing numeric columns in table "league_seasons" */
-export interface league_seasons_inc_input {created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),games_per_week?: (Scalars['Int'] | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),playoff_best_of?: (Scalars['Int'] | null),playoff_seats?: (Scalars['Int'] | null),promote_count?: (Scalars['Int'] | null),relegate_count?: (Scalars['Int'] | null),relegation_down_count?: (Scalars['Int'] | null),relegation_up_count?: (Scalars['Int'] | null),season_number?: (Scalars['Int'] | null)}
+export interface league_seasons_inc_input {created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),games_per_week?: (Scalars['Int'] | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),playoff_best_of?: (Scalars['Int'] | null),playoff_seats?: (Scalars['Int'] | null),relegation_down_count?: (Scalars['Int'] | null),relegation_up_count?: (Scalars['Int'] | null),season_number?: (Scalars['Int'] | null)}
 
 
 /** input type for inserting data into table "league_seasons" */
-export interface league_seasons_insert_input {auto_regular_season_format?: (Scalars['Boolean'] | null),awards?: (award_recipients_arr_rel_insert_input | null),created_at?: (Scalars['timestamptz'] | null),created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),e_league_season_status?: (e_league_season_statuses_obj_rel_insert_input | null),games_per_week?: (Scalars['Int'] | null),id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),match_weeks?: (league_match_weeks_arr_rel_insert_input | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),movements?: (league_team_movements_arr_rel_insert_input | null),name?: (Scalars['String'] | null),options?: (match_options_obj_rel_insert_input | null),player_stats?: (v_league_season_player_stats_arr_rel_insert_input | null),playoff_best_of?: (Scalars['Int'] | null),playoff_round_best_of?: (Scalars['jsonb'] | null),playoff_seats?: (Scalars['Int'] | null),playoff_stage_type?: (e_tournament_stage_types_enum | null),playoff_third_place_match?: (Scalars['Boolean'] | null),promote_count?: (Scalars['Int'] | null),regular_season_stage_type?: (e_tournament_stage_types_enum | null),relegate_count?: (Scalars['Int'] | null),relegation_down_count?: (Scalars['Int'] | null),relegation_playoffs?: (league_relegation_playoffs_arr_rel_insert_input | null),relegation_up_count?: (Scalars['Int'] | null),roster_lock_at?: (Scalars['timestamptz'] | null),season_divisions?: (league_season_divisions_arr_rel_insert_input | null),season_number?: (Scalars['Int'] | null),signup_closes_at?: (Scalars['timestamptz'] | null),signup_opens_at?: (Scalars['timestamptz'] | null),standings?: (v_league_division_standings_arr_rel_insert_input | null),starts_at?: (Scalars['timestamptz'] | null),status?: (e_league_season_statuses_enum | null),team_seasons?: (league_team_seasons_arr_rel_insert_input | null),week_best_of?: (Scalars['jsonb'] | null)}
+export interface league_seasons_insert_input {auto_regular_season_format?: (Scalars['Boolean'] | null),awards?: (award_recipients_arr_rel_insert_input | null),created_at?: (Scalars['timestamptz'] | null),created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),e_league_season_status?: (e_league_season_statuses_obj_rel_insert_input | null),games_per_week?: (Scalars['Int'] | null),id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),match_weeks?: (league_match_weeks_arr_rel_insert_input | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),movements?: (league_team_movements_arr_rel_insert_input | null),name?: (Scalars['String'] | null),options?: (match_options_obj_rel_insert_input | null),player_stats?: (v_league_season_player_stats_arr_rel_insert_input | null),playoff_best_of?: (Scalars['Int'] | null),playoff_round_best_of?: (Scalars['jsonb'] | null),playoff_seats?: (Scalars['Int'] | null),playoff_stage_type?: (e_tournament_stage_types_enum | null),playoff_third_place_match?: (Scalars['Boolean'] | null),regular_season_stage_type?: (e_tournament_stage_types_enum | null),relegation_down_count?: (Scalars['Int'] | null),relegation_playoffs?: (league_relegation_playoffs_arr_rel_insert_input | null),relegation_up_count?: (Scalars['Int'] | null),roster_lock_at?: (Scalars['timestamptz'] | null),season_divisions?: (league_season_divisions_arr_rel_insert_input | null),season_number?: (Scalars['Int'] | null),signup_closes_at?: (Scalars['timestamptz'] | null),signup_opens_at?: (Scalars['timestamptz'] | null),standings?: (v_league_division_standings_arr_rel_insert_input | null),starts_at?: (Scalars['timestamptz'] | null),status?: (e_league_season_statuses_enum | null),team_seasons?: (league_team_seasons_arr_rel_insert_input | null),week_best_of?: (Scalars['jsonb'] | null)}
 
 
 /** aggregate max on columns */
@@ -68450,8 +68515,6 @@ export interface league_seasons_max_fieldsGenqlSelection{
     name?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     roster_lock_at?: boolean | number
@@ -68480,8 +68543,6 @@ export interface league_seasons_min_fieldsGenqlSelection{
     name?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     roster_lock_at?: boolean | number
@@ -68516,7 +68577,7 @@ export interface league_seasons_on_conflict {constraint: league_seasons_constrai
 
 
 /** Ordering options when selecting data from "league_seasons". */
-export interface league_seasons_order_by {auto_regular_season_format?: (order_by | null),awards_aggregate?: (award_recipients_aggregate_order_by | null),can_register?: (order_by | null),created_at?: (order_by | null),created_by_steam_id?: (order_by | null),default_best_of?: (order_by | null),direct_promote_count?: (order_by | null),direct_relegate_count?: (order_by | null),e_league_season_status?: (e_league_season_statuses_order_by | null),games_per_week?: (order_by | null),id?: (order_by | null),is_league_admin?: (order_by | null),is_roster_locked?: (order_by | null),match_options_id?: (order_by | null),match_weeks_aggregate?: (league_match_weeks_aggregate_order_by | null),match_weeks_count?: (order_by | null),max_roster_size?: (order_by | null),min_roster_size?: (order_by | null),movements_aggregate?: (league_team_movements_aggregate_order_by | null),my_registration_aggregate?: (league_team_seasons_aggregate_order_by | null),name?: (order_by | null),options?: (match_options_order_by | null),player_stats_aggregate?: (v_league_season_player_stats_aggregate_order_by | null),playoff_best_of?: (order_by | null),playoff_round_best_of?: (order_by | null),playoff_seats?: (order_by | null),playoff_stage_type?: (order_by | null),playoff_third_place_match?: (order_by | null),promote_count?: (order_by | null),regular_season_stage_type?: (order_by | null),relegate_count?: (order_by | null),relegation_down_count?: (order_by | null),relegation_playoffs_aggregate?: (league_relegation_playoffs_aggregate_order_by | null),relegation_up_count?: (order_by | null),roster_lock_at?: (order_by | null),season_divisions_aggregate?: (league_season_divisions_aggregate_order_by | null),season_number?: (order_by | null),signup_closes_at?: (order_by | null),signup_opens_at?: (order_by | null),standings_aggregate?: (v_league_division_standings_aggregate_order_by | null),starts_at?: (order_by | null),status?: (order_by | null),team_seasons_aggregate?: (league_team_seasons_aggregate_order_by | null),week_best_of?: (order_by | null)}
+export interface league_seasons_order_by {auto_regular_season_format?: (order_by | null),awards_aggregate?: (award_recipients_aggregate_order_by | null),can_register?: (order_by | null),created_at?: (order_by | null),created_by_steam_id?: (order_by | null),default_best_of?: (order_by | null),direct_promote_count?: (order_by | null),direct_relegate_count?: (order_by | null),e_league_season_status?: (e_league_season_statuses_order_by | null),games_per_week?: (order_by | null),id?: (order_by | null),is_league_admin?: (order_by | null),is_roster_locked?: (order_by | null),match_options_id?: (order_by | null),match_weeks_aggregate?: (league_match_weeks_aggregate_order_by | null),match_weeks_count?: (order_by | null),max_roster_size?: (order_by | null),min_roster_size?: (order_by | null),movements_aggregate?: (league_team_movements_aggregate_order_by | null),my_registration_aggregate?: (league_team_seasons_aggregate_order_by | null),name?: (order_by | null),options?: (match_options_order_by | null),player_stats_aggregate?: (v_league_season_player_stats_aggregate_order_by | null),playoff_best_of?: (order_by | null),playoff_round_best_of?: (order_by | null),playoff_seats?: (order_by | null),playoff_stage_type?: (order_by | null),playoff_third_place_match?: (order_by | null),regular_season_stage_type?: (order_by | null),relegation_down_count?: (order_by | null),relegation_playoffs_aggregate?: (league_relegation_playoffs_aggregate_order_by | null),relegation_up_count?: (order_by | null),roster_lock_at?: (order_by | null),season_divisions_aggregate?: (league_season_divisions_aggregate_order_by | null),season_number?: (order_by | null),signup_closes_at?: (order_by | null),signup_opens_at?: (order_by | null),standings_aggregate?: (v_league_division_standings_aggregate_order_by | null),starts_at?: (order_by | null),status?: (order_by | null),team_seasons_aggregate?: (league_team_seasons_aggregate_order_by | null),week_best_of?: (order_by | null)}
 
 
 /** primary key columns input for table: league_seasons */
@@ -68528,7 +68589,7 @@ export interface league_seasons_prepend_input {playoff_round_best_of?: (Scalars[
 
 
 /** input type for updating data in table "league_seasons" */
-export interface league_seasons_set_input {auto_regular_season_format?: (Scalars['Boolean'] | null),created_at?: (Scalars['timestamptz'] | null),created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),games_per_week?: (Scalars['Int'] | null),id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),name?: (Scalars['String'] | null),playoff_best_of?: (Scalars['Int'] | null),playoff_round_best_of?: (Scalars['jsonb'] | null),playoff_seats?: (Scalars['Int'] | null),playoff_stage_type?: (e_tournament_stage_types_enum | null),playoff_third_place_match?: (Scalars['Boolean'] | null),promote_count?: (Scalars['Int'] | null),regular_season_stage_type?: (e_tournament_stage_types_enum | null),relegate_count?: (Scalars['Int'] | null),relegation_down_count?: (Scalars['Int'] | null),relegation_up_count?: (Scalars['Int'] | null),roster_lock_at?: (Scalars['timestamptz'] | null),season_number?: (Scalars['Int'] | null),signup_closes_at?: (Scalars['timestamptz'] | null),signup_opens_at?: (Scalars['timestamptz'] | null),starts_at?: (Scalars['timestamptz'] | null),status?: (e_league_season_statuses_enum | null),week_best_of?: (Scalars['jsonb'] | null)}
+export interface league_seasons_set_input {auto_regular_season_format?: (Scalars['Boolean'] | null),created_at?: (Scalars['timestamptz'] | null),created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),games_per_week?: (Scalars['Int'] | null),id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),name?: (Scalars['String'] | null),playoff_best_of?: (Scalars['Int'] | null),playoff_round_best_of?: (Scalars['jsonb'] | null),playoff_seats?: (Scalars['Int'] | null),playoff_stage_type?: (e_tournament_stage_types_enum | null),playoff_third_place_match?: (Scalars['Boolean'] | null),regular_season_stage_type?: (e_tournament_stage_types_enum | null),relegation_down_count?: (Scalars['Int'] | null),relegation_up_count?: (Scalars['Int'] | null),roster_lock_at?: (Scalars['timestamptz'] | null),season_number?: (Scalars['Int'] | null),signup_closes_at?: (Scalars['timestamptz'] | null),signup_opens_at?: (Scalars['timestamptz'] | null),starts_at?: (Scalars['timestamptz'] | null),status?: (e_league_season_statuses_enum | null),week_best_of?: (Scalars['jsonb'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -68543,8 +68604,6 @@ export interface league_seasons_stddev_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68565,8 +68624,6 @@ export interface league_seasons_stddev_pop_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68587,8 +68644,6 @@ export interface league_seasons_stddev_samp_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68606,7 +68661,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface league_seasons_stream_cursor_value_input {auto_regular_season_format?: (Scalars['Boolean'] | null),created_at?: (Scalars['timestamptz'] | null),created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),games_per_week?: (Scalars['Int'] | null),id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),name?: (Scalars['String'] | null),playoff_best_of?: (Scalars['Int'] | null),playoff_round_best_of?: (Scalars['jsonb'] | null),playoff_seats?: (Scalars['Int'] | null),playoff_stage_type?: (e_tournament_stage_types_enum | null),playoff_third_place_match?: (Scalars['Boolean'] | null),promote_count?: (Scalars['Int'] | null),regular_season_stage_type?: (e_tournament_stage_types_enum | null),relegate_count?: (Scalars['Int'] | null),relegation_down_count?: (Scalars['Int'] | null),relegation_up_count?: (Scalars['Int'] | null),roster_lock_at?: (Scalars['timestamptz'] | null),season_number?: (Scalars['Int'] | null),signup_closes_at?: (Scalars['timestamptz'] | null),signup_opens_at?: (Scalars['timestamptz'] | null),starts_at?: (Scalars['timestamptz'] | null),status?: (e_league_season_statuses_enum | null),week_best_of?: (Scalars['jsonb'] | null)}
+export interface league_seasons_stream_cursor_value_input {auto_regular_season_format?: (Scalars['Boolean'] | null),created_at?: (Scalars['timestamptz'] | null),created_by_steam_id?: (Scalars['bigint'] | null),default_best_of?: (Scalars['Int'] | null),direct_promote_count?: (Scalars['Int'] | null),direct_relegate_count?: (Scalars['Int'] | null),games_per_week?: (Scalars['Int'] | null),id?: (Scalars['uuid'] | null),match_options_id?: (Scalars['uuid'] | null),match_weeks_count?: (Scalars['Int'] | null),max_roster_size?: (Scalars['Int'] | null),min_roster_size?: (Scalars['Int'] | null),name?: (Scalars['String'] | null),playoff_best_of?: (Scalars['Int'] | null),playoff_round_best_of?: (Scalars['jsonb'] | null),playoff_seats?: (Scalars['Int'] | null),playoff_stage_type?: (e_tournament_stage_types_enum | null),playoff_third_place_match?: (Scalars['Boolean'] | null),regular_season_stage_type?: (e_tournament_stage_types_enum | null),relegation_down_count?: (Scalars['Int'] | null),relegation_up_count?: (Scalars['Int'] | null),roster_lock_at?: (Scalars['timestamptz'] | null),season_number?: (Scalars['Int'] | null),signup_closes_at?: (Scalars['timestamptz'] | null),signup_opens_at?: (Scalars['timestamptz'] | null),starts_at?: (Scalars['timestamptz'] | null),status?: (e_league_season_statuses_enum | null),week_best_of?: (Scalars['jsonb'] | null)}
 
 
 /** aggregate sum on columns */
@@ -68621,8 +68676,6 @@ export interface league_seasons_sum_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68661,8 +68714,6 @@ export interface league_seasons_var_pop_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68683,8 +68734,6 @@ export interface league_seasons_var_samp_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -68705,8 +68754,6 @@ export interface league_seasons_variance_fieldsGenqlSelection{
     min_roster_size?: boolean | number
     playoff_best_of?: boolean | number
     playoff_seats?: boolean | number
-    promote_count?: boolean | number
-    relegate_count?: boolean | number
     relegation_down_count?: boolean | number
     relegation_up_count?: boolean | number
     season_number?: boolean | number
@@ -79876,6 +79923,8 @@ export interface mutation_rootGenqlSelection{
     renameServerItem?: (SuccessOutputGenqlSelection & { __args: {new_path: Scalars['String'], node_id: Scalars['String'], old_path: Scalars['String'], server_id?: (Scalars['String'] | null)} })
     /** Re-film a public lineup's preview clip */
     renderUtilityLineupPreview?: (UtilityRenderQueueOutputGenqlSelection & { __args: {utility_lineup_id: Scalars['uuid']} })
+    /** Queue a preview render for every public lineup that is missing one or has an outdated one */
+    renderUtilityLineupPreviews?: (UtilityRenderBulkOutputGenqlSelection & { __args: {map_name?: (Scalars['String'] | null), scope: Scalars['String']} })
     /** execute VOLATILE function "reorder_league_divisions" which returns "league_divisions" */
     reorder_league_divisions?: (league_divisionsGenqlSelection & { __args: {
     /** input parameters for function "reorder_league_divisions" */
@@ -84207,6 +84256,7 @@ export interface mutation_rootGenqlSelection{
 
 /** columns and relationships of "v_my_friends" */
 export interface my_friendsGenqlSelection{
+    allow_message_requests?: boolean | number
     avatar_url?: boolean | number
     country?: boolean | number
     created_at?: boolean | number
@@ -84220,6 +84270,7 @@ export interface my_friendsGenqlSelection{
     faceit_nickname?: boolean | number
     faceit_player_id?: boolean | number
     faceit_skill_level?: boolean | number
+    faceit_synced_at?: boolean | number
     faceit_updated_at?: boolean | number
     faceit_url?: boolean | number
     friend_steam_id?: boolean | number
@@ -84323,7 +84374,7 @@ export interface my_friends_avg_order_by {days_since_last_ban?: (order_by | null
 
 
 /** Boolean expression to filter rows from the table "v_my_friends". All fields are combined with a logical 'AND'. */
-export interface my_friends_bool_exp {_and?: (my_friends_bool_exp[] | null),_not?: (my_friends_bool_exp | null),_or?: (my_friends_bool_exp[] | null),avatar_url?: (String_comparison_exp | null),country?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),custom_avatar_url?: (String_comparison_exp | null),days_since_last_ban?: (Int_comparison_exp | null),discord_id?: (String_comparison_exp | null),elo?: (jsonb_comparison_exp | null),faceit_elo?: (Int_comparison_exp | null),faceit_nickname?: (String_comparison_exp | null),faceit_player_id?: (String_comparison_exp | null),faceit_skill_level?: (Int_comparison_exp | null),faceit_updated_at?: (timestamptz_comparison_exp | null),faceit_url?: (String_comparison_exp | null),friend_steam_id?: (bigint_comparison_exp | null),game_ban_count?: (Int_comparison_exp | null),invited_by_steam_id?: (bigint_comparison_exp | null),language?: (String_comparison_exp | null),last_presence_state?: (jsonb_comparison_exp | null),last_read_news_at?: (timestamptz_comparison_exp | null),last_sign_in_at?: (timestamptz_comparison_exp | null),name?: (String_comparison_exp | null),name_registered?: (Boolean_comparison_exp | null),notification_timezone?: (String_comparison_exp | null),player?: (players_bool_exp | null),premier_rank?: (Int_comparison_exp | null),premier_rank_updated_at?: (timestamptz_comparison_exp | null),presence_updated_at?: (timestamptz_comparison_exp | null),profile_url?: (String_comparison_exp | null),quiet_hours_end?: (time_comparison_exp | null),quiet_hours_start?: (time_comparison_exp | null),role?: (String_comparison_exp | null),roster_image_url?: (String_comparison_exp | null),show_match_ready_modal?: (Boolean_comparison_exp | null),status?: (String_comparison_exp | null),steam_bans_checked_at?: (timestamptz_comparison_exp | null),steam_id?: (bigint_comparison_exp | null),vac_ban_count?: (Int_comparison_exp | null),vac_banned?: (Boolean_comparison_exp | null)}
+export interface my_friends_bool_exp {_and?: (my_friends_bool_exp[] | null),_not?: (my_friends_bool_exp | null),_or?: (my_friends_bool_exp[] | null),allow_message_requests?: (Boolean_comparison_exp | null),avatar_url?: (String_comparison_exp | null),country?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),custom_avatar_url?: (String_comparison_exp | null),days_since_last_ban?: (Int_comparison_exp | null),discord_id?: (String_comparison_exp | null),elo?: (jsonb_comparison_exp | null),faceit_elo?: (Int_comparison_exp | null),faceit_nickname?: (String_comparison_exp | null),faceit_player_id?: (String_comparison_exp | null),faceit_skill_level?: (Int_comparison_exp | null),faceit_synced_at?: (timestamptz_comparison_exp | null),faceit_updated_at?: (timestamptz_comparison_exp | null),faceit_url?: (String_comparison_exp | null),friend_steam_id?: (bigint_comparison_exp | null),game_ban_count?: (Int_comparison_exp | null),invited_by_steam_id?: (bigint_comparison_exp | null),language?: (String_comparison_exp | null),last_presence_state?: (jsonb_comparison_exp | null),last_read_news_at?: (timestamptz_comparison_exp | null),last_sign_in_at?: (timestamptz_comparison_exp | null),name?: (String_comparison_exp | null),name_registered?: (Boolean_comparison_exp | null),notification_timezone?: (String_comparison_exp | null),player?: (players_bool_exp | null),premier_rank?: (Int_comparison_exp | null),premier_rank_updated_at?: (timestamptz_comparison_exp | null),presence_updated_at?: (timestamptz_comparison_exp | null),profile_url?: (String_comparison_exp | null),quiet_hours_end?: (time_comparison_exp | null),quiet_hours_start?: (time_comparison_exp | null),role?: (String_comparison_exp | null),roster_image_url?: (String_comparison_exp | null),show_match_ready_modal?: (Boolean_comparison_exp | null),status?: (String_comparison_exp | null),steam_bans_checked_at?: (timestamptz_comparison_exp | null),steam_id?: (bigint_comparison_exp | null),vac_ban_count?: (Int_comparison_exp | null),vac_banned?: (Boolean_comparison_exp | null)}
 
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -84343,7 +84394,7 @@ export interface my_friends_inc_input {days_since_last_ban?: (Scalars['Int'] | n
 
 
 /** input type for inserting data into table "v_my_friends" */
-export interface my_friends_insert_input {avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),elo?: (Scalars['jsonb'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),friend_steam_id?: (Scalars['bigint'] | null),game_ban_count?: (Scalars['Int'] | null),invited_by_steam_id?: (Scalars['bigint'] | null),language?: (Scalars['String'] | null),last_presence_state?: (Scalars['jsonb'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),player?: (players_obj_rel_insert_input | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),presence_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (Scalars['String'] | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),status?: (Scalars['String'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
+export interface my_friends_insert_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),elo?: (Scalars['jsonb'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_synced_at?: (Scalars['timestamptz'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),friend_steam_id?: (Scalars['bigint'] | null),game_ban_count?: (Scalars['Int'] | null),invited_by_steam_id?: (Scalars['bigint'] | null),language?: (Scalars['String'] | null),last_presence_state?: (Scalars['jsonb'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),player?: (players_obj_rel_insert_input | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),presence_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (Scalars['String'] | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),status?: (Scalars['String'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
 
 
 /** aggregate max on columns */
@@ -84358,6 +84409,7 @@ export interface my_friends_max_fieldsGenqlSelection{
     faceit_nickname?: boolean | number
     faceit_player_id?: boolean | number
     faceit_skill_level?: boolean | number
+    faceit_synced_at?: boolean | number
     faceit_updated_at?: boolean | number
     faceit_url?: boolean | number
     friend_steam_id?: boolean | number
@@ -84384,7 +84436,7 @@ export interface my_friends_max_fieldsGenqlSelection{
 
 
 /** order by max() on columns of table "v_my_friends" */
-export interface my_friends_max_order_by {avatar_url?: (order_by | null),country?: (order_by | null),created_at?: (order_by | null),custom_avatar_url?: (order_by | null),days_since_last_ban?: (order_by | null),discord_id?: (order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_skill_level?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),friend_steam_id?: (order_by | null),game_ban_count?: (order_by | null),invited_by_steam_id?: (order_by | null),language?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),name?: (order_by | null),notification_timezone?: (order_by | null),premier_rank?: (order_by | null),premier_rank_updated_at?: (order_by | null),presence_updated_at?: (order_by | null),profile_url?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),status?: (order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),vac_ban_count?: (order_by | null)}
+export interface my_friends_max_order_by {avatar_url?: (order_by | null),country?: (order_by | null),created_at?: (order_by | null),custom_avatar_url?: (order_by | null),days_since_last_ban?: (order_by | null),discord_id?: (order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_skill_level?: (order_by | null),faceit_synced_at?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),friend_steam_id?: (order_by | null),game_ban_count?: (order_by | null),invited_by_steam_id?: (order_by | null),language?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),name?: (order_by | null),notification_timezone?: (order_by | null),premier_rank?: (order_by | null),premier_rank_updated_at?: (order_by | null),presence_updated_at?: (order_by | null),profile_url?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),status?: (order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),vac_ban_count?: (order_by | null)}
 
 
 /** aggregate min on columns */
@@ -84399,6 +84451,7 @@ export interface my_friends_min_fieldsGenqlSelection{
     faceit_nickname?: boolean | number
     faceit_player_id?: boolean | number
     faceit_skill_level?: boolean | number
+    faceit_synced_at?: boolean | number
     faceit_updated_at?: boolean | number
     faceit_url?: boolean | number
     friend_steam_id?: boolean | number
@@ -84425,7 +84478,7 @@ export interface my_friends_min_fieldsGenqlSelection{
 
 
 /** order by min() on columns of table "v_my_friends" */
-export interface my_friends_min_order_by {avatar_url?: (order_by | null),country?: (order_by | null),created_at?: (order_by | null),custom_avatar_url?: (order_by | null),days_since_last_ban?: (order_by | null),discord_id?: (order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_skill_level?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),friend_steam_id?: (order_by | null),game_ban_count?: (order_by | null),invited_by_steam_id?: (order_by | null),language?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),name?: (order_by | null),notification_timezone?: (order_by | null),premier_rank?: (order_by | null),premier_rank_updated_at?: (order_by | null),presence_updated_at?: (order_by | null),profile_url?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),status?: (order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),vac_ban_count?: (order_by | null)}
+export interface my_friends_min_order_by {avatar_url?: (order_by | null),country?: (order_by | null),created_at?: (order_by | null),custom_avatar_url?: (order_by | null),days_since_last_ban?: (order_by | null),discord_id?: (order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_skill_level?: (order_by | null),faceit_synced_at?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),friend_steam_id?: (order_by | null),game_ban_count?: (order_by | null),invited_by_steam_id?: (order_by | null),language?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),name?: (order_by | null),notification_timezone?: (order_by | null),premier_rank?: (order_by | null),premier_rank_updated_at?: (order_by | null),presence_updated_at?: (order_by | null),profile_url?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),status?: (order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),vac_ban_count?: (order_by | null)}
 
 
 /** response of any mutation on the table "v_my_friends" */
@@ -84440,7 +84493,7 @@ export interface my_friends_mutation_responseGenqlSelection{
 
 
 /** Ordering options when selecting data from "v_my_friends". */
-export interface my_friends_order_by {avatar_url?: (order_by | null),country?: (order_by | null),created_at?: (order_by | null),custom_avatar_url?: (order_by | null),days_since_last_ban?: (order_by | null),discord_id?: (order_by | null),elo?: (order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_skill_level?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),friend_steam_id?: (order_by | null),game_ban_count?: (order_by | null),invited_by_steam_id?: (order_by | null),language?: (order_by | null),last_presence_state?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),name?: (order_by | null),name_registered?: (order_by | null),notification_timezone?: (order_by | null),player?: (players_order_by | null),premier_rank?: (order_by | null),premier_rank_updated_at?: (order_by | null),presence_updated_at?: (order_by | null),profile_url?: (order_by | null),quiet_hours_end?: (order_by | null),quiet_hours_start?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),show_match_ready_modal?: (order_by | null),status?: (order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),vac_ban_count?: (order_by | null),vac_banned?: (order_by | null)}
+export interface my_friends_order_by {allow_message_requests?: (order_by | null),avatar_url?: (order_by | null),country?: (order_by | null),created_at?: (order_by | null),custom_avatar_url?: (order_by | null),days_since_last_ban?: (order_by | null),discord_id?: (order_by | null),elo?: (order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_skill_level?: (order_by | null),faceit_synced_at?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),friend_steam_id?: (order_by | null),game_ban_count?: (order_by | null),invited_by_steam_id?: (order_by | null),language?: (order_by | null),last_presence_state?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),name?: (order_by | null),name_registered?: (order_by | null),notification_timezone?: (order_by | null),player?: (players_order_by | null),premier_rank?: (order_by | null),premier_rank_updated_at?: (order_by | null),presence_updated_at?: (order_by | null),profile_url?: (order_by | null),quiet_hours_end?: (order_by | null),quiet_hours_start?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),show_match_ready_modal?: (order_by | null),status?: (order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),vac_ban_count?: (order_by | null),vac_banned?: (order_by | null)}
 
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
@@ -84448,7 +84501,7 @@ export interface my_friends_prepend_input {elo?: (Scalars['jsonb'] | null),last_
 
 
 /** input type for updating data in table "v_my_friends" */
-export interface my_friends_set_input {avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),elo?: (Scalars['jsonb'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),friend_steam_id?: (Scalars['bigint'] | null),game_ban_count?: (Scalars['Int'] | null),invited_by_steam_id?: (Scalars['bigint'] | null),language?: (Scalars['String'] | null),last_presence_state?: (Scalars['jsonb'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),presence_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (Scalars['String'] | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),status?: (Scalars['String'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
+export interface my_friends_set_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),elo?: (Scalars['jsonb'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_synced_at?: (Scalars['timestamptz'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),friend_steam_id?: (Scalars['bigint'] | null),game_ban_count?: (Scalars['Int'] | null),invited_by_steam_id?: (Scalars['bigint'] | null),language?: (Scalars['String'] | null),last_presence_state?: (Scalars['jsonb'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),presence_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (Scalars['String'] | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),status?: (Scalars['String'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -84520,7 +84573,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface my_friends_stream_cursor_value_input {avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),elo?: (Scalars['jsonb'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),friend_steam_id?: (Scalars['bigint'] | null),game_ban_count?: (Scalars['Int'] | null),invited_by_steam_id?: (Scalars['bigint'] | null),language?: (Scalars['String'] | null),last_presence_state?: (Scalars['jsonb'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),presence_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (Scalars['String'] | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),status?: (Scalars['String'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
+export interface my_friends_stream_cursor_value_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),elo?: (Scalars['jsonb'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_synced_at?: (Scalars['timestamptz'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),friend_steam_id?: (Scalars['bigint'] | null),game_ban_count?: (Scalars['Int'] | null),invited_by_steam_id?: (Scalars['bigint'] | null),language?: (Scalars['String'] | null),last_presence_state?: (Scalars['jsonb'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),presence_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (Scalars['String'] | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),status?: (Scalars['String'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
 
 
 /** aggregate sum on columns */
@@ -95315,6 +95368,7 @@ export interface playersGenqlSelection{
     /** filter the rows returned */
     where?: (player_faceit_rank_history_bool_exp | null)} })
     faceit_skill_level?: boolean | number
+    faceit_synced_at?: boolean | number
     faceit_updated_at?: boolean | number
     faceit_url?: boolean | number
     /** An array relationship */
@@ -96125,7 +96179,7 @@ export interface players_avg_fieldsGenqlSelection{
 
 
 /** Boolean expression to filter rows from the table "players". All fields are combined with a logical 'AND'. */
-export interface players_bool_exp {_and?: (players_bool_exp[] | null),_not?: (players_bool_exp | null),_or?: (players_bool_exp[] | null),abandoned_matches?: (abandoned_matches_bool_exp | null),abandoned_matches_aggregate?: (abandoned_matches_aggregate_bool_exp | null),aim_weapon_stats?: (player_aim_weapon_stats_bool_exp | null),aim_weapon_stats_aggregate?: (player_aim_weapon_stats_aggregate_bool_exp | null),allow_message_requests?: (Boolean_comparison_exp | null),assists?: (player_assists_bool_exp | null),assists_aggregate?: (player_assists_aggregate_bool_exp | null),assited_by_players?: (player_assists_bool_exp | null),assited_by_players_aggregate?: (player_assists_aggregate_bool_exp | null),avatar_url?: (String_comparison_exp | null),awards?: (award_recipients_bool_exp | null),awards_aggregate?: (award_recipients_aggregate_bool_exp | null),banned_until?: (timestamptz_comparison_exp | null),coach_lineups?: (match_lineups_bool_exp | null),coach_lineups_aggregate?: (match_lineups_aggregate_bool_exp | null),country?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),current_lobby_id?: (uuid_comparison_exp | null),custom_avatar_url?: (String_comparison_exp | null),damage_dealt?: (player_damages_bool_exp | null),damage_dealt_aggregate?: (player_damages_aggregate_bool_exp | null),damage_taken?: (player_damages_bool_exp | null),damage_taken_aggregate?: (player_damages_aggregate_bool_exp | null),days_since_last_ban?: (Int_comparison_exp | null),deaths?: (player_kills_bool_exp | null),deaths_aggregate?: (player_kills_aggregate_bool_exp | null),discord_id?: (String_comparison_exp | null),draft_game_players?: (draft_game_players_bool_exp | null),draft_game_players_aggregate?: (draft_game_players_aggregate_bool_exp | null),elo?: (jsonb_comparison_exp | null),elo_history?: (v_player_elo_bool_exp | null),elo_history_aggregate?: (v_player_elo_aggregate_bool_exp | null),faceit_elo?: (Int_comparison_exp | null),faceit_nickname?: (String_comparison_exp | null),faceit_player_id?: (String_comparison_exp | null),faceit_rank_history?: (player_faceit_rank_history_bool_exp | null),faceit_rank_history_aggregate?: (player_faceit_rank_history_aggregate_bool_exp | null),faceit_skill_level?: (Int_comparison_exp | null),faceit_updated_at?: (timestamptz_comparison_exp | null),faceit_url?: (String_comparison_exp | null),flashed_by_players?: (player_flashes_bool_exp | null),flashed_by_players_aggregate?: (player_flashes_aggregate_bool_exp | null),flashed_players?: (player_flashes_bool_exp | null),flashed_players_aggregate?: (player_flashes_aggregate_bool_exp | null),friends?: (my_friends_bool_exp | null),friends_aggregate?: (my_friends_aggregate_bool_exp | null),game_ban_count?: (Int_comparison_exp | null),invited_players?: (team_invites_bool_exp | null),invited_players_aggregate?: (team_invites_aggregate_bool_exp | null),is_admin_sanctioned?: (Boolean_comparison_exp | null),is_banned?: (Boolean_comparison_exp | null),is_gagged?: (Boolean_comparison_exp | null),is_in_another_match?: (Boolean_comparison_exp | null),is_in_draft?: (Boolean_comparison_exp | null),is_in_lobby?: (Boolean_comparison_exp | null),is_muted?: (Boolean_comparison_exp | null),is_registered?: (Boolean_comparison_exp | null),kills?: (player_kills_bool_exp | null),kills_aggregate?: (player_kills_aggregate_bool_exp | null),kills_by_weapons?: (player_kills_by_weapon_bool_exp | null),kills_by_weapons_aggregate?: (player_kills_by_weapon_aggregate_bool_exp | null),language?: (String_comparison_exp | null),last_read_news_at?: (timestamptz_comparison_exp | null),last_sign_in_at?: (timestamptz_comparison_exp | null),lobby_players?: (lobby_players_bool_exp | null),lobby_players_aggregate?: (lobby_players_aggregate_bool_exp | null),losses?: (Int_comparison_exp | null),losses_competitive?: (Int_comparison_exp | null),losses_duel?: (Int_comparison_exp | null),losses_rush?: (Int_comparison_exp | null),losses_wingman?: (Int_comparison_exp | null),match_map_hltv?: (v_player_match_map_hltv_bool_exp | null),match_map_hltv_aggregate?: (v_player_match_map_hltv_aggregate_bool_exp | null),match_map_stats?: (player_match_map_stats_bool_exp | null),match_map_stats_aggregate?: (player_match_map_stats_aggregate_bool_exp | null),match_stats?: (player_match_stats_v_bool_exp | null),match_stats_aggregate?: (player_match_stats_v_aggregate_bool_exp | null),matches?: (matches_bool_exp | null),matchmaking_cooldown?: (timestamptz_comparison_exp | null),multi_kills?: (v_player_multi_kills_bool_exp | null),multi_kills_aggregate?: (v_player_multi_kills_aggregate_bool_exp | null),name?: (String_comparison_exp | null),name_registered?: (Boolean_comparison_exp | null),notification_timezone?: (String_comparison_exp | null),notifications?: (notifications_bool_exp | null),notifications_aggregate?: (notifications_aggregate_bool_exp | null),objectives?: (player_objectives_bool_exp | null),objectives_aggregate?: (player_objectives_aggregate_bool_exp | null),owned_teams?: (teams_bool_exp | null),owned_teams_aggregate?: (teams_aggregate_bool_exp | null),peak_elo?: (jsonb_comparison_exp | null),pending_match_imports?: (pending_match_import_players_bool_exp | null),pending_match_imports_aggregate?: (pending_match_import_players_aggregate_bool_exp | null),player_lineup?: (match_lineup_players_bool_exp | null),player_lineup_aggregate?: (match_lineup_players_aggregate_bool_exp | null),player_unused_utilities?: (player_unused_utility_bool_exp | null),player_unused_utilities_aggregate?: (player_unused_utility_aggregate_bool_exp | null),premier_rank?: (Int_comparison_exp | null),premier_rank_history?: (player_premier_rank_history_bool_exp | null),premier_rank_history_aggregate?: (player_premier_rank_history_aggregate_bool_exp | null),premier_rank_updated_at?: (timestamptz_comparison_exp | null),profile_url?: (String_comparison_exp | null),quiet_hours_end?: (time_comparison_exp | null),quiet_hours_start?: (time_comparison_exp | null),role?: (e_player_roles_enum_comparison_exp | null),roster_image_url?: (String_comparison_exp | null),sanctions?: (player_sanctions_bool_exp | null),sanctions_aggregate?: (player_sanctions_aggregate_bool_exp | null),season_stats?: (player_season_stats_bool_exp | null),season_stats_aggregate?: (player_season_stats_aggregate_bool_exp | null),show_match_ready_modal?: (Boolean_comparison_exp | null),stats?: (player_stats_bool_exp | null),steam_bans_checked_at?: (timestamptz_comparison_exp | null),steam_id?: (bigint_comparison_exp | null),team_invites?: (team_invites_bool_exp | null),team_invites_aggregate?: (team_invites_aggregate_bool_exp | null),team_members?: (team_roster_bool_exp | null),team_members_aggregate?: (team_roster_aggregate_bool_exp | null),teams?: (teams_bool_exp | null),total_matches?: (Int_comparison_exp | null),tournament_cooldown?: (timestamptz_comparison_exp | null),tournament_organizers?: (tournament_organizers_bool_exp | null),tournament_organizers_aggregate?: (tournament_organizers_aggregate_bool_exp | null),tournament_rosters?: (tournament_team_roster_bool_exp | null),tournament_rosters_aggregate?: (tournament_team_roster_aggregate_bool_exp | null),tournaments?: (tournaments_bool_exp | null),tournaments_aggregate?: (tournaments_aggregate_bool_exp | null),utility_thrown?: (player_utility_bool_exp | null),utility_thrown_aggregate?: (player_utility_aggregate_bool_exp | null),vac_ban_count?: (Int_comparison_exp | null),vac_banned?: (Boolean_comparison_exp | null),weapon_stats?: (player_weapon_stats_v_bool_exp | null),weapon_stats_aggregate?: (player_weapon_stats_v_aggregate_bool_exp | null),wins?: (Int_comparison_exp | null),wins_competitive?: (Int_comparison_exp | null),wins_duel?: (Int_comparison_exp | null),wins_rush?: (Int_comparison_exp | null),wins_wingman?: (Int_comparison_exp | null)}
+export interface players_bool_exp {_and?: (players_bool_exp[] | null),_not?: (players_bool_exp | null),_or?: (players_bool_exp[] | null),abandoned_matches?: (abandoned_matches_bool_exp | null),abandoned_matches_aggregate?: (abandoned_matches_aggregate_bool_exp | null),aim_weapon_stats?: (player_aim_weapon_stats_bool_exp | null),aim_weapon_stats_aggregate?: (player_aim_weapon_stats_aggregate_bool_exp | null),allow_message_requests?: (Boolean_comparison_exp | null),assists?: (player_assists_bool_exp | null),assists_aggregate?: (player_assists_aggregate_bool_exp | null),assited_by_players?: (player_assists_bool_exp | null),assited_by_players_aggregate?: (player_assists_aggregate_bool_exp | null),avatar_url?: (String_comparison_exp | null),awards?: (award_recipients_bool_exp | null),awards_aggregate?: (award_recipients_aggregate_bool_exp | null),banned_until?: (timestamptz_comparison_exp | null),coach_lineups?: (match_lineups_bool_exp | null),coach_lineups_aggregate?: (match_lineups_aggregate_bool_exp | null),country?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),current_lobby_id?: (uuid_comparison_exp | null),custom_avatar_url?: (String_comparison_exp | null),damage_dealt?: (player_damages_bool_exp | null),damage_dealt_aggregate?: (player_damages_aggregate_bool_exp | null),damage_taken?: (player_damages_bool_exp | null),damage_taken_aggregate?: (player_damages_aggregate_bool_exp | null),days_since_last_ban?: (Int_comparison_exp | null),deaths?: (player_kills_bool_exp | null),deaths_aggregate?: (player_kills_aggregate_bool_exp | null),discord_id?: (String_comparison_exp | null),draft_game_players?: (draft_game_players_bool_exp | null),draft_game_players_aggregate?: (draft_game_players_aggregate_bool_exp | null),elo?: (jsonb_comparison_exp | null),elo_history?: (v_player_elo_bool_exp | null),elo_history_aggregate?: (v_player_elo_aggregate_bool_exp | null),faceit_elo?: (Int_comparison_exp | null),faceit_nickname?: (String_comparison_exp | null),faceit_player_id?: (String_comparison_exp | null),faceit_rank_history?: (player_faceit_rank_history_bool_exp | null),faceit_rank_history_aggregate?: (player_faceit_rank_history_aggregate_bool_exp | null),faceit_skill_level?: (Int_comparison_exp | null),faceit_synced_at?: (timestamptz_comparison_exp | null),faceit_updated_at?: (timestamptz_comparison_exp | null),faceit_url?: (String_comparison_exp | null),flashed_by_players?: (player_flashes_bool_exp | null),flashed_by_players_aggregate?: (player_flashes_aggregate_bool_exp | null),flashed_players?: (player_flashes_bool_exp | null),flashed_players_aggregate?: (player_flashes_aggregate_bool_exp | null),friends?: (my_friends_bool_exp | null),friends_aggregate?: (my_friends_aggregate_bool_exp | null),game_ban_count?: (Int_comparison_exp | null),invited_players?: (team_invites_bool_exp | null),invited_players_aggregate?: (team_invites_aggregate_bool_exp | null),is_admin_sanctioned?: (Boolean_comparison_exp | null),is_banned?: (Boolean_comparison_exp | null),is_gagged?: (Boolean_comparison_exp | null),is_in_another_match?: (Boolean_comparison_exp | null),is_in_draft?: (Boolean_comparison_exp | null),is_in_lobby?: (Boolean_comparison_exp | null),is_muted?: (Boolean_comparison_exp | null),is_registered?: (Boolean_comparison_exp | null),kills?: (player_kills_bool_exp | null),kills_aggregate?: (player_kills_aggregate_bool_exp | null),kills_by_weapons?: (player_kills_by_weapon_bool_exp | null),kills_by_weapons_aggregate?: (player_kills_by_weapon_aggregate_bool_exp | null),language?: (String_comparison_exp | null),last_read_news_at?: (timestamptz_comparison_exp | null),last_sign_in_at?: (timestamptz_comparison_exp | null),lobby_players?: (lobby_players_bool_exp | null),lobby_players_aggregate?: (lobby_players_aggregate_bool_exp | null),losses?: (Int_comparison_exp | null),losses_competitive?: (Int_comparison_exp | null),losses_duel?: (Int_comparison_exp | null),losses_rush?: (Int_comparison_exp | null),losses_wingman?: (Int_comparison_exp | null),match_map_hltv?: (v_player_match_map_hltv_bool_exp | null),match_map_hltv_aggregate?: (v_player_match_map_hltv_aggregate_bool_exp | null),match_map_stats?: (player_match_map_stats_bool_exp | null),match_map_stats_aggregate?: (player_match_map_stats_aggregate_bool_exp | null),match_stats?: (player_match_stats_v_bool_exp | null),match_stats_aggregate?: (player_match_stats_v_aggregate_bool_exp | null),matches?: (matches_bool_exp | null),matchmaking_cooldown?: (timestamptz_comparison_exp | null),multi_kills?: (v_player_multi_kills_bool_exp | null),multi_kills_aggregate?: (v_player_multi_kills_aggregate_bool_exp | null),name?: (String_comparison_exp | null),name_registered?: (Boolean_comparison_exp | null),notification_timezone?: (String_comparison_exp | null),notifications?: (notifications_bool_exp | null),notifications_aggregate?: (notifications_aggregate_bool_exp | null),objectives?: (player_objectives_bool_exp | null),objectives_aggregate?: (player_objectives_aggregate_bool_exp | null),owned_teams?: (teams_bool_exp | null),owned_teams_aggregate?: (teams_aggregate_bool_exp | null),peak_elo?: (jsonb_comparison_exp | null),pending_match_imports?: (pending_match_import_players_bool_exp | null),pending_match_imports_aggregate?: (pending_match_import_players_aggregate_bool_exp | null),player_lineup?: (match_lineup_players_bool_exp | null),player_lineup_aggregate?: (match_lineup_players_aggregate_bool_exp | null),player_unused_utilities?: (player_unused_utility_bool_exp | null),player_unused_utilities_aggregate?: (player_unused_utility_aggregate_bool_exp | null),premier_rank?: (Int_comparison_exp | null),premier_rank_history?: (player_premier_rank_history_bool_exp | null),premier_rank_history_aggregate?: (player_premier_rank_history_aggregate_bool_exp | null),premier_rank_updated_at?: (timestamptz_comparison_exp | null),profile_url?: (String_comparison_exp | null),quiet_hours_end?: (time_comparison_exp | null),quiet_hours_start?: (time_comparison_exp | null),role?: (e_player_roles_enum_comparison_exp | null),roster_image_url?: (String_comparison_exp | null),sanctions?: (player_sanctions_bool_exp | null),sanctions_aggregate?: (player_sanctions_aggregate_bool_exp | null),season_stats?: (player_season_stats_bool_exp | null),season_stats_aggregate?: (player_season_stats_aggregate_bool_exp | null),show_match_ready_modal?: (Boolean_comparison_exp | null),stats?: (player_stats_bool_exp | null),steam_bans_checked_at?: (timestamptz_comparison_exp | null),steam_id?: (bigint_comparison_exp | null),team_invites?: (team_invites_bool_exp | null),team_invites_aggregate?: (team_invites_aggregate_bool_exp | null),team_members?: (team_roster_bool_exp | null),team_members_aggregate?: (team_roster_aggregate_bool_exp | null),teams?: (teams_bool_exp | null),total_matches?: (Int_comparison_exp | null),tournament_cooldown?: (timestamptz_comparison_exp | null),tournament_organizers?: (tournament_organizers_bool_exp | null),tournament_organizers_aggregate?: (tournament_organizers_aggregate_bool_exp | null),tournament_rosters?: (tournament_team_roster_bool_exp | null),tournament_rosters_aggregate?: (tournament_team_roster_aggregate_bool_exp | null),tournaments?: (tournaments_bool_exp | null),tournaments_aggregate?: (tournaments_aggregate_bool_exp | null),utility_thrown?: (player_utility_bool_exp | null),utility_thrown_aggregate?: (player_utility_aggregate_bool_exp | null),vac_ban_count?: (Int_comparison_exp | null),vac_banned?: (Boolean_comparison_exp | null),weapon_stats?: (player_weapon_stats_v_bool_exp | null),weapon_stats_aggregate?: (player_weapon_stats_v_aggregate_bool_exp | null),wins?: (Int_comparison_exp | null),wins_competitive?: (Int_comparison_exp | null),wins_duel?: (Int_comparison_exp | null),wins_rush?: (Int_comparison_exp | null),wins_wingman?: (Int_comparison_exp | null)}
 
 
 /** input type for incrementing numeric columns in table "players" */
@@ -96133,7 +96187,7 @@ export interface players_inc_input {days_since_last_ban?: (Scalars['Int'] | null
 
 
 /** input type for inserting data into table "players" */
-export interface players_insert_input {abandoned_matches?: (abandoned_matches_arr_rel_insert_input | null),aim_weapon_stats?: (player_aim_weapon_stats_arr_rel_insert_input | null),allow_message_requests?: (Scalars['Boolean'] | null),assists?: (player_assists_arr_rel_insert_input | null),assited_by_players?: (player_assists_arr_rel_insert_input | null),avatar_url?: (Scalars['String'] | null),awards?: (award_recipients_arr_rel_insert_input | null),coach_lineups?: (match_lineups_arr_rel_insert_input | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),damage_dealt?: (player_damages_arr_rel_insert_input | null),damage_taken?: (player_damages_arr_rel_insert_input | null),days_since_last_ban?: (Scalars['Int'] | null),deaths?: (player_kills_arr_rel_insert_input | null),discord_id?: (Scalars['String'] | null),draft_game_players?: (draft_game_players_arr_rel_insert_input | null),elo_history?: (v_player_elo_arr_rel_insert_input | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_rank_history?: (player_faceit_rank_history_arr_rel_insert_input | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),flashed_by_players?: (player_flashes_arr_rel_insert_input | null),flashed_players?: (player_flashes_arr_rel_insert_input | null),friends?: (my_friends_arr_rel_insert_input | null),game_ban_count?: (Scalars['Int'] | null),invited_players?: (team_invites_arr_rel_insert_input | null),kills?: (player_kills_arr_rel_insert_input | null),kills_by_weapons?: (player_kills_by_weapon_arr_rel_insert_input | null),language?: (Scalars['String'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),lobby_players?: (lobby_players_arr_rel_insert_input | null),match_map_hltv?: (v_player_match_map_hltv_arr_rel_insert_input | null),match_map_stats?: (player_match_map_stats_arr_rel_insert_input | null),match_stats?: (player_match_stats_v_arr_rel_insert_input | null),multi_kills?: (v_player_multi_kills_arr_rel_insert_input | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),notifications?: (notifications_arr_rel_insert_input | null),objectives?: (player_objectives_arr_rel_insert_input | null),owned_teams?: (teams_arr_rel_insert_input | null),pending_match_imports?: (pending_match_import_players_arr_rel_insert_input | null),player_lineup?: (match_lineup_players_arr_rel_insert_input | null),player_unused_utilities?: (player_unused_utility_arr_rel_insert_input | null),premier_rank?: (Scalars['Int'] | null),premier_rank_history?: (player_premier_rank_history_arr_rel_insert_input | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (e_player_roles_enum | null),roster_image_url?: (Scalars['String'] | null),sanctions?: (player_sanctions_arr_rel_insert_input | null),season_stats?: (player_season_stats_arr_rel_insert_input | null),show_match_ready_modal?: (Scalars['Boolean'] | null),stats?: (player_stats_obj_rel_insert_input | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),team_invites?: (team_invites_arr_rel_insert_input | null),team_members?: (team_roster_arr_rel_insert_input | null),tournament_organizers?: (tournament_organizers_arr_rel_insert_input | null),tournament_rosters?: (tournament_team_roster_arr_rel_insert_input | null),tournaments?: (tournaments_arr_rel_insert_input | null),utility_thrown?: (player_utility_arr_rel_insert_input | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null),weapon_stats?: (player_weapon_stats_v_arr_rel_insert_input | null)}
+export interface players_insert_input {abandoned_matches?: (abandoned_matches_arr_rel_insert_input | null),aim_weapon_stats?: (player_aim_weapon_stats_arr_rel_insert_input | null),allow_message_requests?: (Scalars['Boolean'] | null),assists?: (player_assists_arr_rel_insert_input | null),assited_by_players?: (player_assists_arr_rel_insert_input | null),avatar_url?: (Scalars['String'] | null),awards?: (award_recipients_arr_rel_insert_input | null),coach_lineups?: (match_lineups_arr_rel_insert_input | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),damage_dealt?: (player_damages_arr_rel_insert_input | null),damage_taken?: (player_damages_arr_rel_insert_input | null),days_since_last_ban?: (Scalars['Int'] | null),deaths?: (player_kills_arr_rel_insert_input | null),discord_id?: (Scalars['String'] | null),draft_game_players?: (draft_game_players_arr_rel_insert_input | null),elo_history?: (v_player_elo_arr_rel_insert_input | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_rank_history?: (player_faceit_rank_history_arr_rel_insert_input | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_synced_at?: (Scalars['timestamptz'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),flashed_by_players?: (player_flashes_arr_rel_insert_input | null),flashed_players?: (player_flashes_arr_rel_insert_input | null),friends?: (my_friends_arr_rel_insert_input | null),game_ban_count?: (Scalars['Int'] | null),invited_players?: (team_invites_arr_rel_insert_input | null),kills?: (player_kills_arr_rel_insert_input | null),kills_by_weapons?: (player_kills_by_weapon_arr_rel_insert_input | null),language?: (Scalars['String'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),lobby_players?: (lobby_players_arr_rel_insert_input | null),match_map_hltv?: (v_player_match_map_hltv_arr_rel_insert_input | null),match_map_stats?: (player_match_map_stats_arr_rel_insert_input | null),match_stats?: (player_match_stats_v_arr_rel_insert_input | null),multi_kills?: (v_player_multi_kills_arr_rel_insert_input | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),notifications?: (notifications_arr_rel_insert_input | null),objectives?: (player_objectives_arr_rel_insert_input | null),owned_teams?: (teams_arr_rel_insert_input | null),pending_match_imports?: (pending_match_import_players_arr_rel_insert_input | null),player_lineup?: (match_lineup_players_arr_rel_insert_input | null),player_unused_utilities?: (player_unused_utility_arr_rel_insert_input | null),premier_rank?: (Scalars['Int'] | null),premier_rank_history?: (player_premier_rank_history_arr_rel_insert_input | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (e_player_roles_enum | null),roster_image_url?: (Scalars['String'] | null),sanctions?: (player_sanctions_arr_rel_insert_input | null),season_stats?: (player_season_stats_arr_rel_insert_input | null),show_match_ready_modal?: (Scalars['Boolean'] | null),stats?: (player_stats_obj_rel_insert_input | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),team_invites?: (team_invites_arr_rel_insert_input | null),team_members?: (team_roster_arr_rel_insert_input | null),tournament_organizers?: (tournament_organizers_arr_rel_insert_input | null),tournament_rosters?: (tournament_team_roster_arr_rel_insert_input | null),tournaments?: (tournaments_arr_rel_insert_input | null),utility_thrown?: (player_utility_arr_rel_insert_input | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null),weapon_stats?: (player_weapon_stats_v_arr_rel_insert_input | null)}
 
 
 /** aggregate max on columns */
@@ -96152,6 +96206,7 @@ export interface players_max_fieldsGenqlSelection{
     faceit_nickname?: boolean | number
     faceit_player_id?: boolean | number
     faceit_skill_level?: boolean | number
+    faceit_synced_at?: boolean | number
     faceit_updated_at?: boolean | number
     faceit_url?: boolean | number
     game_ban_count?: boolean | number
@@ -96214,6 +96269,7 @@ export interface players_min_fieldsGenqlSelection{
     faceit_nickname?: boolean | number
     faceit_player_id?: boolean | number
     faceit_skill_level?: boolean | number
+    faceit_synced_at?: boolean | number
     faceit_updated_at?: boolean | number
     faceit_url?: boolean | number
     game_ban_count?: boolean | number
@@ -96282,7 +96338,7 @@ export interface players_on_conflict {constraint: players_constraint,update_colu
 
 
 /** Ordering options when selecting data from "players". */
-export interface players_order_by {abandoned_matches_aggregate?: (abandoned_matches_aggregate_order_by | null),aim_weapon_stats_aggregate?: (player_aim_weapon_stats_aggregate_order_by | null),allow_message_requests?: (order_by | null),assists_aggregate?: (player_assists_aggregate_order_by | null),assited_by_players_aggregate?: (player_assists_aggregate_order_by | null),avatar_url?: (order_by | null),awards_aggregate?: (award_recipients_aggregate_order_by | null),banned_until?: (order_by | null),coach_lineups_aggregate?: (match_lineups_aggregate_order_by | null),country?: (order_by | null),created_at?: (order_by | null),current_lobby_id?: (order_by | null),custom_avatar_url?: (order_by | null),damage_dealt_aggregate?: (player_damages_aggregate_order_by | null),damage_taken_aggregate?: (player_damages_aggregate_order_by | null),days_since_last_ban?: (order_by | null),deaths_aggregate?: (player_kills_aggregate_order_by | null),discord_id?: (order_by | null),draft_game_players_aggregate?: (draft_game_players_aggregate_order_by | null),elo?: (order_by | null),elo_history_aggregate?: (v_player_elo_aggregate_order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_rank_history_aggregate?: (player_faceit_rank_history_aggregate_order_by | null),faceit_skill_level?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),flashed_by_players_aggregate?: (player_flashes_aggregate_order_by | null),flashed_players_aggregate?: (player_flashes_aggregate_order_by | null),friends_aggregate?: (my_friends_aggregate_order_by | null),game_ban_count?: (order_by | null),invited_players_aggregate?: (team_invites_aggregate_order_by | null),is_admin_sanctioned?: (order_by | null),is_banned?: (order_by | null),is_gagged?: (order_by | null),is_in_another_match?: (order_by | null),is_in_draft?: (order_by | null),is_in_lobby?: (order_by | null),is_muted?: (order_by | null),is_registered?: (order_by | null),kills_aggregate?: (player_kills_aggregate_order_by | null),kills_by_weapons_aggregate?: (player_kills_by_weapon_aggregate_order_by | null),language?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),lobby_players_aggregate?: (lobby_players_aggregate_order_by | null),losses?: (order_by | null),losses_competitive?: (order_by | null),losses_duel?: (order_by | null),losses_rush?: (order_by | null),losses_wingman?: (order_by | null),match_map_hltv_aggregate?: (v_player_match_map_hltv_aggregate_order_by | null),match_map_stats_aggregate?: (player_match_map_stats_aggregate_order_by | null),match_stats_aggregate?: (player_match_stats_v_aggregate_order_by | null),matches_aggregate?: (matches_aggregate_order_by | null),matchmaking_cooldown?: (order_by | null),multi_kills_aggregate?: (v_player_multi_kills_aggregate_order_by | null),name?: (order_by | null),name_registered?: (order_by | null),notification_timezone?: (order_by | null),notifications_aggregate?: (notifications_aggregate_order_by | null),objectives_aggregate?: (player_objectives_aggregate_order_by | null),owned_teams_aggregate?: (teams_aggregate_order_by | null),peak_elo?: (order_by | null),pending_match_imports_aggregate?: (pending_match_import_players_aggregate_order_by | null),player_lineup_aggregate?: (match_lineup_players_aggregate_order_by | null),player_unused_utilities_aggregate?: (player_unused_utility_aggregate_order_by | null),premier_rank?: (order_by | null),premier_rank_history_aggregate?: (player_premier_rank_history_aggregate_order_by | null),premier_rank_updated_at?: (order_by | null),profile_url?: (order_by | null),quiet_hours_end?: (order_by | null),quiet_hours_start?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),sanctions_aggregate?: (player_sanctions_aggregate_order_by | null),season_stats_aggregate?: (player_season_stats_aggregate_order_by | null),show_match_ready_modal?: (order_by | null),stats?: (player_stats_order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),team_invites_aggregate?: (team_invites_aggregate_order_by | null),team_members_aggregate?: (team_roster_aggregate_order_by | null),teams_aggregate?: (teams_aggregate_order_by | null),total_matches?: (order_by | null),tournament_cooldown?: (order_by | null),tournament_organizers_aggregate?: (tournament_organizers_aggregate_order_by | null),tournament_rosters_aggregate?: (tournament_team_roster_aggregate_order_by | null),tournaments_aggregate?: (tournaments_aggregate_order_by | null),utility_thrown_aggregate?: (player_utility_aggregate_order_by | null),vac_ban_count?: (order_by | null),vac_banned?: (order_by | null),weapon_stats_aggregate?: (player_weapon_stats_v_aggregate_order_by | null),wins?: (order_by | null),wins_competitive?: (order_by | null),wins_duel?: (order_by | null),wins_rush?: (order_by | null),wins_wingman?: (order_by | null)}
+export interface players_order_by {abandoned_matches_aggregate?: (abandoned_matches_aggregate_order_by | null),aim_weapon_stats_aggregate?: (player_aim_weapon_stats_aggregate_order_by | null),allow_message_requests?: (order_by | null),assists_aggregate?: (player_assists_aggregate_order_by | null),assited_by_players_aggregate?: (player_assists_aggregate_order_by | null),avatar_url?: (order_by | null),awards_aggregate?: (award_recipients_aggregate_order_by | null),banned_until?: (order_by | null),coach_lineups_aggregate?: (match_lineups_aggregate_order_by | null),country?: (order_by | null),created_at?: (order_by | null),current_lobby_id?: (order_by | null),custom_avatar_url?: (order_by | null),damage_dealt_aggregate?: (player_damages_aggregate_order_by | null),damage_taken_aggregate?: (player_damages_aggregate_order_by | null),days_since_last_ban?: (order_by | null),deaths_aggregate?: (player_kills_aggregate_order_by | null),discord_id?: (order_by | null),draft_game_players_aggregate?: (draft_game_players_aggregate_order_by | null),elo?: (order_by | null),elo_history_aggregate?: (v_player_elo_aggregate_order_by | null),faceit_elo?: (order_by | null),faceit_nickname?: (order_by | null),faceit_player_id?: (order_by | null),faceit_rank_history_aggregate?: (player_faceit_rank_history_aggregate_order_by | null),faceit_skill_level?: (order_by | null),faceit_synced_at?: (order_by | null),faceit_updated_at?: (order_by | null),faceit_url?: (order_by | null),flashed_by_players_aggregate?: (player_flashes_aggregate_order_by | null),flashed_players_aggregate?: (player_flashes_aggregate_order_by | null),friends_aggregate?: (my_friends_aggregate_order_by | null),game_ban_count?: (order_by | null),invited_players_aggregate?: (team_invites_aggregate_order_by | null),is_admin_sanctioned?: (order_by | null),is_banned?: (order_by | null),is_gagged?: (order_by | null),is_in_another_match?: (order_by | null),is_in_draft?: (order_by | null),is_in_lobby?: (order_by | null),is_muted?: (order_by | null),is_registered?: (order_by | null),kills_aggregate?: (player_kills_aggregate_order_by | null),kills_by_weapons_aggregate?: (player_kills_by_weapon_aggregate_order_by | null),language?: (order_by | null),last_read_news_at?: (order_by | null),last_sign_in_at?: (order_by | null),lobby_players_aggregate?: (lobby_players_aggregate_order_by | null),losses?: (order_by | null),losses_competitive?: (order_by | null),losses_duel?: (order_by | null),losses_rush?: (order_by | null),losses_wingman?: (order_by | null),match_map_hltv_aggregate?: (v_player_match_map_hltv_aggregate_order_by | null),match_map_stats_aggregate?: (player_match_map_stats_aggregate_order_by | null),match_stats_aggregate?: (player_match_stats_v_aggregate_order_by | null),matches_aggregate?: (matches_aggregate_order_by | null),matchmaking_cooldown?: (order_by | null),multi_kills_aggregate?: (v_player_multi_kills_aggregate_order_by | null),name?: (order_by | null),name_registered?: (order_by | null),notification_timezone?: (order_by | null),notifications_aggregate?: (notifications_aggregate_order_by | null),objectives_aggregate?: (player_objectives_aggregate_order_by | null),owned_teams_aggregate?: (teams_aggregate_order_by | null),peak_elo?: (order_by | null),pending_match_imports_aggregate?: (pending_match_import_players_aggregate_order_by | null),player_lineup_aggregate?: (match_lineup_players_aggregate_order_by | null),player_unused_utilities_aggregate?: (player_unused_utility_aggregate_order_by | null),premier_rank?: (order_by | null),premier_rank_history_aggregate?: (player_premier_rank_history_aggregate_order_by | null),premier_rank_updated_at?: (order_by | null),profile_url?: (order_by | null),quiet_hours_end?: (order_by | null),quiet_hours_start?: (order_by | null),role?: (order_by | null),roster_image_url?: (order_by | null),sanctions_aggregate?: (player_sanctions_aggregate_order_by | null),season_stats_aggregate?: (player_season_stats_aggregate_order_by | null),show_match_ready_modal?: (order_by | null),stats?: (player_stats_order_by | null),steam_bans_checked_at?: (order_by | null),steam_id?: (order_by | null),team_invites_aggregate?: (team_invites_aggregate_order_by | null),team_members_aggregate?: (team_roster_aggregate_order_by | null),teams_aggregate?: (teams_aggregate_order_by | null),total_matches?: (order_by | null),tournament_cooldown?: (order_by | null),tournament_organizers_aggregate?: (tournament_organizers_aggregate_order_by | null),tournament_rosters_aggregate?: (tournament_team_roster_aggregate_order_by | null),tournaments_aggregate?: (tournaments_aggregate_order_by | null),utility_thrown_aggregate?: (player_utility_aggregate_order_by | null),vac_ban_count?: (order_by | null),vac_banned?: (order_by | null),weapon_stats_aggregate?: (player_weapon_stats_v_aggregate_order_by | null),wins?: (order_by | null),wins_competitive?: (order_by | null),wins_duel?: (order_by | null),wins_rush?: (order_by | null),wins_wingman?: (order_by | null)}
 
 
 /** primary key columns input for table: players */
@@ -96290,7 +96346,7 @@ export interface players_pk_columns_input {steam_id: Scalars['bigint']}
 
 
 /** input type for updating data in table "players" */
-export interface players_set_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),game_ban_count?: (Scalars['Int'] | null),language?: (Scalars['String'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (e_player_roles_enum | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
+export interface players_set_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_synced_at?: (Scalars['timestamptz'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),game_ban_count?: (Scalars['Int'] | null),language?: (Scalars['String'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (e_player_roles_enum | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -96410,7 +96466,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface players_stream_cursor_value_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),game_ban_count?: (Scalars['Int'] | null),language?: (Scalars['String'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (e_player_roles_enum | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
+export interface players_stream_cursor_value_input {allow_message_requests?: (Scalars['Boolean'] | null),avatar_url?: (Scalars['String'] | null),country?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),custom_avatar_url?: (Scalars['String'] | null),days_since_last_ban?: (Scalars['Int'] | null),discord_id?: (Scalars['String'] | null),faceit_elo?: (Scalars['Int'] | null),faceit_nickname?: (Scalars['String'] | null),faceit_player_id?: (Scalars['String'] | null),faceit_skill_level?: (Scalars['Int'] | null),faceit_synced_at?: (Scalars['timestamptz'] | null),faceit_updated_at?: (Scalars['timestamptz'] | null),faceit_url?: (Scalars['String'] | null),game_ban_count?: (Scalars['Int'] | null),language?: (Scalars['String'] | null),last_read_news_at?: (Scalars['timestamptz'] | null),last_sign_in_at?: (Scalars['timestamptz'] | null),name?: (Scalars['String'] | null),name_registered?: (Scalars['Boolean'] | null),notification_timezone?: (Scalars['String'] | null),premier_rank?: (Scalars['Int'] | null),premier_rank_updated_at?: (Scalars['timestamptz'] | null),profile_url?: (Scalars['String'] | null),quiet_hours_end?: (Scalars['time'] | null),quiet_hours_start?: (Scalars['time'] | null),role?: (e_player_roles_enum | null),roster_image_url?: (Scalars['String'] | null),show_match_ready_modal?: (Scalars['Boolean'] | null),steam_bans_checked_at?: (Scalars['timestamptz'] | null),steam_id?: (Scalars['bigint'] | null),vac_ban_count?: (Scalars['Int'] | null),vac_banned?: (Scalars['Boolean'] | null)}
 
 
 /** aggregate sum on columns */
@@ -102554,6 +102610,8 @@ export interface query_rootGenqlSelection{
     tournaments_by_pk?: (tournamentsGenqlSelection & { __args: {id: Scalars['uuid']} })
     /** Which way everybody misses one lineup, from their practice throws */
     utilityLineupMissPattern?: (UtilityMissPatternOutputGenqlSelection & { __args: {utility_lineup_id: Scalars['uuid']} })
+    /** Which public lineups have no preview, or one filmed by an older render version */
+    utilityLineupRenderCoverage?: (UtilityRenderCoverageOutputGenqlSelection & { __args?: {map_name?: (Scalars['String'] | null)} })
     /** Report a player's mined utility throws for a match */
     utilityMatchUtilityReport?: (UtilityUtilityReportOutputGenqlSelection & { __args: {match_id: Scalars['uuid'], steam_id?: (Scalars['String'] | null)} })
     /** Rank what to practise next on a map from the mined meta */
@@ -123410,7 +123468,6 @@ export interface tournamentsGenqlSelection{
     homepage?: boolean | number
     id?: boolean | number
     invite_only?: boolean | number
-    is_league?: boolean | number
     /** A computed field, executes function "is_tournament_organizer" */
     is_organizer?: boolean | number
     /** A computed field, executes function "joined_tournament" */
@@ -123734,7 +123791,7 @@ export interface tournaments_avg_order_by {check_in_closes_before_minutes?: (ord
 
 
 /** Boolean expression to filter rows from the table "tournaments". All fields are combined with a logical 'AND'. */
-export interface tournaments_bool_exp {_and?: (tournaments_bool_exp[] | null),_not?: (tournaments_bool_exp | null),_or?: (tournaments_bool_exp[] | null),admin?: (players_bool_exp | null),auto_start?: (Boolean_comparison_exp | null),award_configs?: (tournament_awards_bool_exp | null),award_configs_aggregate?: (tournament_awards_aggregate_bool_exp | null),awards?: (award_recipients_bool_exp | null),awards_aggregate?: (award_recipients_aggregate_bool_exp | null),awards_enabled?: (Boolean_comparison_exp | null),banner?: (String_comparison_exp | null),can_cancel?: (Boolean_comparison_exp | null),can_close_registration?: (Boolean_comparison_exp | null),can_join?: (Boolean_comparison_exp | null),can_open_registration?: (Boolean_comparison_exp | null),can_pause?: (Boolean_comparison_exp | null),can_resume?: (Boolean_comparison_exp | null),can_review_check_in?: (Boolean_comparison_exp | null),can_setup?: (Boolean_comparison_exp | null),can_start?: (Boolean_comparison_exp | null),categories?: (tournament_categories_bool_exp | null),categories_aggregate?: (tournament_categories_aggregate_bool_exp | null),check_in_closed_for?: (timestamptz_comparison_exp | null),check_in_closes_before_minutes?: (Int_comparison_exp | null),check_in_closing_notified_for?: (timestamptz_comparison_exp | null),check_in_ends_at?: (timestamptz_comparison_exp | null),check_in_open?: (Boolean_comparison_exp | null),check_in_opens_before_minutes?: (Int_comparison_exp | null),check_in_required?: (Boolean_comparison_exp | null),check_in_setting?: (e_check_in_settings_enum_comparison_exp | null),check_in_started?: (Boolean_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),current_stage?: (Int_comparison_exp | null),description?: (String_comparison_exp | null),discord_guild_id?: (String_comparison_exp | null),discord_notifications_enabled?: (Boolean_comparison_exp | null),discord_notify_Canceled?: (Boolean_comparison_exp | null),discord_notify_Finished?: (Boolean_comparison_exp | null),discord_notify_Forfeit?: (Boolean_comparison_exp | null),discord_notify_Live?: (Boolean_comparison_exp | null),discord_notify_MapPaused?: (Boolean_comparison_exp | null),discord_notify_PickingPlayers?: (Boolean_comparison_exp | null),discord_notify_Scheduled?: (Boolean_comparison_exp | null),discord_notify_Surrendered?: (Boolean_comparison_exp | null),discord_notify_Tie?: (Boolean_comparison_exp | null),discord_notify_Veto?: (Boolean_comparison_exp | null),discord_notify_WaitingForCheckIn?: (Boolean_comparison_exp | null),discord_notify_WaitingForServer?: (Boolean_comparison_exp | null),discord_role_id?: (String_comparison_exp | null),discord_voice_enabled?: (Boolean_comparison_exp | null),discord_webhook?: (String_comparison_exp | null),e_tournament_status?: (e_tournament_status_bool_exp | null),finished_at?: (timestamptz_comparison_exp | null),free_agents?: (tournament_free_agents_bool_exp | null),free_agents_aggregate?: (tournament_free_agents_aggregate_bool_exp | null),has_min_teams?: (Boolean_comparison_exp | null),homepage?: (String_comparison_exp | null),id?: (uuid_comparison_exp | null),invite_only?: (Boolean_comparison_exp | null),is_league?: (Boolean_comparison_exp | null),is_organizer?: (Boolean_comparison_exp | null),joined_tournament?: (Boolean_comparison_exp | null),latitude?: (float8_comparison_exp | null),league_season_division?: (league_season_divisions_bool_exp | null),location?: (String_comparison_exp | null),logo?: (String_comparison_exp | null),longitude?: (float8_comparison_exp | null),match_options_id?: (uuid_comparison_exp | null),max_elo?: (Int_comparison_exp | null),max_players_per_lineup?: (Int_comparison_exp | null),meets_min_role?: (Boolean_comparison_exp | null),min_elo?: (Int_comparison_exp | null),min_players_per_lineup?: (Int_comparison_exp | null),min_role?: (e_player_roles_enum_comparison_exp | null),missed_check_in_count?: (Int_comparison_exp | null),name?: (String_comparison_exp | null),options?: (match_options_bool_exp | null),organizer_steam_id?: (bigint_comparison_exp | null),organizer_teams?: (tournament_organizer_teams_bool_exp | null),organizer_teams_aggregate?: (tournament_organizer_teams_aggregate_bool_exp | null),organizers?: (tournament_organizers_bool_exp | null),organizers_aggregate?: (tournament_organizers_aggregate_bool_exp | null),player_stats?: (v_tournament_player_stats_bool_exp | null),player_stats_aggregate?: (v_tournament_player_stats_aggregate_bool_exp | null),prizes?: (tournament_prizes_bool_exp | null),prizes_aggregate?: (tournament_prizes_aggregate_bool_exp | null),registration_type?: (e_tournament_registration_types_enum_comparison_exp | null),registration_unlocked?: (Boolean_comparison_exp | null),results?: (v_team_tournament_results_bool_exp | null),results_aggregate?: (v_team_tournament_results_aggregate_bool_exp | null),rosters?: (tournament_team_roster_bool_exp | null),rosters_aggregate?: (tournament_team_roster_aggregate_bool_exp | null),scheduling_mode?: (String_comparison_exp | null),stages?: (tournament_stages_bool_exp | null),stages_aggregate?: (tournament_stages_aggregate_bool_exp | null),start?: (timestamptz_comparison_exp | null),status?: (e_tournament_status_enum_comparison_exp | null),substitutes_enabled?: (Boolean_comparison_exp | null),teams?: (tournament_teams_bool_exp | null),teams_aggregate?: (tournament_teams_aggregate_bool_exp | null)}
+export interface tournaments_bool_exp {_and?: (tournaments_bool_exp[] | null),_not?: (tournaments_bool_exp | null),_or?: (tournaments_bool_exp[] | null),admin?: (players_bool_exp | null),auto_start?: (Boolean_comparison_exp | null),award_configs?: (tournament_awards_bool_exp | null),award_configs_aggregate?: (tournament_awards_aggregate_bool_exp | null),awards?: (award_recipients_bool_exp | null),awards_aggregate?: (award_recipients_aggregate_bool_exp | null),awards_enabled?: (Boolean_comparison_exp | null),banner?: (String_comparison_exp | null),can_cancel?: (Boolean_comparison_exp | null),can_close_registration?: (Boolean_comparison_exp | null),can_join?: (Boolean_comparison_exp | null),can_open_registration?: (Boolean_comparison_exp | null),can_pause?: (Boolean_comparison_exp | null),can_resume?: (Boolean_comparison_exp | null),can_review_check_in?: (Boolean_comparison_exp | null),can_setup?: (Boolean_comparison_exp | null),can_start?: (Boolean_comparison_exp | null),categories?: (tournament_categories_bool_exp | null),categories_aggregate?: (tournament_categories_aggregate_bool_exp | null),check_in_closed_for?: (timestamptz_comparison_exp | null),check_in_closes_before_minutes?: (Int_comparison_exp | null),check_in_closing_notified_for?: (timestamptz_comparison_exp | null),check_in_ends_at?: (timestamptz_comparison_exp | null),check_in_open?: (Boolean_comparison_exp | null),check_in_opens_before_minutes?: (Int_comparison_exp | null),check_in_required?: (Boolean_comparison_exp | null),check_in_setting?: (e_check_in_settings_enum_comparison_exp | null),check_in_started?: (Boolean_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),current_stage?: (Int_comparison_exp | null),description?: (String_comparison_exp | null),discord_guild_id?: (String_comparison_exp | null),discord_notifications_enabled?: (Boolean_comparison_exp | null),discord_notify_Canceled?: (Boolean_comparison_exp | null),discord_notify_Finished?: (Boolean_comparison_exp | null),discord_notify_Forfeit?: (Boolean_comparison_exp | null),discord_notify_Live?: (Boolean_comparison_exp | null),discord_notify_MapPaused?: (Boolean_comparison_exp | null),discord_notify_PickingPlayers?: (Boolean_comparison_exp | null),discord_notify_Scheduled?: (Boolean_comparison_exp | null),discord_notify_Surrendered?: (Boolean_comparison_exp | null),discord_notify_Tie?: (Boolean_comparison_exp | null),discord_notify_Veto?: (Boolean_comparison_exp | null),discord_notify_WaitingForCheckIn?: (Boolean_comparison_exp | null),discord_notify_WaitingForServer?: (Boolean_comparison_exp | null),discord_role_id?: (String_comparison_exp | null),discord_voice_enabled?: (Boolean_comparison_exp | null),discord_webhook?: (String_comparison_exp | null),e_tournament_status?: (e_tournament_status_bool_exp | null),finished_at?: (timestamptz_comparison_exp | null),free_agents?: (tournament_free_agents_bool_exp | null),free_agents_aggregate?: (tournament_free_agents_aggregate_bool_exp | null),has_min_teams?: (Boolean_comparison_exp | null),homepage?: (String_comparison_exp | null),id?: (uuid_comparison_exp | null),invite_only?: (Boolean_comparison_exp | null),is_organizer?: (Boolean_comparison_exp | null),joined_tournament?: (Boolean_comparison_exp | null),latitude?: (float8_comparison_exp | null),league_season_division?: (league_season_divisions_bool_exp | null),location?: (String_comparison_exp | null),logo?: (String_comparison_exp | null),longitude?: (float8_comparison_exp | null),match_options_id?: (uuid_comparison_exp | null),max_elo?: (Int_comparison_exp | null),max_players_per_lineup?: (Int_comparison_exp | null),meets_min_role?: (Boolean_comparison_exp | null),min_elo?: (Int_comparison_exp | null),min_players_per_lineup?: (Int_comparison_exp | null),min_role?: (e_player_roles_enum_comparison_exp | null),missed_check_in_count?: (Int_comparison_exp | null),name?: (String_comparison_exp | null),options?: (match_options_bool_exp | null),organizer_steam_id?: (bigint_comparison_exp | null),organizer_teams?: (tournament_organizer_teams_bool_exp | null),organizer_teams_aggregate?: (tournament_organizer_teams_aggregate_bool_exp | null),organizers?: (tournament_organizers_bool_exp | null),organizers_aggregate?: (tournament_organizers_aggregate_bool_exp | null),player_stats?: (v_tournament_player_stats_bool_exp | null),player_stats_aggregate?: (v_tournament_player_stats_aggregate_bool_exp | null),prizes?: (tournament_prizes_bool_exp | null),prizes_aggregate?: (tournament_prizes_aggregate_bool_exp | null),registration_type?: (e_tournament_registration_types_enum_comparison_exp | null),registration_unlocked?: (Boolean_comparison_exp | null),results?: (v_team_tournament_results_bool_exp | null),results_aggregate?: (v_team_tournament_results_aggregate_bool_exp | null),rosters?: (tournament_team_roster_bool_exp | null),rosters_aggregate?: (tournament_team_roster_aggregate_bool_exp | null),scheduling_mode?: (String_comparison_exp | null),stages?: (tournament_stages_bool_exp | null),stages_aggregate?: (tournament_stages_aggregate_bool_exp | null),start?: (timestamptz_comparison_exp | null),status?: (e_tournament_status_enum_comparison_exp | null),substitutes_enabled?: (Boolean_comparison_exp | null),teams?: (tournament_teams_bool_exp | null),teams_aggregate?: (tournament_teams_aggregate_bool_exp | null)}
 
 
 /** input type for incrementing numeric columns in table "tournaments" */
@@ -123750,7 +123807,7 @@ check_in_closing_notified_for?: (Scalars['timestamptz'] | null),
 /** When the check-in window closes; NULL until it opens */
 check_in_ends_at?: (Scalars['timestamptz'] | null),check_in_opens_before_minutes?: (Scalars['Int'] | null),check_in_required?: (Scalars['Boolean'] | null),
 /** Who confirms a team: Captains, every rostered Player, or the organizer (Admin) */
-check_in_setting?: (e_check_in_settings_enum | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),discord_guild_id?: (Scalars['String'] | null),discord_notifications_enabled?: (Scalars['Boolean'] | null),discord_notify_Canceled?: (Scalars['Boolean'] | null),discord_notify_Finished?: (Scalars['Boolean'] | null),discord_notify_Forfeit?: (Scalars['Boolean'] | null),discord_notify_Live?: (Scalars['Boolean'] | null),discord_notify_MapPaused?: (Scalars['Boolean'] | null),discord_notify_PickingPlayers?: (Scalars['Boolean'] | null),discord_notify_Scheduled?: (Scalars['Boolean'] | null),discord_notify_Surrendered?: (Scalars['Boolean'] | null),discord_notify_Tie?: (Scalars['Boolean'] | null),discord_notify_Veto?: (Scalars['Boolean'] | null),discord_notify_WaitingForCheckIn?: (Scalars['Boolean'] | null),discord_notify_WaitingForServer?: (Scalars['Boolean'] | null),discord_role_id?: (Scalars['String'] | null),discord_voice_enabled?: (Scalars['Boolean'] | null),discord_webhook?: (Scalars['String'] | null),e_tournament_status?: (e_tournament_status_obj_rel_insert_input | null),finished_at?: (Scalars['timestamptz'] | null),free_agents?: (tournament_free_agents_arr_rel_insert_input | null),homepage?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),invite_only?: (Scalars['Boolean'] | null),is_league?: (Scalars['Boolean'] | null),latitude?: (Scalars['float8'] | null),league_season_division?: (league_season_divisions_obj_rel_insert_input | null),location?: (Scalars['String'] | null),logo?: (Scalars['String'] | null),longitude?: (Scalars['float8'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),min_role?: (e_player_roles_enum | null),name?: (Scalars['String'] | null),options?: (match_options_obj_rel_insert_input | null),organizer_steam_id?: (Scalars['bigint'] | null),organizer_teams?: (tournament_organizer_teams_arr_rel_insert_input | null),organizers?: (tournament_organizers_arr_rel_insert_input | null),player_stats?: (v_tournament_player_stats_arr_rel_insert_input | null),prizes?: (tournament_prizes_arr_rel_insert_input | null),registration_type?: (e_tournament_registration_types_enum | null),results?: (v_team_tournament_results_arr_rel_insert_input | null),rosters?: (tournament_team_roster_arr_rel_insert_input | null),scheduling_mode?: (Scalars['String'] | null),stages?: (tournament_stages_arr_rel_insert_input | null),start?: (Scalars['timestamptz'] | null),status?: (e_tournament_status_enum | null),
+check_in_setting?: (e_check_in_settings_enum | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),discord_guild_id?: (Scalars['String'] | null),discord_notifications_enabled?: (Scalars['Boolean'] | null),discord_notify_Canceled?: (Scalars['Boolean'] | null),discord_notify_Finished?: (Scalars['Boolean'] | null),discord_notify_Forfeit?: (Scalars['Boolean'] | null),discord_notify_Live?: (Scalars['Boolean'] | null),discord_notify_MapPaused?: (Scalars['Boolean'] | null),discord_notify_PickingPlayers?: (Scalars['Boolean'] | null),discord_notify_Scheduled?: (Scalars['Boolean'] | null),discord_notify_Surrendered?: (Scalars['Boolean'] | null),discord_notify_Tie?: (Scalars['Boolean'] | null),discord_notify_Veto?: (Scalars['Boolean'] | null),discord_notify_WaitingForCheckIn?: (Scalars['Boolean'] | null),discord_notify_WaitingForServer?: (Scalars['Boolean'] | null),discord_role_id?: (Scalars['String'] | null),discord_voice_enabled?: (Scalars['Boolean'] | null),discord_webhook?: (Scalars['String'] | null),e_tournament_status?: (e_tournament_status_obj_rel_insert_input | null),finished_at?: (Scalars['timestamptz'] | null),free_agents?: (tournament_free_agents_arr_rel_insert_input | null),homepage?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),invite_only?: (Scalars['Boolean'] | null),latitude?: (Scalars['float8'] | null),league_season_division?: (league_season_divisions_obj_rel_insert_input | null),location?: (Scalars['String'] | null),logo?: (Scalars['String'] | null),longitude?: (Scalars['float8'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),min_role?: (e_player_roles_enum | null),name?: (Scalars['String'] | null),options?: (match_options_obj_rel_insert_input | null),organizer_steam_id?: (Scalars['bigint'] | null),organizer_teams?: (tournament_organizer_teams_arr_rel_insert_input | null),organizers?: (tournament_organizers_arr_rel_insert_input | null),player_stats?: (v_tournament_player_stats_arr_rel_insert_input | null),prizes?: (tournament_prizes_arr_rel_insert_input | null),registration_type?: (e_tournament_registration_types_enum | null),results?: (v_team_tournament_results_arr_rel_insert_input | null),rosters?: (tournament_team_roster_arr_rel_insert_input | null),scheduling_mode?: (Scalars['String'] | null),stages?: (tournament_stages_arr_rel_insert_input | null),start?: (Scalars['timestamptz'] | null),status?: (e_tournament_status_enum | null),
 /** Whether teams may roster and field substitutes beyond the starting lineup */
 substitutes_enabled?: (Scalars['Boolean'] | null),teams?: (tournament_teams_arr_rel_insert_input | null)}
 
@@ -123883,7 +123940,7 @@ export interface tournaments_on_conflict {constraint: tournaments_constraint,upd
 
 
 /** Ordering options when selecting data from "tournaments". */
-export interface tournaments_order_by {admin?: (players_order_by | null),auto_start?: (order_by | null),award_configs_aggregate?: (tournament_awards_aggregate_order_by | null),awards_aggregate?: (award_recipients_aggregate_order_by | null),awards_enabled?: (order_by | null),banner?: (order_by | null),can_cancel?: (order_by | null),can_close_registration?: (order_by | null),can_join?: (order_by | null),can_open_registration?: (order_by | null),can_pause?: (order_by | null),can_resume?: (order_by | null),can_review_check_in?: (order_by | null),can_setup?: (order_by | null),can_start?: (order_by | null),categories_aggregate?: (tournament_categories_aggregate_order_by | null),check_in_closed_for?: (order_by | null),check_in_closes_before_minutes?: (order_by | null),check_in_closing_notified_for?: (order_by | null),check_in_ends_at?: (order_by | null),check_in_open?: (order_by | null),check_in_opens_before_minutes?: (order_by | null),check_in_required?: (order_by | null),check_in_setting?: (order_by | null),check_in_started?: (order_by | null),created_at?: (order_by | null),current_stage?: (order_by | null),description?: (order_by | null),discord_guild_id?: (order_by | null),discord_notifications_enabled?: (order_by | null),discord_notify_Canceled?: (order_by | null),discord_notify_Finished?: (order_by | null),discord_notify_Forfeit?: (order_by | null),discord_notify_Live?: (order_by | null),discord_notify_MapPaused?: (order_by | null),discord_notify_PickingPlayers?: (order_by | null),discord_notify_Scheduled?: (order_by | null),discord_notify_Surrendered?: (order_by | null),discord_notify_Tie?: (order_by | null),discord_notify_Veto?: (order_by | null),discord_notify_WaitingForCheckIn?: (order_by | null),discord_notify_WaitingForServer?: (order_by | null),discord_role_id?: (order_by | null),discord_voice_enabled?: (order_by | null),discord_webhook?: (order_by | null),e_tournament_status?: (e_tournament_status_order_by | null),finished_at?: (order_by | null),free_agents_aggregate?: (tournament_free_agents_aggregate_order_by | null),has_min_teams?: (order_by | null),homepage?: (order_by | null),id?: (order_by | null),invite_only?: (order_by | null),is_league?: (order_by | null),is_organizer?: (order_by | null),joined_tournament?: (order_by | null),latitude?: (order_by | null),league_season_division?: (league_season_divisions_order_by | null),location?: (order_by | null),logo?: (order_by | null),longitude?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),max_players_per_lineup?: (order_by | null),meets_min_role?: (order_by | null),min_elo?: (order_by | null),min_players_per_lineup?: (order_by | null),min_role?: (order_by | null),missed_check_in_count?: (order_by | null),name?: (order_by | null),options?: (match_options_order_by | null),organizer_steam_id?: (order_by | null),organizer_teams_aggregate?: (tournament_organizer_teams_aggregate_order_by | null),organizers_aggregate?: (tournament_organizers_aggregate_order_by | null),player_stats_aggregate?: (v_tournament_player_stats_aggregate_order_by | null),prizes_aggregate?: (tournament_prizes_aggregate_order_by | null),registration_type?: (order_by | null),registration_unlocked?: (order_by | null),results_aggregate?: (v_team_tournament_results_aggregate_order_by | null),rosters_aggregate?: (tournament_team_roster_aggregate_order_by | null),scheduling_mode?: (order_by | null),stages_aggregate?: (tournament_stages_aggregate_order_by | null),start?: (order_by | null),status?: (order_by | null),substitutes_enabled?: (order_by | null),teams_aggregate?: (tournament_teams_aggregate_order_by | null)}
+export interface tournaments_order_by {admin?: (players_order_by | null),auto_start?: (order_by | null),award_configs_aggregate?: (tournament_awards_aggregate_order_by | null),awards_aggregate?: (award_recipients_aggregate_order_by | null),awards_enabled?: (order_by | null),banner?: (order_by | null),can_cancel?: (order_by | null),can_close_registration?: (order_by | null),can_join?: (order_by | null),can_open_registration?: (order_by | null),can_pause?: (order_by | null),can_resume?: (order_by | null),can_review_check_in?: (order_by | null),can_setup?: (order_by | null),can_start?: (order_by | null),categories_aggregate?: (tournament_categories_aggregate_order_by | null),check_in_closed_for?: (order_by | null),check_in_closes_before_minutes?: (order_by | null),check_in_closing_notified_for?: (order_by | null),check_in_ends_at?: (order_by | null),check_in_open?: (order_by | null),check_in_opens_before_minutes?: (order_by | null),check_in_required?: (order_by | null),check_in_setting?: (order_by | null),check_in_started?: (order_by | null),created_at?: (order_by | null),current_stage?: (order_by | null),description?: (order_by | null),discord_guild_id?: (order_by | null),discord_notifications_enabled?: (order_by | null),discord_notify_Canceled?: (order_by | null),discord_notify_Finished?: (order_by | null),discord_notify_Forfeit?: (order_by | null),discord_notify_Live?: (order_by | null),discord_notify_MapPaused?: (order_by | null),discord_notify_PickingPlayers?: (order_by | null),discord_notify_Scheduled?: (order_by | null),discord_notify_Surrendered?: (order_by | null),discord_notify_Tie?: (order_by | null),discord_notify_Veto?: (order_by | null),discord_notify_WaitingForCheckIn?: (order_by | null),discord_notify_WaitingForServer?: (order_by | null),discord_role_id?: (order_by | null),discord_voice_enabled?: (order_by | null),discord_webhook?: (order_by | null),e_tournament_status?: (e_tournament_status_order_by | null),finished_at?: (order_by | null),free_agents_aggregate?: (tournament_free_agents_aggregate_order_by | null),has_min_teams?: (order_by | null),homepage?: (order_by | null),id?: (order_by | null),invite_only?: (order_by | null),is_organizer?: (order_by | null),joined_tournament?: (order_by | null),latitude?: (order_by | null),league_season_division?: (league_season_divisions_order_by | null),location?: (order_by | null),logo?: (order_by | null),longitude?: (order_by | null),match_options_id?: (order_by | null),max_elo?: (order_by | null),max_players_per_lineup?: (order_by | null),meets_min_role?: (order_by | null),min_elo?: (order_by | null),min_players_per_lineup?: (order_by | null),min_role?: (order_by | null),missed_check_in_count?: (order_by | null),name?: (order_by | null),options?: (match_options_order_by | null),organizer_steam_id?: (order_by | null),organizer_teams_aggregate?: (tournament_organizer_teams_aggregate_order_by | null),organizers_aggregate?: (tournament_organizers_aggregate_order_by | null),player_stats_aggregate?: (v_tournament_player_stats_aggregate_order_by | null),prizes_aggregate?: (tournament_prizes_aggregate_order_by | null),registration_type?: (order_by | null),registration_unlocked?: (order_by | null),results_aggregate?: (v_team_tournament_results_aggregate_order_by | null),rosters_aggregate?: (tournament_team_roster_aggregate_order_by | null),scheduling_mode?: (order_by | null),stages_aggregate?: (tournament_stages_aggregate_order_by | null),start?: (order_by | null),status?: (order_by | null),substitutes_enabled?: (order_by | null),teams_aggregate?: (tournament_teams_aggregate_order_by | null)}
 
 
 /** primary key columns input for table: tournaments */
@@ -123899,7 +123956,7 @@ check_in_closing_notified_for?: (Scalars['timestamptz'] | null),
 /** When the check-in window closes; NULL until it opens */
 check_in_ends_at?: (Scalars['timestamptz'] | null),check_in_opens_before_minutes?: (Scalars['Int'] | null),check_in_required?: (Scalars['Boolean'] | null),
 /** Who confirms a team: Captains, every rostered Player, or the organizer (Admin) */
-check_in_setting?: (e_check_in_settings_enum | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),discord_guild_id?: (Scalars['String'] | null),discord_notifications_enabled?: (Scalars['Boolean'] | null),discord_notify_Canceled?: (Scalars['Boolean'] | null),discord_notify_Finished?: (Scalars['Boolean'] | null),discord_notify_Forfeit?: (Scalars['Boolean'] | null),discord_notify_Live?: (Scalars['Boolean'] | null),discord_notify_MapPaused?: (Scalars['Boolean'] | null),discord_notify_PickingPlayers?: (Scalars['Boolean'] | null),discord_notify_Scheduled?: (Scalars['Boolean'] | null),discord_notify_Surrendered?: (Scalars['Boolean'] | null),discord_notify_Tie?: (Scalars['Boolean'] | null),discord_notify_Veto?: (Scalars['Boolean'] | null),discord_notify_WaitingForCheckIn?: (Scalars['Boolean'] | null),discord_notify_WaitingForServer?: (Scalars['Boolean'] | null),discord_role_id?: (Scalars['String'] | null),discord_voice_enabled?: (Scalars['Boolean'] | null),discord_webhook?: (Scalars['String'] | null),finished_at?: (Scalars['timestamptz'] | null),homepage?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),invite_only?: (Scalars['Boolean'] | null),is_league?: (Scalars['Boolean'] | null),latitude?: (Scalars['float8'] | null),location?: (Scalars['String'] | null),logo?: (Scalars['String'] | null),longitude?: (Scalars['float8'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),min_role?: (e_player_roles_enum | null),name?: (Scalars['String'] | null),organizer_steam_id?: (Scalars['bigint'] | null),registration_type?: (e_tournament_registration_types_enum | null),scheduling_mode?: (Scalars['String'] | null),start?: (Scalars['timestamptz'] | null),status?: (e_tournament_status_enum | null),
+check_in_setting?: (e_check_in_settings_enum | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),discord_guild_id?: (Scalars['String'] | null),discord_notifications_enabled?: (Scalars['Boolean'] | null),discord_notify_Canceled?: (Scalars['Boolean'] | null),discord_notify_Finished?: (Scalars['Boolean'] | null),discord_notify_Forfeit?: (Scalars['Boolean'] | null),discord_notify_Live?: (Scalars['Boolean'] | null),discord_notify_MapPaused?: (Scalars['Boolean'] | null),discord_notify_PickingPlayers?: (Scalars['Boolean'] | null),discord_notify_Scheduled?: (Scalars['Boolean'] | null),discord_notify_Surrendered?: (Scalars['Boolean'] | null),discord_notify_Tie?: (Scalars['Boolean'] | null),discord_notify_Veto?: (Scalars['Boolean'] | null),discord_notify_WaitingForCheckIn?: (Scalars['Boolean'] | null),discord_notify_WaitingForServer?: (Scalars['Boolean'] | null),discord_role_id?: (Scalars['String'] | null),discord_voice_enabled?: (Scalars['Boolean'] | null),discord_webhook?: (Scalars['String'] | null),finished_at?: (Scalars['timestamptz'] | null),homepage?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),invite_only?: (Scalars['Boolean'] | null),latitude?: (Scalars['float8'] | null),location?: (Scalars['String'] | null),logo?: (Scalars['String'] | null),longitude?: (Scalars['float8'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),min_role?: (e_player_roles_enum | null),name?: (Scalars['String'] | null),organizer_steam_id?: (Scalars['bigint'] | null),registration_type?: (e_tournament_registration_types_enum | null),scheduling_mode?: (Scalars['String'] | null),start?: (Scalars['timestamptz'] | null),status?: (e_tournament_status_enum | null),
 /** Whether teams may roster and field substitutes beyond the starting lineup */
 substitutes_enabled?: (Scalars['Boolean'] | null)}
 
@@ -123999,7 +124056,7 @@ check_in_closing_notified_for?: (Scalars['timestamptz'] | null),
 /** When the check-in window closes; NULL until it opens */
 check_in_ends_at?: (Scalars['timestamptz'] | null),check_in_opens_before_minutes?: (Scalars['Int'] | null),check_in_required?: (Scalars['Boolean'] | null),
 /** Who confirms a team: Captains, every rostered Player, or the organizer (Admin) */
-check_in_setting?: (e_check_in_settings_enum | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),discord_guild_id?: (Scalars['String'] | null),discord_notifications_enabled?: (Scalars['Boolean'] | null),discord_notify_Canceled?: (Scalars['Boolean'] | null),discord_notify_Finished?: (Scalars['Boolean'] | null),discord_notify_Forfeit?: (Scalars['Boolean'] | null),discord_notify_Live?: (Scalars['Boolean'] | null),discord_notify_MapPaused?: (Scalars['Boolean'] | null),discord_notify_PickingPlayers?: (Scalars['Boolean'] | null),discord_notify_Scheduled?: (Scalars['Boolean'] | null),discord_notify_Surrendered?: (Scalars['Boolean'] | null),discord_notify_Tie?: (Scalars['Boolean'] | null),discord_notify_Veto?: (Scalars['Boolean'] | null),discord_notify_WaitingForCheckIn?: (Scalars['Boolean'] | null),discord_notify_WaitingForServer?: (Scalars['Boolean'] | null),discord_role_id?: (Scalars['String'] | null),discord_voice_enabled?: (Scalars['Boolean'] | null),discord_webhook?: (Scalars['String'] | null),finished_at?: (Scalars['timestamptz'] | null),homepage?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),invite_only?: (Scalars['Boolean'] | null),is_league?: (Scalars['Boolean'] | null),latitude?: (Scalars['float8'] | null),location?: (Scalars['String'] | null),logo?: (Scalars['String'] | null),longitude?: (Scalars['float8'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),min_role?: (e_player_roles_enum | null),name?: (Scalars['String'] | null),organizer_steam_id?: (Scalars['bigint'] | null),registration_type?: (e_tournament_registration_types_enum | null),scheduling_mode?: (Scalars['String'] | null),start?: (Scalars['timestamptz'] | null),status?: (e_tournament_status_enum | null),
+check_in_setting?: (e_check_in_settings_enum | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),discord_guild_id?: (Scalars['String'] | null),discord_notifications_enabled?: (Scalars['Boolean'] | null),discord_notify_Canceled?: (Scalars['Boolean'] | null),discord_notify_Finished?: (Scalars['Boolean'] | null),discord_notify_Forfeit?: (Scalars['Boolean'] | null),discord_notify_Live?: (Scalars['Boolean'] | null),discord_notify_MapPaused?: (Scalars['Boolean'] | null),discord_notify_PickingPlayers?: (Scalars['Boolean'] | null),discord_notify_Scheduled?: (Scalars['Boolean'] | null),discord_notify_Surrendered?: (Scalars['Boolean'] | null),discord_notify_Tie?: (Scalars['Boolean'] | null),discord_notify_Veto?: (Scalars['Boolean'] | null),discord_notify_WaitingForCheckIn?: (Scalars['Boolean'] | null),discord_notify_WaitingForServer?: (Scalars['Boolean'] | null),discord_role_id?: (Scalars['String'] | null),discord_voice_enabled?: (Scalars['Boolean'] | null),discord_webhook?: (Scalars['String'] | null),finished_at?: (Scalars['timestamptz'] | null),homepage?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),invite_only?: (Scalars['Boolean'] | null),latitude?: (Scalars['float8'] | null),location?: (Scalars['String'] | null),logo?: (Scalars['String'] | null),longitude?: (Scalars['float8'] | null),match_options_id?: (Scalars['uuid'] | null),max_elo?: (Scalars['Int'] | null),min_elo?: (Scalars['Int'] | null),min_role?: (e_player_roles_enum | null),name?: (Scalars['String'] | null),organizer_steam_id?: (Scalars['bigint'] | null),registration_type?: (e_tournament_registration_types_enum | null),scheduling_mode?: (Scalars['String'] | null),start?: (Scalars['timestamptz'] | null),status?: (e_tournament_status_enum | null),
 /** Whether teams may roster and field substitutes beyond the starting lineup */
 substitutes_enabled?: (Scalars['Boolean'] | null)}
 
@@ -126366,6 +126423,7 @@ export interface utility_lineup_rendersGenqlSelection{
     /** An object relationship */
     practice_session?: utility_practice_sessionsGenqlSelection
     progress?: boolean | number
+    render_version?: boolean | number
     /** An object relationship */
     requested_by?: playersGenqlSelection
     requested_by_steam_id?: boolean | number
@@ -126439,6 +126497,7 @@ on_conflict?: (utility_lineup_renders_on_conflict | null)}
 export interface utility_lineup_renders_avg_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126447,11 +126506,11 @@ export interface utility_lineup_renders_avg_fieldsGenqlSelection{
 
 
 /** order by avg() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_avg_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_avg_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** Boolean expression to filter rows from the table "utility_lineup_renders". All fields are combined with a logical 'AND'. */
-export interface utility_lineup_renders_bool_exp {_and?: (utility_lineup_renders_bool_exp[] | null),_not?: (utility_lineup_renders_bool_exp | null),_or?: (utility_lineup_renders_bool_exp[] | null),created_at?: (timestamptz_comparison_exp | null),duration_ms?: (Int_comparison_exp | null),error_message?: (String_comparison_exp | null),game_server_node?: (game_server_nodes_bool_exp | null),game_server_node_id?: (String_comparison_exp | null),id?: (uuid_comparison_exp | null),k8s_job_name?: (String_comparison_exp | null),last_status_at?: (timestamptz_comparison_exp | null),lineup?: (utility_lineups_bool_exp | null),map_name?: (String_comparison_exp | null),paused?: (Boolean_comparison_exp | null),practice_session?: (utility_practice_sessions_bool_exp | null),progress?: (numeric_comparison_exp | null),requested_by?: (players_bool_exp | null),requested_by_steam_id?: (bigint_comparison_exp | null),session_token?: (String_comparison_exp | null),skip_reason?: (String_comparison_exp | null),sort_index?: (Int_comparison_exp | null),spec?: (jsonb_comparison_exp | null),status?: (String_comparison_exp | null),status_history?: (jsonb_comparison_exp | null),utility_lineup_id?: (uuid_comparison_exp | null),utility_practice_session_id?: (uuid_comparison_exp | null)}
+export interface utility_lineup_renders_bool_exp {_and?: (utility_lineup_renders_bool_exp[] | null),_not?: (utility_lineup_renders_bool_exp | null),_or?: (utility_lineup_renders_bool_exp[] | null),created_at?: (timestamptz_comparison_exp | null),duration_ms?: (Int_comparison_exp | null),error_message?: (String_comparison_exp | null),game_server_node?: (game_server_nodes_bool_exp | null),game_server_node_id?: (String_comparison_exp | null),id?: (uuid_comparison_exp | null),k8s_job_name?: (String_comparison_exp | null),last_status_at?: (timestamptz_comparison_exp | null),lineup?: (utility_lineups_bool_exp | null),map_name?: (String_comparison_exp | null),paused?: (Boolean_comparison_exp | null),practice_session?: (utility_practice_sessions_bool_exp | null),progress?: (numeric_comparison_exp | null),render_version?: (Int_comparison_exp | null),requested_by?: (players_bool_exp | null),requested_by_steam_id?: (bigint_comparison_exp | null),session_token?: (String_comparison_exp | null),skip_reason?: (String_comparison_exp | null),sort_index?: (Int_comparison_exp | null),spec?: (jsonb_comparison_exp | null),status?: (String_comparison_exp | null),status_history?: (jsonb_comparison_exp | null),utility_lineup_id?: (uuid_comparison_exp | null),utility_practice_session_id?: (uuid_comparison_exp | null)}
 
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -126467,11 +126526,11 @@ export interface utility_lineup_renders_delete_key_input {spec?: (Scalars['Strin
 
 
 /** input type for incrementing numeric columns in table "utility_lineup_renders" */
-export interface utility_lineup_renders_inc_input {duration_ms?: (Scalars['Int'] | null),progress?: (Scalars['numeric'] | null),requested_by_steam_id?: (Scalars['bigint'] | null),sort_index?: (Scalars['Int'] | null)}
+export interface utility_lineup_renders_inc_input {duration_ms?: (Scalars['Int'] | null),progress?: (Scalars['numeric'] | null),render_version?: (Scalars['Int'] | null),requested_by_steam_id?: (Scalars['bigint'] | null),sort_index?: (Scalars['Int'] | null)}
 
 
 /** input type for inserting data into table "utility_lineup_renders" */
-export interface utility_lineup_renders_insert_input {created_at?: (Scalars['timestamptz'] | null),duration_ms?: (Scalars['Int'] | null),error_message?: (Scalars['String'] | null),game_server_node?: (game_server_nodes_obj_rel_insert_input | null),game_server_node_id?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),k8s_job_name?: (Scalars['String'] | null),last_status_at?: (Scalars['timestamptz'] | null),lineup?: (utility_lineups_obj_rel_insert_input | null),map_name?: (Scalars['String'] | null),paused?: (Scalars['Boolean'] | null),practice_session?: (utility_practice_sessions_obj_rel_insert_input | null),progress?: (Scalars['numeric'] | null),requested_by?: (players_obj_rel_insert_input | null),requested_by_steam_id?: (Scalars['bigint'] | null),session_token?: (Scalars['String'] | null),skip_reason?: (Scalars['String'] | null),sort_index?: (Scalars['Int'] | null),spec?: (Scalars['jsonb'] | null),status?: (Scalars['String'] | null),status_history?: (Scalars['jsonb'] | null),utility_lineup_id?: (Scalars['uuid'] | null),utility_practice_session_id?: (Scalars['uuid'] | null)}
+export interface utility_lineup_renders_insert_input {created_at?: (Scalars['timestamptz'] | null),duration_ms?: (Scalars['Int'] | null),error_message?: (Scalars['String'] | null),game_server_node?: (game_server_nodes_obj_rel_insert_input | null),game_server_node_id?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),k8s_job_name?: (Scalars['String'] | null),last_status_at?: (Scalars['timestamptz'] | null),lineup?: (utility_lineups_obj_rel_insert_input | null),map_name?: (Scalars['String'] | null),paused?: (Scalars['Boolean'] | null),practice_session?: (utility_practice_sessions_obj_rel_insert_input | null),progress?: (Scalars['numeric'] | null),render_version?: (Scalars['Int'] | null),requested_by?: (players_obj_rel_insert_input | null),requested_by_steam_id?: (Scalars['bigint'] | null),session_token?: (Scalars['String'] | null),skip_reason?: (Scalars['String'] | null),sort_index?: (Scalars['Int'] | null),spec?: (Scalars['jsonb'] | null),status?: (Scalars['String'] | null),status_history?: (Scalars['jsonb'] | null),utility_lineup_id?: (Scalars['uuid'] | null),utility_practice_session_id?: (Scalars['uuid'] | null)}
 
 
 /** aggregate max on columns */
@@ -126485,6 +126544,7 @@ export interface utility_lineup_renders_max_fieldsGenqlSelection{
     last_status_at?: boolean | number
     map_name?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     session_token?: boolean | number
     skip_reason?: boolean | number
@@ -126498,7 +126558,7 @@ export interface utility_lineup_renders_max_fieldsGenqlSelection{
 
 
 /** order by max() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_max_order_by {created_at?: (order_by | null),duration_ms?: (order_by | null),error_message?: (order_by | null),game_server_node_id?: (order_by | null),id?: (order_by | null),k8s_job_name?: (order_by | null),last_status_at?: (order_by | null),map_name?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),session_token?: (order_by | null),skip_reason?: (order_by | null),sort_index?: (order_by | null),status?: (order_by | null),utility_lineup_id?: (order_by | null),utility_practice_session_id?: (order_by | null)}
+export interface utility_lineup_renders_max_order_by {created_at?: (order_by | null),duration_ms?: (order_by | null),error_message?: (order_by | null),game_server_node_id?: (order_by | null),id?: (order_by | null),k8s_job_name?: (order_by | null),last_status_at?: (order_by | null),map_name?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),session_token?: (order_by | null),skip_reason?: (order_by | null),sort_index?: (order_by | null),status?: (order_by | null),utility_lineup_id?: (order_by | null),utility_practice_session_id?: (order_by | null)}
 
 
 /** aggregate min on columns */
@@ -126512,6 +126572,7 @@ export interface utility_lineup_renders_min_fieldsGenqlSelection{
     last_status_at?: boolean | number
     map_name?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     session_token?: boolean | number
     skip_reason?: boolean | number
@@ -126525,7 +126586,7 @@ export interface utility_lineup_renders_min_fieldsGenqlSelection{
 
 
 /** order by min() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_min_order_by {created_at?: (order_by | null),duration_ms?: (order_by | null),error_message?: (order_by | null),game_server_node_id?: (order_by | null),id?: (order_by | null),k8s_job_name?: (order_by | null),last_status_at?: (order_by | null),map_name?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),session_token?: (order_by | null),skip_reason?: (order_by | null),sort_index?: (order_by | null),status?: (order_by | null),utility_lineup_id?: (order_by | null),utility_practice_session_id?: (order_by | null)}
+export interface utility_lineup_renders_min_order_by {created_at?: (order_by | null),duration_ms?: (order_by | null),error_message?: (order_by | null),game_server_node_id?: (order_by | null),id?: (order_by | null),k8s_job_name?: (order_by | null),last_status_at?: (order_by | null),map_name?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),session_token?: (order_by | null),skip_reason?: (order_by | null),sort_index?: (order_by | null),status?: (order_by | null),utility_lineup_id?: (order_by | null),utility_practice_session_id?: (order_by | null)}
 
 
 /** response of any mutation on the table "utility_lineup_renders" */
@@ -126544,7 +126605,7 @@ export interface utility_lineup_renders_on_conflict {constraint: utility_lineup_
 
 
 /** Ordering options when selecting data from "utility_lineup_renders". */
-export interface utility_lineup_renders_order_by {created_at?: (order_by | null),duration_ms?: (order_by | null),error_message?: (order_by | null),game_server_node?: (game_server_nodes_order_by | null),game_server_node_id?: (order_by | null),id?: (order_by | null),k8s_job_name?: (order_by | null),last_status_at?: (order_by | null),lineup?: (utility_lineups_order_by | null),map_name?: (order_by | null),paused?: (order_by | null),practice_session?: (utility_practice_sessions_order_by | null),progress?: (order_by | null),requested_by?: (players_order_by | null),requested_by_steam_id?: (order_by | null),session_token?: (order_by | null),skip_reason?: (order_by | null),sort_index?: (order_by | null),spec?: (order_by | null),status?: (order_by | null),status_history?: (order_by | null),utility_lineup_id?: (order_by | null),utility_practice_session_id?: (order_by | null)}
+export interface utility_lineup_renders_order_by {created_at?: (order_by | null),duration_ms?: (order_by | null),error_message?: (order_by | null),game_server_node?: (game_server_nodes_order_by | null),game_server_node_id?: (order_by | null),id?: (order_by | null),k8s_job_name?: (order_by | null),last_status_at?: (order_by | null),lineup?: (utility_lineups_order_by | null),map_name?: (order_by | null),paused?: (order_by | null),practice_session?: (utility_practice_sessions_order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by?: (players_order_by | null),requested_by_steam_id?: (order_by | null),session_token?: (order_by | null),skip_reason?: (order_by | null),sort_index?: (order_by | null),spec?: (order_by | null),status?: (order_by | null),status_history?: (order_by | null),utility_lineup_id?: (order_by | null),utility_practice_session_id?: (order_by | null)}
 
 
 /** primary key columns input for table: utility_lineup_renders */
@@ -126556,13 +126617,14 @@ export interface utility_lineup_renders_prepend_input {spec?: (Scalars['jsonb'] 
 
 
 /** input type for updating data in table "utility_lineup_renders" */
-export interface utility_lineup_renders_set_input {created_at?: (Scalars['timestamptz'] | null),duration_ms?: (Scalars['Int'] | null),error_message?: (Scalars['String'] | null),game_server_node_id?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),k8s_job_name?: (Scalars['String'] | null),last_status_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),paused?: (Scalars['Boolean'] | null),progress?: (Scalars['numeric'] | null),requested_by_steam_id?: (Scalars['bigint'] | null),session_token?: (Scalars['String'] | null),skip_reason?: (Scalars['String'] | null),sort_index?: (Scalars['Int'] | null),spec?: (Scalars['jsonb'] | null),status?: (Scalars['String'] | null),status_history?: (Scalars['jsonb'] | null),utility_lineup_id?: (Scalars['uuid'] | null),utility_practice_session_id?: (Scalars['uuid'] | null)}
+export interface utility_lineup_renders_set_input {created_at?: (Scalars['timestamptz'] | null),duration_ms?: (Scalars['Int'] | null),error_message?: (Scalars['String'] | null),game_server_node_id?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),k8s_job_name?: (Scalars['String'] | null),last_status_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),paused?: (Scalars['Boolean'] | null),progress?: (Scalars['numeric'] | null),render_version?: (Scalars['Int'] | null),requested_by_steam_id?: (Scalars['bigint'] | null),session_token?: (Scalars['String'] | null),skip_reason?: (Scalars['String'] | null),sort_index?: (Scalars['Int'] | null),spec?: (Scalars['jsonb'] | null),status?: (Scalars['String'] | null),status_history?: (Scalars['jsonb'] | null),utility_lineup_id?: (Scalars['uuid'] | null),utility_practice_session_id?: (Scalars['uuid'] | null)}
 
 
 /** aggregate stddev on columns */
 export interface utility_lineup_renders_stddev_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126571,13 +126633,14 @@ export interface utility_lineup_renders_stddev_fieldsGenqlSelection{
 
 
 /** order by stddev() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_stddev_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_stddev_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** aggregate stddev_pop on columns */
 export interface utility_lineup_renders_stddev_pop_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126586,13 +126649,14 @@ export interface utility_lineup_renders_stddev_pop_fieldsGenqlSelection{
 
 
 /** order by stddev_pop() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_stddev_pop_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_stddev_pop_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** aggregate stddev_samp on columns */
 export interface utility_lineup_renders_stddev_samp_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126601,7 +126665,7 @@ export interface utility_lineup_renders_stddev_samp_fieldsGenqlSelection{
 
 
 /** order by stddev_samp() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_stddev_samp_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_stddev_samp_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** Streaming cursor of the table "utility_lineup_renders" */
@@ -126613,13 +126677,14 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface utility_lineup_renders_stream_cursor_value_input {created_at?: (Scalars['timestamptz'] | null),duration_ms?: (Scalars['Int'] | null),error_message?: (Scalars['String'] | null),game_server_node_id?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),k8s_job_name?: (Scalars['String'] | null),last_status_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),paused?: (Scalars['Boolean'] | null),progress?: (Scalars['numeric'] | null),requested_by_steam_id?: (Scalars['bigint'] | null),session_token?: (Scalars['String'] | null),skip_reason?: (Scalars['String'] | null),sort_index?: (Scalars['Int'] | null),spec?: (Scalars['jsonb'] | null),status?: (Scalars['String'] | null),status_history?: (Scalars['jsonb'] | null),utility_lineup_id?: (Scalars['uuid'] | null),utility_practice_session_id?: (Scalars['uuid'] | null)}
+export interface utility_lineup_renders_stream_cursor_value_input {created_at?: (Scalars['timestamptz'] | null),duration_ms?: (Scalars['Int'] | null),error_message?: (Scalars['String'] | null),game_server_node_id?: (Scalars['String'] | null),id?: (Scalars['uuid'] | null),k8s_job_name?: (Scalars['String'] | null),last_status_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),paused?: (Scalars['Boolean'] | null),progress?: (Scalars['numeric'] | null),render_version?: (Scalars['Int'] | null),requested_by_steam_id?: (Scalars['bigint'] | null),session_token?: (Scalars['String'] | null),skip_reason?: (Scalars['String'] | null),sort_index?: (Scalars['Int'] | null),spec?: (Scalars['jsonb'] | null),status?: (Scalars['String'] | null),status_history?: (Scalars['jsonb'] | null),utility_lineup_id?: (Scalars['uuid'] | null),utility_practice_session_id?: (Scalars['uuid'] | null)}
 
 
 /** aggregate sum on columns */
 export interface utility_lineup_renders_sum_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126628,7 +126693,7 @@ export interface utility_lineup_renders_sum_fieldsGenqlSelection{
 
 
 /** order by sum() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_sum_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_sum_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 export interface utility_lineup_renders_updates {
 /** append existing jsonb value of filtered columns with new jsonb value */
@@ -126653,6 +126718,7 @@ where: utility_lineup_renders_bool_exp}
 export interface utility_lineup_renders_var_pop_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126661,13 +126727,14 @@ export interface utility_lineup_renders_var_pop_fieldsGenqlSelection{
 
 
 /** order by var_pop() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_var_pop_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_var_pop_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** aggregate var_samp on columns */
 export interface utility_lineup_renders_var_samp_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126676,13 +126743,14 @@ export interface utility_lineup_renders_var_samp_fieldsGenqlSelection{
 
 
 /** order by var_samp() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_var_samp_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_var_samp_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** aggregate variance on columns */
 export interface utility_lineup_renders_variance_fieldsGenqlSelection{
     duration_ms?: boolean | number
     progress?: boolean | number
+    render_version?: boolean | number
     requested_by_steam_id?: boolean | number
     sort_index?: boolean | number
     __typename?: boolean | number
@@ -126691,7 +126759,7 @@ export interface utility_lineup_renders_variance_fieldsGenqlSelection{
 
 
 /** order by variance() on columns of table "utility_lineup_renders" */
-export interface utility_lineup_renders_variance_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
+export interface utility_lineup_renders_variance_order_by {duration_ms?: (order_by | null),progress?: (order_by | null),render_version?: (order_by | null),requested_by_steam_id?: (order_by | null),sort_index?: (order_by | null)}
 
 
 /** columns and relationships of "utility_lineup_repairs" */
@@ -127354,6 +127422,7 @@ export interface utility_lineupsGenqlSelection{
     preview_thumbnail_url?: boolean | number
     /** A computed field, executes function "utility_lineup_preview_url" */
     preview_url?: boolean | number
+    preview_version?: boolean | number
     /** An array relationship */
     progress?: (utility_lineup_progressGenqlSelection & { __args?: {
     /** distinct select on columns */
@@ -127584,6 +127653,7 @@ export interface utility_lineups_avg_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -127598,11 +127668,11 @@ export interface utility_lineups_avg_fieldsGenqlSelection{
 
 
 /** order by avg() on columns of table "utility_lineups" */
-export interface utility_lineups_avg_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_avg_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** Boolean expression to filter rows from the table "utility_lineups". All fields are combined with a logical 'AND'. */
-export interface utility_lineups_bool_exp {_and?: (utility_lineups_bool_exp[] | null),_not?: (utility_lineups_bool_exp | null),_or?: (utility_lineups_bool_exp[] | null),aim_tolerance?: (float8_comparison_exp | null),approach?: (jsonb_comparison_exp | null),archived_at?: (timestamptz_comparison_exp | null),author?: (players_bool_exp | null),author_steam_id?: (bigint_comparison_exp | null),can_edit?: (Boolean_comparison_exp | null),can_view?: (Boolean_comparison_exp | null),collection_items?: (utility_collection_items_bool_exp | null),collection_items_aggregate?: (utility_collection_items_aggregate_bool_exp | null),confidence?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),description?: (String_comparison_exp | null),difficulty?: (String_comparison_exp | null),downvotes?: (Int_comparison_exp | null),external_id?: (String_comparison_exp | null),eye_z?: (float8_comparison_exp | null),favorited_by?: (utility_lineup_favorites_bool_exp | null),favorited_by_aggregate?: (utility_lineup_favorites_aggregate_bool_exp | null),favorites?: (Int_comparison_exp | null),flight_time_ms?: (Int_comparison_exp | null),forked_from?: (utility_lineups_bool_exp | null),forked_from_utility_lineup_id?: (uuid_comparison_exp | null),id?: (uuid_comparison_exp | null),initial_pos_x?: (float8_comparison_exp | null),initial_pos_y?: (float8_comparison_exp | null),initial_pos_z?: (float8_comparison_exp | null),initial_vel_x?: (float8_comparison_exp | null),initial_vel_y?: (float8_comparison_exp | null),initial_vel_z?: (float8_comparison_exp | null),is_favorited?: (Boolean_comparison_exp | null),jump_throw_bind?: (Boolean_comparison_exp | null),land_x?: (float8_comparison_exp | null),land_y?: (float8_comparison_exp | null),land_z?: (float8_comparison_exp | null),lineup_bucket?: (String_comparison_exp | null),map_name?: (String_comparison_exp | null),my_vote?: (smallint_comparison_exp | null),name?: (String_comparison_exp | null),origin_source?: (e_utility_sources_enum_comparison_exp | null),origin_x?: (float8_comparison_exp | null),origin_y?: (float8_comparison_exp | null),origin_z?: (float8_comparison_exp | null),practice_attempts?: (Int_comparison_exp | null),practice_players?: (Int_comparison_exp | null),practice_successes?: (Int_comparison_exp | null),preview_duration_ms?: (Int_comparison_exp | null),preview_file?: (String_comparison_exp | null),preview_rendered_at?: (timestamptz_comparison_exp | null),preview_stills?: (jsonb_comparison_exp | null),preview_stills_url?: (jsonb_comparison_exp | null),preview_thumbnail?: (String_comparison_exp | null),preview_thumbnail_url?: (String_comparison_exp | null),preview_url?: (String_comparison_exp | null),progress?: (utility_lineup_progress_bool_exp | null),progress_aggregate?: (utility_lineup_progress_aggregate_bool_exp | null),public_requested_at?: (timestamptz_comparison_exp | null),public_review_note?: (String_comparison_exp | null),public_reviewed_at?: (timestamptz_comparison_exp | null),public_reviewed_by?: (bigint_comparison_exp | null),renders?: (utility_lineup_renders_bool_exp | null),renders_aggregate?: (utility_lineup_renders_aggregate_bool_exp | null),repairs?: (utility_lineup_repairs_bool_exp | null),repairs_aggregate?: (utility_lineup_repairs_aggregate_bool_exp | null),side?: (e_sides_enum_comparison_exp | null),source_grenade_id?: (Int_comparison_exp | null),source_match?: (matches_bool_exp | null),source_match_id?: (uuid_comparison_exp | null),source_match_map?: (match_maps_bool_exp | null),source_match_map_id?: (uuid_comparison_exp | null),source_url?: (String_comparison_exp | null),tags?: (String_array_comparison_exp | null),team?: (teams_bool_exp | null),team_id?: (uuid_comparison_exp | null),technique?: (e_utility_techniques_enum_comparison_exp | null),throw_strength?: (e_utility_throw_strengths_enum_comparison_exp | null),trajectory_file?: (String_comparison_exp | null),trajectory_preview?: (jsonb_comparison_exp | null),trajectory_size?: (Int_comparison_exp | null),updated_at?: (timestamptz_comparison_exp | null),upvotes?: (Int_comparison_exp | null),utility_type?: (e_utility_types_enum_comparison_exp | null),verified_at?: (timestamptz_comparison_exp | null),view_pitch?: (float8_comparison_exp | null),view_pitch_delta?: (float8_comparison_exp | null),view_yaw?: (float8_comparison_exp | null),view_yaw_delta?: (float8_comparison_exp | null),visibility?: (e_utility_visibility_enum_comparison_exp | null),votes?: (utility_lineup_votes_bool_exp | null),votes_aggregate?: (utility_lineup_votes_aggregate_bool_exp | null),workshop_map_id?: (String_comparison_exp | null)}
+export interface utility_lineups_bool_exp {_and?: (utility_lineups_bool_exp[] | null),_not?: (utility_lineups_bool_exp | null),_or?: (utility_lineups_bool_exp[] | null),aim_tolerance?: (float8_comparison_exp | null),approach?: (jsonb_comparison_exp | null),archived_at?: (timestamptz_comparison_exp | null),author?: (players_bool_exp | null),author_steam_id?: (bigint_comparison_exp | null),can_edit?: (Boolean_comparison_exp | null),can_view?: (Boolean_comparison_exp | null),collection_items?: (utility_collection_items_bool_exp | null),collection_items_aggregate?: (utility_collection_items_aggregate_bool_exp | null),confidence?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),description?: (String_comparison_exp | null),difficulty?: (String_comparison_exp | null),downvotes?: (Int_comparison_exp | null),external_id?: (String_comparison_exp | null),eye_z?: (float8_comparison_exp | null),favorited_by?: (utility_lineup_favorites_bool_exp | null),favorited_by_aggregate?: (utility_lineup_favorites_aggregate_bool_exp | null),favorites?: (Int_comparison_exp | null),flight_time_ms?: (Int_comparison_exp | null),forked_from?: (utility_lineups_bool_exp | null),forked_from_utility_lineup_id?: (uuid_comparison_exp | null),id?: (uuid_comparison_exp | null),initial_pos_x?: (float8_comparison_exp | null),initial_pos_y?: (float8_comparison_exp | null),initial_pos_z?: (float8_comparison_exp | null),initial_vel_x?: (float8_comparison_exp | null),initial_vel_y?: (float8_comparison_exp | null),initial_vel_z?: (float8_comparison_exp | null),is_favorited?: (Boolean_comparison_exp | null),jump_throw_bind?: (Boolean_comparison_exp | null),land_x?: (float8_comparison_exp | null),land_y?: (float8_comparison_exp | null),land_z?: (float8_comparison_exp | null),lineup_bucket?: (String_comparison_exp | null),map_name?: (String_comparison_exp | null),my_vote?: (smallint_comparison_exp | null),name?: (String_comparison_exp | null),origin_source?: (e_utility_sources_enum_comparison_exp | null),origin_x?: (float8_comparison_exp | null),origin_y?: (float8_comparison_exp | null),origin_z?: (float8_comparison_exp | null),practice_attempts?: (Int_comparison_exp | null),practice_players?: (Int_comparison_exp | null),practice_successes?: (Int_comparison_exp | null),preview_duration_ms?: (Int_comparison_exp | null),preview_file?: (String_comparison_exp | null),preview_rendered_at?: (timestamptz_comparison_exp | null),preview_stills?: (jsonb_comparison_exp | null),preview_stills_url?: (jsonb_comparison_exp | null),preview_thumbnail?: (String_comparison_exp | null),preview_thumbnail_url?: (String_comparison_exp | null),preview_url?: (String_comparison_exp | null),preview_version?: (Int_comparison_exp | null),progress?: (utility_lineup_progress_bool_exp | null),progress_aggregate?: (utility_lineup_progress_aggregate_bool_exp | null),public_requested_at?: (timestamptz_comparison_exp | null),public_review_note?: (String_comparison_exp | null),public_reviewed_at?: (timestamptz_comparison_exp | null),public_reviewed_by?: (bigint_comparison_exp | null),renders?: (utility_lineup_renders_bool_exp | null),renders_aggregate?: (utility_lineup_renders_aggregate_bool_exp | null),repairs?: (utility_lineup_repairs_bool_exp | null),repairs_aggregate?: (utility_lineup_repairs_aggregate_bool_exp | null),side?: (e_sides_enum_comparison_exp | null),source_grenade_id?: (Int_comparison_exp | null),source_match?: (matches_bool_exp | null),source_match_id?: (uuid_comparison_exp | null),source_match_map?: (match_maps_bool_exp | null),source_match_map_id?: (uuid_comparison_exp | null),source_url?: (String_comparison_exp | null),tags?: (String_array_comparison_exp | null),team?: (teams_bool_exp | null),team_id?: (uuid_comparison_exp | null),technique?: (e_utility_techniques_enum_comparison_exp | null),throw_strength?: (e_utility_throw_strengths_enum_comparison_exp | null),trajectory_file?: (String_comparison_exp | null),trajectory_preview?: (jsonb_comparison_exp | null),trajectory_size?: (Int_comparison_exp | null),updated_at?: (timestamptz_comparison_exp | null),upvotes?: (Int_comparison_exp | null),utility_type?: (e_utility_types_enum_comparison_exp | null),verified_at?: (timestamptz_comparison_exp | null),view_pitch?: (float8_comparison_exp | null),view_pitch_delta?: (float8_comparison_exp | null),view_yaw?: (float8_comparison_exp | null),view_yaw_delta?: (float8_comparison_exp | null),visibility?: (e_utility_visibility_enum_comparison_exp | null),votes?: (utility_lineup_votes_bool_exp | null),votes_aggregate?: (utility_lineup_votes_aggregate_bool_exp | null),workshop_map_id?: (String_comparison_exp | null)}
 
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -127618,11 +127688,11 @@ export interface utility_lineups_delete_key_input {approach?: (Scalars['String']
 
 
 /** input type for incrementing numeric columns in table "utility_lineups" */
-export interface utility_lineups_inc_input {aim_tolerance?: (Scalars['float8'] | null),author_steam_id?: (Scalars['bigint'] | null),downvotes?: (Scalars['Int'] | null),eye_z?: (Scalars['float8'] | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),public_reviewed_by?: (Scalars['bigint'] | null),source_grenade_id?: (Scalars['Int'] | null),trajectory_size?: (Scalars['Int'] | null),upvotes?: (Scalars['Int'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null)}
+export interface utility_lineups_inc_input {aim_tolerance?: (Scalars['float8'] | null),author_steam_id?: (Scalars['bigint'] | null),downvotes?: (Scalars['Int'] | null),eye_z?: (Scalars['float8'] | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_version?: (Scalars['Int'] | null),public_reviewed_by?: (Scalars['bigint'] | null),source_grenade_id?: (Scalars['Int'] | null),trajectory_size?: (Scalars['Int'] | null),upvotes?: (Scalars['Int'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null)}
 
 
 /** input type for inserting data into table "utility_lineups" */
-export interface utility_lineups_insert_input {aim_tolerance?: (Scalars['float8'] | null),approach?: (Scalars['jsonb'] | null),archived_at?: (Scalars['timestamptz'] | null),author?: (players_obj_rel_insert_input | null),author_steam_id?: (Scalars['bigint'] | null),collection_items?: (utility_collection_items_arr_rel_insert_input | null),confidence?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),downvotes?: (Scalars['Int'] | null),external_id?: (Scalars['String'] | null),eye_z?: (Scalars['float8'] | null),favorited_by?: (utility_lineup_favorites_arr_rel_insert_input | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),forked_from?: (utility_lineups_obj_rel_insert_input | null),forked_from_utility_lineup_id?: (Scalars['uuid'] | null),id?: (Scalars['uuid'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),jump_throw_bind?: (Scalars['Boolean'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),map_name?: (Scalars['String'] | null),name?: (Scalars['String'] | null),origin_source?: (e_utility_sources_enum | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_file?: (Scalars['String'] | null),preview_rendered_at?: (Scalars['timestamptz'] | null),preview_stills?: (Scalars['jsonb'] | null),preview_thumbnail?: (Scalars['String'] | null),progress?: (utility_lineup_progress_arr_rel_insert_input | null),public_requested_at?: (Scalars['timestamptz'] | null),public_review_note?: (Scalars['String'] | null),public_reviewed_at?: (Scalars['timestamptz'] | null),public_reviewed_by?: (Scalars['bigint'] | null),renders?: (utility_lineup_renders_arr_rel_insert_input | null),repairs?: (utility_lineup_repairs_arr_rel_insert_input | null),side?: (e_sides_enum | null),source_grenade_id?: (Scalars['Int'] | null),source_match?: (matches_obj_rel_insert_input | null),source_match_id?: (Scalars['uuid'] | null),source_match_map?: (match_maps_obj_rel_insert_input | null),source_match_map_id?: (Scalars['uuid'] | null),source_url?: (Scalars['String'] | null),tags?: (Scalars['String'][] | null),team?: (teams_obj_rel_insert_input | null),team_id?: (Scalars['uuid'] | null),technique?: (e_utility_techniques_enum | null),throw_strength?: (e_utility_throw_strengths_enum | null),trajectory_file?: (Scalars['String'] | null),trajectory_preview?: (Scalars['jsonb'] | null),trajectory_size?: (Scalars['Int'] | null),updated_at?: (Scalars['timestamptz'] | null),upvotes?: (Scalars['Int'] | null),utility_type?: (e_utility_types_enum | null),verified_at?: (Scalars['timestamptz'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null),visibility?: (e_utility_visibility_enum | null),votes?: (utility_lineup_votes_arr_rel_insert_input | null),workshop_map_id?: (Scalars['String'] | null)}
+export interface utility_lineups_insert_input {aim_tolerance?: (Scalars['float8'] | null),approach?: (Scalars['jsonb'] | null),archived_at?: (Scalars['timestamptz'] | null),author?: (players_obj_rel_insert_input | null),author_steam_id?: (Scalars['bigint'] | null),collection_items?: (utility_collection_items_arr_rel_insert_input | null),confidence?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),downvotes?: (Scalars['Int'] | null),external_id?: (Scalars['String'] | null),eye_z?: (Scalars['float8'] | null),favorited_by?: (utility_lineup_favorites_arr_rel_insert_input | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),forked_from?: (utility_lineups_obj_rel_insert_input | null),forked_from_utility_lineup_id?: (Scalars['uuid'] | null),id?: (Scalars['uuid'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),jump_throw_bind?: (Scalars['Boolean'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),map_name?: (Scalars['String'] | null),name?: (Scalars['String'] | null),origin_source?: (e_utility_sources_enum | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_file?: (Scalars['String'] | null),preview_rendered_at?: (Scalars['timestamptz'] | null),preview_stills?: (Scalars['jsonb'] | null),preview_thumbnail?: (Scalars['String'] | null),preview_version?: (Scalars['Int'] | null),progress?: (utility_lineup_progress_arr_rel_insert_input | null),public_requested_at?: (Scalars['timestamptz'] | null),public_review_note?: (Scalars['String'] | null),public_reviewed_at?: (Scalars['timestamptz'] | null),public_reviewed_by?: (Scalars['bigint'] | null),renders?: (utility_lineup_renders_arr_rel_insert_input | null),repairs?: (utility_lineup_repairs_arr_rel_insert_input | null),side?: (e_sides_enum | null),source_grenade_id?: (Scalars['Int'] | null),source_match?: (matches_obj_rel_insert_input | null),source_match_id?: (Scalars['uuid'] | null),source_match_map?: (match_maps_obj_rel_insert_input | null),source_match_map_id?: (Scalars['uuid'] | null),source_url?: (Scalars['String'] | null),tags?: (Scalars['String'][] | null),team?: (teams_obj_rel_insert_input | null),team_id?: (Scalars['uuid'] | null),technique?: (e_utility_techniques_enum | null),throw_strength?: (e_utility_throw_strengths_enum | null),trajectory_file?: (Scalars['String'] | null),trajectory_preview?: (Scalars['jsonb'] | null),trajectory_size?: (Scalars['Int'] | null),updated_at?: (Scalars['timestamptz'] | null),upvotes?: (Scalars['Int'] | null),utility_type?: (e_utility_types_enum | null),verified_at?: (Scalars['timestamptz'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null),visibility?: (e_utility_visibility_enum | null),votes?: (utility_lineup_votes_arr_rel_insert_input | null),workshop_map_id?: (Scalars['String'] | null)}
 
 
 /** aggregate max on columns */
@@ -127670,6 +127740,7 @@ export interface utility_lineups_max_fieldsGenqlSelection{
     preview_thumbnail_url?: boolean | number
     /** A computed field, executes function "utility_lineup_preview_url" */
     preview_url?: boolean | number
+    preview_version?: boolean | number
     public_requested_at?: boolean | number
     public_review_note?: boolean | number
     public_reviewed_at?: boolean | number
@@ -127696,7 +127767,7 @@ export interface utility_lineups_max_fieldsGenqlSelection{
 
 
 /** order by max() on columns of table "utility_lineups" */
-export interface utility_lineups_max_order_by {aim_tolerance?: (order_by | null),archived_at?: (order_by | null),author_steam_id?: (order_by | null),confidence?: (order_by | null),created_at?: (order_by | null),description?: (order_by | null),downvotes?: (order_by | null),external_id?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),forked_from_utility_lineup_id?: (order_by | null),id?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),lineup_bucket?: (order_by | null),map_name?: (order_by | null),name?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_file?: (order_by | null),preview_rendered_at?: (order_by | null),preview_thumbnail?: (order_by | null),public_requested_at?: (order_by | null),public_review_note?: (order_by | null),public_reviewed_at?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),source_match_id?: (order_by | null),source_match_map_id?: (order_by | null),source_url?: (order_by | null),tags?: (order_by | null),team_id?: (order_by | null),trajectory_file?: (order_by | null),trajectory_size?: (order_by | null),updated_at?: (order_by | null),upvotes?: (order_by | null),verified_at?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null),workshop_map_id?: (order_by | null)}
+export interface utility_lineups_max_order_by {aim_tolerance?: (order_by | null),archived_at?: (order_by | null),author_steam_id?: (order_by | null),confidence?: (order_by | null),created_at?: (order_by | null),description?: (order_by | null),downvotes?: (order_by | null),external_id?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),forked_from_utility_lineup_id?: (order_by | null),id?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),lineup_bucket?: (order_by | null),map_name?: (order_by | null),name?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_file?: (order_by | null),preview_rendered_at?: (order_by | null),preview_thumbnail?: (order_by | null),preview_version?: (order_by | null),public_requested_at?: (order_by | null),public_review_note?: (order_by | null),public_reviewed_at?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),source_match_id?: (order_by | null),source_match_map_id?: (order_by | null),source_url?: (order_by | null),tags?: (order_by | null),team_id?: (order_by | null),trajectory_file?: (order_by | null),trajectory_size?: (order_by | null),updated_at?: (order_by | null),upvotes?: (order_by | null),verified_at?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null),workshop_map_id?: (order_by | null)}
 
 
 /** aggregate min on columns */
@@ -127744,6 +127815,7 @@ export interface utility_lineups_min_fieldsGenqlSelection{
     preview_thumbnail_url?: boolean | number
     /** A computed field, executes function "utility_lineup_preview_url" */
     preview_url?: boolean | number
+    preview_version?: boolean | number
     public_requested_at?: boolean | number
     public_review_note?: boolean | number
     public_reviewed_at?: boolean | number
@@ -127770,7 +127842,7 @@ export interface utility_lineups_min_fieldsGenqlSelection{
 
 
 /** order by min() on columns of table "utility_lineups" */
-export interface utility_lineups_min_order_by {aim_tolerance?: (order_by | null),archived_at?: (order_by | null),author_steam_id?: (order_by | null),confidence?: (order_by | null),created_at?: (order_by | null),description?: (order_by | null),downvotes?: (order_by | null),external_id?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),forked_from_utility_lineup_id?: (order_by | null),id?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),lineup_bucket?: (order_by | null),map_name?: (order_by | null),name?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_file?: (order_by | null),preview_rendered_at?: (order_by | null),preview_thumbnail?: (order_by | null),public_requested_at?: (order_by | null),public_review_note?: (order_by | null),public_reviewed_at?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),source_match_id?: (order_by | null),source_match_map_id?: (order_by | null),source_url?: (order_by | null),tags?: (order_by | null),team_id?: (order_by | null),trajectory_file?: (order_by | null),trajectory_size?: (order_by | null),updated_at?: (order_by | null),upvotes?: (order_by | null),verified_at?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null),workshop_map_id?: (order_by | null)}
+export interface utility_lineups_min_order_by {aim_tolerance?: (order_by | null),archived_at?: (order_by | null),author_steam_id?: (order_by | null),confidence?: (order_by | null),created_at?: (order_by | null),description?: (order_by | null),downvotes?: (order_by | null),external_id?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),forked_from_utility_lineup_id?: (order_by | null),id?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),lineup_bucket?: (order_by | null),map_name?: (order_by | null),name?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_file?: (order_by | null),preview_rendered_at?: (order_by | null),preview_thumbnail?: (order_by | null),preview_version?: (order_by | null),public_requested_at?: (order_by | null),public_review_note?: (order_by | null),public_reviewed_at?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),source_match_id?: (order_by | null),source_match_map_id?: (order_by | null),source_url?: (order_by | null),tags?: (order_by | null),team_id?: (order_by | null),trajectory_file?: (order_by | null),trajectory_size?: (order_by | null),updated_at?: (order_by | null),upvotes?: (order_by | null),verified_at?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null),workshop_map_id?: (order_by | null)}
 
 
 /** response of any mutation on the table "utility_lineups" */
@@ -127795,7 +127867,7 @@ export interface utility_lineups_on_conflict {constraint: utility_lineups_constr
 
 
 /** Ordering options when selecting data from "utility_lineups". */
-export interface utility_lineups_order_by {aim_tolerance?: (order_by | null),approach?: (order_by | null),archived_at?: (order_by | null),author?: (players_order_by | null),author_steam_id?: (order_by | null),can_edit?: (order_by | null),can_view?: (order_by | null),collection_items_aggregate?: (utility_collection_items_aggregate_order_by | null),confidence?: (order_by | null),created_at?: (order_by | null),description?: (order_by | null),difficulty?: (order_by | null),downvotes?: (order_by | null),external_id?: (order_by | null),eye_z?: (order_by | null),favorited_by_aggregate?: (utility_lineup_favorites_aggregate_order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),forked_from?: (utility_lineups_order_by | null),forked_from_utility_lineup_id?: (order_by | null),id?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),is_favorited?: (order_by | null),jump_throw_bind?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),lineup_bucket?: (order_by | null),map_name?: (order_by | null),my_vote?: (order_by | null),name?: (order_by | null),origin_source?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_file?: (order_by | null),preview_rendered_at?: (order_by | null),preview_stills?: (order_by | null),preview_stills_url?: (order_by | null),preview_thumbnail?: (order_by | null),preview_thumbnail_url?: (order_by | null),preview_url?: (order_by | null),progress_aggregate?: (utility_lineup_progress_aggregate_order_by | null),public_requested_at?: (order_by | null),public_review_note?: (order_by | null),public_reviewed_at?: (order_by | null),public_reviewed_by?: (order_by | null),renders_aggregate?: (utility_lineup_renders_aggregate_order_by | null),repairs_aggregate?: (utility_lineup_repairs_aggregate_order_by | null),side?: (order_by | null),source_grenade_id?: (order_by | null),source_match?: (matches_order_by | null),source_match_id?: (order_by | null),source_match_map?: (match_maps_order_by | null),source_match_map_id?: (order_by | null),source_url?: (order_by | null),tags?: (order_by | null),team?: (teams_order_by | null),team_id?: (order_by | null),technique?: (order_by | null),throw_strength?: (order_by | null),trajectory_file?: (order_by | null),trajectory_preview?: (order_by | null),trajectory_size?: (order_by | null),updated_at?: (order_by | null),upvotes?: (order_by | null),utility_type?: (order_by | null),verified_at?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null),visibility?: (order_by | null),votes_aggregate?: (utility_lineup_votes_aggregate_order_by | null),workshop_map_id?: (order_by | null)}
+export interface utility_lineups_order_by {aim_tolerance?: (order_by | null),approach?: (order_by | null),archived_at?: (order_by | null),author?: (players_order_by | null),author_steam_id?: (order_by | null),can_edit?: (order_by | null),can_view?: (order_by | null),collection_items_aggregate?: (utility_collection_items_aggregate_order_by | null),confidence?: (order_by | null),created_at?: (order_by | null),description?: (order_by | null),difficulty?: (order_by | null),downvotes?: (order_by | null),external_id?: (order_by | null),eye_z?: (order_by | null),favorited_by_aggregate?: (utility_lineup_favorites_aggregate_order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),forked_from?: (utility_lineups_order_by | null),forked_from_utility_lineup_id?: (order_by | null),id?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),is_favorited?: (order_by | null),jump_throw_bind?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),lineup_bucket?: (order_by | null),map_name?: (order_by | null),my_vote?: (order_by | null),name?: (order_by | null),origin_source?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_file?: (order_by | null),preview_rendered_at?: (order_by | null),preview_stills?: (order_by | null),preview_stills_url?: (order_by | null),preview_thumbnail?: (order_by | null),preview_thumbnail_url?: (order_by | null),preview_url?: (order_by | null),preview_version?: (order_by | null),progress_aggregate?: (utility_lineup_progress_aggregate_order_by | null),public_requested_at?: (order_by | null),public_review_note?: (order_by | null),public_reviewed_at?: (order_by | null),public_reviewed_by?: (order_by | null),renders_aggregate?: (utility_lineup_renders_aggregate_order_by | null),repairs_aggregate?: (utility_lineup_repairs_aggregate_order_by | null),side?: (order_by | null),source_grenade_id?: (order_by | null),source_match?: (matches_order_by | null),source_match_id?: (order_by | null),source_match_map?: (match_maps_order_by | null),source_match_map_id?: (order_by | null),source_url?: (order_by | null),tags?: (order_by | null),team?: (teams_order_by | null),team_id?: (order_by | null),technique?: (order_by | null),throw_strength?: (order_by | null),trajectory_file?: (order_by | null),trajectory_preview?: (order_by | null),trajectory_size?: (order_by | null),updated_at?: (order_by | null),upvotes?: (order_by | null),utility_type?: (order_by | null),verified_at?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null),visibility?: (order_by | null),votes_aggregate?: (utility_lineup_votes_aggregate_order_by | null),workshop_map_id?: (order_by | null)}
 
 
 /** primary key columns input for table: utility_lineups */
@@ -127807,7 +127879,7 @@ export interface utility_lineups_prepend_input {approach?: (Scalars['jsonb'] | n
 
 
 /** input type for updating data in table "utility_lineups" */
-export interface utility_lineups_set_input {aim_tolerance?: (Scalars['float8'] | null),approach?: (Scalars['jsonb'] | null),archived_at?: (Scalars['timestamptz'] | null),author_steam_id?: (Scalars['bigint'] | null),confidence?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),downvotes?: (Scalars['Int'] | null),external_id?: (Scalars['String'] | null),eye_z?: (Scalars['float8'] | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),forked_from_utility_lineup_id?: (Scalars['uuid'] | null),id?: (Scalars['uuid'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),jump_throw_bind?: (Scalars['Boolean'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),map_name?: (Scalars['String'] | null),name?: (Scalars['String'] | null),origin_source?: (e_utility_sources_enum | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_file?: (Scalars['String'] | null),preview_rendered_at?: (Scalars['timestamptz'] | null),preview_stills?: (Scalars['jsonb'] | null),preview_thumbnail?: (Scalars['String'] | null),public_requested_at?: (Scalars['timestamptz'] | null),public_review_note?: (Scalars['String'] | null),public_reviewed_at?: (Scalars['timestamptz'] | null),public_reviewed_by?: (Scalars['bigint'] | null),side?: (e_sides_enum | null),source_grenade_id?: (Scalars['Int'] | null),source_match_id?: (Scalars['uuid'] | null),source_match_map_id?: (Scalars['uuid'] | null),source_url?: (Scalars['String'] | null),tags?: (Scalars['String'][] | null),team_id?: (Scalars['uuid'] | null),technique?: (e_utility_techniques_enum | null),throw_strength?: (e_utility_throw_strengths_enum | null),trajectory_file?: (Scalars['String'] | null),trajectory_preview?: (Scalars['jsonb'] | null),trajectory_size?: (Scalars['Int'] | null),updated_at?: (Scalars['timestamptz'] | null),upvotes?: (Scalars['Int'] | null),utility_type?: (e_utility_types_enum | null),verified_at?: (Scalars['timestamptz'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null),visibility?: (e_utility_visibility_enum | null),workshop_map_id?: (Scalars['String'] | null)}
+export interface utility_lineups_set_input {aim_tolerance?: (Scalars['float8'] | null),approach?: (Scalars['jsonb'] | null),archived_at?: (Scalars['timestamptz'] | null),author_steam_id?: (Scalars['bigint'] | null),confidence?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),downvotes?: (Scalars['Int'] | null),external_id?: (Scalars['String'] | null),eye_z?: (Scalars['float8'] | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),forked_from_utility_lineup_id?: (Scalars['uuid'] | null),id?: (Scalars['uuid'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),jump_throw_bind?: (Scalars['Boolean'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),map_name?: (Scalars['String'] | null),name?: (Scalars['String'] | null),origin_source?: (e_utility_sources_enum | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_file?: (Scalars['String'] | null),preview_rendered_at?: (Scalars['timestamptz'] | null),preview_stills?: (Scalars['jsonb'] | null),preview_thumbnail?: (Scalars['String'] | null),preview_version?: (Scalars['Int'] | null),public_requested_at?: (Scalars['timestamptz'] | null),public_review_note?: (Scalars['String'] | null),public_reviewed_at?: (Scalars['timestamptz'] | null),public_reviewed_by?: (Scalars['bigint'] | null),side?: (e_sides_enum | null),source_grenade_id?: (Scalars['Int'] | null),source_match_id?: (Scalars['uuid'] | null),source_match_map_id?: (Scalars['uuid'] | null),source_url?: (Scalars['String'] | null),tags?: (Scalars['String'][] | null),team_id?: (Scalars['uuid'] | null),technique?: (e_utility_techniques_enum | null),throw_strength?: (e_utility_throw_strengths_enum | null),trajectory_file?: (Scalars['String'] | null),trajectory_preview?: (Scalars['jsonb'] | null),trajectory_size?: (Scalars['Int'] | null),updated_at?: (Scalars['timestamptz'] | null),upvotes?: (Scalars['Int'] | null),utility_type?: (e_utility_types_enum | null),verified_at?: (Scalars['timestamptz'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null),visibility?: (e_utility_visibility_enum | null),workshop_map_id?: (Scalars['String'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -127836,6 +127908,7 @@ export interface utility_lineups_stddev_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -127850,7 +127923,7 @@ export interface utility_lineups_stddev_fieldsGenqlSelection{
 
 
 /** order by stddev() on columns of table "utility_lineups" */
-export interface utility_lineups_stddev_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_stddev_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** aggregate stddev_pop on columns */
@@ -127879,6 +127952,7 @@ export interface utility_lineups_stddev_pop_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -127893,7 +127967,7 @@ export interface utility_lineups_stddev_pop_fieldsGenqlSelection{
 
 
 /** order by stddev_pop() on columns of table "utility_lineups" */
-export interface utility_lineups_stddev_pop_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_stddev_pop_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** aggregate stddev_samp on columns */
@@ -127922,6 +127996,7 @@ export interface utility_lineups_stddev_samp_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -127936,7 +128011,7 @@ export interface utility_lineups_stddev_samp_fieldsGenqlSelection{
 
 
 /** order by stddev_samp() on columns of table "utility_lineups" */
-export interface utility_lineups_stddev_samp_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_stddev_samp_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** Streaming cursor of the table "utility_lineups" */
@@ -127948,7 +128023,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface utility_lineups_stream_cursor_value_input {aim_tolerance?: (Scalars['float8'] | null),approach?: (Scalars['jsonb'] | null),archived_at?: (Scalars['timestamptz'] | null),author_steam_id?: (Scalars['bigint'] | null),confidence?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),downvotes?: (Scalars['Int'] | null),external_id?: (Scalars['String'] | null),eye_z?: (Scalars['float8'] | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),forked_from_utility_lineup_id?: (Scalars['uuid'] | null),id?: (Scalars['uuid'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),jump_throw_bind?: (Scalars['Boolean'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),lineup_bucket?: (Scalars['String'] | null),map_name?: (Scalars['String'] | null),name?: (Scalars['String'] | null),origin_source?: (e_utility_sources_enum | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_file?: (Scalars['String'] | null),preview_rendered_at?: (Scalars['timestamptz'] | null),preview_stills?: (Scalars['jsonb'] | null),preview_thumbnail?: (Scalars['String'] | null),public_requested_at?: (Scalars['timestamptz'] | null),public_review_note?: (Scalars['String'] | null),public_reviewed_at?: (Scalars['timestamptz'] | null),public_reviewed_by?: (Scalars['bigint'] | null),side?: (e_sides_enum | null),source_grenade_id?: (Scalars['Int'] | null),source_match_id?: (Scalars['uuid'] | null),source_match_map_id?: (Scalars['uuid'] | null),source_url?: (Scalars['String'] | null),tags?: (Scalars['String'][] | null),team_id?: (Scalars['uuid'] | null),technique?: (e_utility_techniques_enum | null),throw_strength?: (e_utility_throw_strengths_enum | null),trajectory_file?: (Scalars['String'] | null),trajectory_preview?: (Scalars['jsonb'] | null),trajectory_size?: (Scalars['Int'] | null),updated_at?: (Scalars['timestamptz'] | null),upvotes?: (Scalars['Int'] | null),utility_type?: (e_utility_types_enum | null),verified_at?: (Scalars['timestamptz'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null),visibility?: (e_utility_visibility_enum | null),workshop_map_id?: (Scalars['String'] | null)}
+export interface utility_lineups_stream_cursor_value_input {aim_tolerance?: (Scalars['float8'] | null),approach?: (Scalars['jsonb'] | null),archived_at?: (Scalars['timestamptz'] | null),author_steam_id?: (Scalars['bigint'] | null),confidence?: (Scalars['String'] | null),created_at?: (Scalars['timestamptz'] | null),description?: (Scalars['String'] | null),downvotes?: (Scalars['Int'] | null),external_id?: (Scalars['String'] | null),eye_z?: (Scalars['float8'] | null),favorites?: (Scalars['Int'] | null),flight_time_ms?: (Scalars['Int'] | null),forked_from_utility_lineup_id?: (Scalars['uuid'] | null),id?: (Scalars['uuid'] | null),initial_pos_x?: (Scalars['float8'] | null),initial_pos_y?: (Scalars['float8'] | null),initial_pos_z?: (Scalars['float8'] | null),initial_vel_x?: (Scalars['float8'] | null),initial_vel_y?: (Scalars['float8'] | null),initial_vel_z?: (Scalars['float8'] | null),jump_throw_bind?: (Scalars['Boolean'] | null),land_x?: (Scalars['float8'] | null),land_y?: (Scalars['float8'] | null),land_z?: (Scalars['float8'] | null),lineup_bucket?: (Scalars['String'] | null),map_name?: (Scalars['String'] | null),name?: (Scalars['String'] | null),origin_source?: (e_utility_sources_enum | null),origin_x?: (Scalars['float8'] | null),origin_y?: (Scalars['float8'] | null),origin_z?: (Scalars['float8'] | null),practice_attempts?: (Scalars['Int'] | null),practice_players?: (Scalars['Int'] | null),practice_successes?: (Scalars['Int'] | null),preview_duration_ms?: (Scalars['Int'] | null),preview_file?: (Scalars['String'] | null),preview_rendered_at?: (Scalars['timestamptz'] | null),preview_stills?: (Scalars['jsonb'] | null),preview_thumbnail?: (Scalars['String'] | null),preview_version?: (Scalars['Int'] | null),public_requested_at?: (Scalars['timestamptz'] | null),public_review_note?: (Scalars['String'] | null),public_reviewed_at?: (Scalars['timestamptz'] | null),public_reviewed_by?: (Scalars['bigint'] | null),side?: (e_sides_enum | null),source_grenade_id?: (Scalars['Int'] | null),source_match_id?: (Scalars['uuid'] | null),source_match_map_id?: (Scalars['uuid'] | null),source_url?: (Scalars['String'] | null),tags?: (Scalars['String'][] | null),team_id?: (Scalars['uuid'] | null),technique?: (e_utility_techniques_enum | null),throw_strength?: (e_utility_throw_strengths_enum | null),trajectory_file?: (Scalars['String'] | null),trajectory_preview?: (Scalars['jsonb'] | null),trajectory_size?: (Scalars['Int'] | null),updated_at?: (Scalars['timestamptz'] | null),upvotes?: (Scalars['Int'] | null),utility_type?: (e_utility_types_enum | null),verified_at?: (Scalars['timestamptz'] | null),view_pitch?: (Scalars['float8'] | null),view_pitch_delta?: (Scalars['float8'] | null),view_yaw?: (Scalars['float8'] | null),view_yaw_delta?: (Scalars['float8'] | null),visibility?: (e_utility_visibility_enum | null),workshop_map_id?: (Scalars['String'] | null)}
 
 
 /** aggregate sum on columns */
@@ -127977,6 +128052,7 @@ export interface utility_lineups_sum_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -127991,7 +128067,7 @@ export interface utility_lineups_sum_fieldsGenqlSelection{
 
 
 /** order by sum() on columns of table "utility_lineups" */
-export interface utility_lineups_sum_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_sum_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 export interface utility_lineups_updates {
 /** append existing jsonb value of filtered columns with new jsonb value */
@@ -128038,6 +128114,7 @@ export interface utility_lineups_var_pop_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -128052,7 +128129,7 @@ export interface utility_lineups_var_pop_fieldsGenqlSelection{
 
 
 /** order by var_pop() on columns of table "utility_lineups" */
-export interface utility_lineups_var_pop_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_var_pop_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** aggregate var_samp on columns */
@@ -128081,6 +128158,7 @@ export interface utility_lineups_var_samp_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -128095,7 +128173,7 @@ export interface utility_lineups_var_samp_fieldsGenqlSelection{
 
 
 /** order by var_samp() on columns of table "utility_lineups" */
-export interface utility_lineups_var_samp_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_var_samp_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** aggregate variance on columns */
@@ -128124,6 +128202,7 @@ export interface utility_lineups_variance_fieldsGenqlSelection{
     practice_players?: boolean | number
     practice_successes?: boolean | number
     preview_duration_ms?: boolean | number
+    preview_version?: boolean | number
     public_reviewed_by?: boolean | number
     source_grenade_id?: boolean | number
     trajectory_size?: boolean | number
@@ -128138,7 +128217,7 @@ export interface utility_lineups_variance_fieldsGenqlSelection{
 
 
 /** order by variance() on columns of table "utility_lineups" */
-export interface utility_lineups_variance_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
+export interface utility_lineups_variance_order_by {aim_tolerance?: (order_by | null),author_steam_id?: (order_by | null),downvotes?: (order_by | null),eye_z?: (order_by | null),favorites?: (order_by | null),flight_time_ms?: (order_by | null),initial_pos_x?: (order_by | null),initial_pos_y?: (order_by | null),initial_pos_z?: (order_by | null),initial_vel_x?: (order_by | null),initial_vel_y?: (order_by | null),initial_vel_z?: (order_by | null),land_x?: (order_by | null),land_y?: (order_by | null),land_z?: (order_by | null),origin_x?: (order_by | null),origin_y?: (order_by | null),origin_z?: (order_by | null),practice_attempts?: (order_by | null),practice_players?: (order_by | null),practice_successes?: (order_by | null),preview_duration_ms?: (order_by | null),preview_version?: (order_by | null),public_reviewed_by?: (order_by | null),source_grenade_id?: (order_by | null),trajectory_size?: (order_by | null),upvotes?: (order_by | null),view_pitch?: (order_by | null),view_pitch_delta?: (order_by | null),view_yaw?: (order_by | null),view_yaw_delta?: (order_by | null)}
 
 
 /** columns and relationships of "utility_meta_lineups" */
@@ -129279,6 +129358,8 @@ export interface utility_practice_sessionsGenqlSelection{
     playbook?: utility_playbooksGenqlSelection
     playbook_id?: boolean | number
     region?: boolean | number
+    render_job_name?: boolean | number
+    render_seen_at?: boolean | number
     status?: boolean | number
     /** An object relationship */
     team?: teamsGenqlSelection
@@ -129347,7 +129428,7 @@ export interface utility_practice_sessions_avg_order_by {host_steam_id?: (order_
 
 
 /** Boolean expression to filter rows from the table "utility_practice_sessions". All fields are combined with a logical 'AND'. */
-export interface utility_practice_sessions_bool_exp {_and?: (utility_practice_sessions_bool_exp[] | null),_not?: (utility_practice_sessions_bool_exp | null),_or?: (utility_practice_sessions_bool_exp[] | null),access?: (e_utility_practice_access_enum_comparison_exp | null),can_manage?: (Boolean_comparison_exp | null),can_view?: (Boolean_comparison_exp | null),collection?: (utility_collections_bool_exp | null),collection_id?: (uuid_comparison_exp | null),connection_link?: (String_comparison_exp | null),connection_string?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),e_utility_practice_status?: (e_utility_practice_statuses_bool_exp | null),empty_since?: (timestamptz_comparison_exp | null),expires_at?: (timestamptz_comparison_exp | null),failure_reason?: (String_comparison_exp | null),first_joined_at?: (timestamptz_comparison_exp | null),host?: (players_bool_exp | null),host_steam_id?: (bigint_comparison_exp | null),id?: (uuid_comparison_exp | null),invite_code?: (String_comparison_exp | null),invites?: (utility_practice_invites_bool_exp | null),invites_aggregate?: (utility_practice_invites_aggregate_bool_exp | null),is_member?: (Boolean_comparison_exp | null),is_open?: (Boolean_comparison_exp | null),is_render?: (Boolean_comparison_exp | null),last_occupied_at?: (timestamptz_comparison_exp | null),map_changing_at?: (timestamptz_comparison_exp | null),map_name?: (String_comparison_exp | null),match?: (matches_bool_exp | null),match_id?: (uuid_comparison_exp | null),notify_when_ready?: (Boolean_comparison_exp | null),playbook?: (utility_playbooks_bool_exp | null),playbook_id?: (uuid_comparison_exp | null),region?: (String_comparison_exp | null),status?: (e_utility_practice_statuses_enum_comparison_exp | null),team?: (teams_bool_exp | null),team_id?: (uuid_comparison_exp | null),updated_at?: (timestamptz_comparison_exp | null)}
+export interface utility_practice_sessions_bool_exp {_and?: (utility_practice_sessions_bool_exp[] | null),_not?: (utility_practice_sessions_bool_exp | null),_or?: (utility_practice_sessions_bool_exp[] | null),access?: (e_utility_practice_access_enum_comparison_exp | null),can_manage?: (Boolean_comparison_exp | null),can_view?: (Boolean_comparison_exp | null),collection?: (utility_collections_bool_exp | null),collection_id?: (uuid_comparison_exp | null),connection_link?: (String_comparison_exp | null),connection_string?: (String_comparison_exp | null),created_at?: (timestamptz_comparison_exp | null),e_utility_practice_status?: (e_utility_practice_statuses_bool_exp | null),empty_since?: (timestamptz_comparison_exp | null),expires_at?: (timestamptz_comparison_exp | null),failure_reason?: (String_comparison_exp | null),first_joined_at?: (timestamptz_comparison_exp | null),host?: (players_bool_exp | null),host_steam_id?: (bigint_comparison_exp | null),id?: (uuid_comparison_exp | null),invite_code?: (String_comparison_exp | null),invites?: (utility_practice_invites_bool_exp | null),invites_aggregate?: (utility_practice_invites_aggregate_bool_exp | null),is_member?: (Boolean_comparison_exp | null),is_open?: (Boolean_comparison_exp | null),is_render?: (Boolean_comparison_exp | null),last_occupied_at?: (timestamptz_comparison_exp | null),map_changing_at?: (timestamptz_comparison_exp | null),map_name?: (String_comparison_exp | null),match?: (matches_bool_exp | null),match_id?: (uuid_comparison_exp | null),notify_when_ready?: (Boolean_comparison_exp | null),playbook?: (utility_playbooks_bool_exp | null),playbook_id?: (uuid_comparison_exp | null),region?: (String_comparison_exp | null),render_job_name?: (String_comparison_exp | null),render_seen_at?: (timestamptz_comparison_exp | null),status?: (e_utility_practice_statuses_enum_comparison_exp | null),team?: (teams_bool_exp | null),team_id?: (uuid_comparison_exp | null),updated_at?: (timestamptz_comparison_exp | null)}
 
 
 /** input type for incrementing numeric columns in table "utility_practice_sessions" */
@@ -129355,7 +129436,7 @@ export interface utility_practice_sessions_inc_input {host_steam_id?: (Scalars['
 
 
 /** input type for inserting data into table "utility_practice_sessions" */
-export interface utility_practice_sessions_insert_input {access?: (e_utility_practice_access_enum | null),collection?: (utility_collections_obj_rel_insert_input | null),collection_id?: (Scalars['uuid'] | null),created_at?: (Scalars['timestamptz'] | null),e_utility_practice_status?: (e_utility_practice_statuses_obj_rel_insert_input | null),empty_since?: (Scalars['timestamptz'] | null),expires_at?: (Scalars['timestamptz'] | null),failure_reason?: (Scalars['String'] | null),first_joined_at?: (Scalars['timestamptz'] | null),host?: (players_obj_rel_insert_input | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),invite_code?: (Scalars['String'] | null),invites?: (utility_practice_invites_arr_rel_insert_input | null),is_open?: (Scalars['Boolean'] | null),is_render?: (Scalars['Boolean'] | null),last_occupied_at?: (Scalars['timestamptz'] | null),map_changing_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),match?: (matches_obj_rel_insert_input | null),match_id?: (Scalars['uuid'] | null),notify_when_ready?: (Scalars['Boolean'] | null),playbook?: (utility_playbooks_obj_rel_insert_input | null),playbook_id?: (Scalars['uuid'] | null),region?: (Scalars['String'] | null),status?: (e_utility_practice_statuses_enum | null),team?: (teams_obj_rel_insert_input | null),team_id?: (Scalars['uuid'] | null),updated_at?: (Scalars['timestamptz'] | null)}
+export interface utility_practice_sessions_insert_input {access?: (e_utility_practice_access_enum | null),collection?: (utility_collections_obj_rel_insert_input | null),collection_id?: (Scalars['uuid'] | null),created_at?: (Scalars['timestamptz'] | null),e_utility_practice_status?: (e_utility_practice_statuses_obj_rel_insert_input | null),empty_since?: (Scalars['timestamptz'] | null),expires_at?: (Scalars['timestamptz'] | null),failure_reason?: (Scalars['String'] | null),first_joined_at?: (Scalars['timestamptz'] | null),host?: (players_obj_rel_insert_input | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),invite_code?: (Scalars['String'] | null),invites?: (utility_practice_invites_arr_rel_insert_input | null),is_open?: (Scalars['Boolean'] | null),is_render?: (Scalars['Boolean'] | null),last_occupied_at?: (Scalars['timestamptz'] | null),map_changing_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),match?: (matches_obj_rel_insert_input | null),match_id?: (Scalars['uuid'] | null),notify_when_ready?: (Scalars['Boolean'] | null),playbook?: (utility_playbooks_obj_rel_insert_input | null),playbook_id?: (Scalars['uuid'] | null),region?: (Scalars['String'] | null),render_job_name?: (Scalars['String'] | null),render_seen_at?: (Scalars['timestamptz'] | null),status?: (e_utility_practice_statuses_enum | null),team?: (teams_obj_rel_insert_input | null),team_id?: (Scalars['uuid'] | null),updated_at?: (Scalars['timestamptz'] | null)}
 
 
 /** aggregate max on columns */
@@ -129379,6 +129460,8 @@ export interface utility_practice_sessions_max_fieldsGenqlSelection{
     match_id?: boolean | number
     playbook_id?: boolean | number
     region?: boolean | number
+    render_job_name?: boolean | number
+    render_seen_at?: boolean | number
     team_id?: boolean | number
     updated_at?: boolean | number
     __typename?: boolean | number
@@ -129387,7 +129470,7 @@ export interface utility_practice_sessions_max_fieldsGenqlSelection{
 
 
 /** order by max() on columns of table "utility_practice_sessions" */
-export interface utility_practice_sessions_max_order_by {collection_id?: (order_by | null),created_at?: (order_by | null),empty_since?: (order_by | null),expires_at?: (order_by | null),failure_reason?: (order_by | null),first_joined_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),last_occupied_at?: (order_by | null),map_changing_at?: (order_by | null),map_name?: (order_by | null),match_id?: (order_by | null),playbook_id?: (order_by | null),region?: (order_by | null),team_id?: (order_by | null),updated_at?: (order_by | null)}
+export interface utility_practice_sessions_max_order_by {collection_id?: (order_by | null),created_at?: (order_by | null),empty_since?: (order_by | null),expires_at?: (order_by | null),failure_reason?: (order_by | null),first_joined_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),last_occupied_at?: (order_by | null),map_changing_at?: (order_by | null),map_name?: (order_by | null),match_id?: (order_by | null),playbook_id?: (order_by | null),region?: (order_by | null),render_job_name?: (order_by | null),render_seen_at?: (order_by | null),team_id?: (order_by | null),updated_at?: (order_by | null)}
 
 
 /** aggregate min on columns */
@@ -129411,6 +129494,8 @@ export interface utility_practice_sessions_min_fieldsGenqlSelection{
     match_id?: boolean | number
     playbook_id?: boolean | number
     region?: boolean | number
+    render_job_name?: boolean | number
+    render_seen_at?: boolean | number
     team_id?: boolean | number
     updated_at?: boolean | number
     __typename?: boolean | number
@@ -129419,7 +129504,7 @@ export interface utility_practice_sessions_min_fieldsGenqlSelection{
 
 
 /** order by min() on columns of table "utility_practice_sessions" */
-export interface utility_practice_sessions_min_order_by {collection_id?: (order_by | null),created_at?: (order_by | null),empty_since?: (order_by | null),expires_at?: (order_by | null),failure_reason?: (order_by | null),first_joined_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),last_occupied_at?: (order_by | null),map_changing_at?: (order_by | null),map_name?: (order_by | null),match_id?: (order_by | null),playbook_id?: (order_by | null),region?: (order_by | null),team_id?: (order_by | null),updated_at?: (order_by | null)}
+export interface utility_practice_sessions_min_order_by {collection_id?: (order_by | null),created_at?: (order_by | null),empty_since?: (order_by | null),expires_at?: (order_by | null),failure_reason?: (order_by | null),first_joined_at?: (order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),last_occupied_at?: (order_by | null),map_changing_at?: (order_by | null),map_name?: (order_by | null),match_id?: (order_by | null),playbook_id?: (order_by | null),region?: (order_by | null),render_job_name?: (order_by | null),render_seen_at?: (order_by | null),team_id?: (order_by | null),updated_at?: (order_by | null)}
 
 
 /** response of any mutation on the table "utility_practice_sessions" */
@@ -129444,7 +129529,7 @@ export interface utility_practice_sessions_on_conflict {constraint: utility_prac
 
 
 /** Ordering options when selecting data from "utility_practice_sessions". */
-export interface utility_practice_sessions_order_by {access?: (order_by | null),can_manage?: (order_by | null),can_view?: (order_by | null),collection?: (utility_collections_order_by | null),collection_id?: (order_by | null),connection_link?: (order_by | null),connection_string?: (order_by | null),created_at?: (order_by | null),e_utility_practice_status?: (e_utility_practice_statuses_order_by | null),empty_since?: (order_by | null),expires_at?: (order_by | null),failure_reason?: (order_by | null),first_joined_at?: (order_by | null),host?: (players_order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),invites_aggregate?: (utility_practice_invites_aggregate_order_by | null),is_member?: (order_by | null),is_open?: (order_by | null),is_render?: (order_by | null),last_occupied_at?: (order_by | null),map_changing_at?: (order_by | null),map_name?: (order_by | null),match?: (matches_order_by | null),match_id?: (order_by | null),notify_when_ready?: (order_by | null),playbook?: (utility_playbooks_order_by | null),playbook_id?: (order_by | null),region?: (order_by | null),status?: (order_by | null),team?: (teams_order_by | null),team_id?: (order_by | null),updated_at?: (order_by | null)}
+export interface utility_practice_sessions_order_by {access?: (order_by | null),can_manage?: (order_by | null),can_view?: (order_by | null),collection?: (utility_collections_order_by | null),collection_id?: (order_by | null),connection_link?: (order_by | null),connection_string?: (order_by | null),created_at?: (order_by | null),e_utility_practice_status?: (e_utility_practice_statuses_order_by | null),empty_since?: (order_by | null),expires_at?: (order_by | null),failure_reason?: (order_by | null),first_joined_at?: (order_by | null),host?: (players_order_by | null),host_steam_id?: (order_by | null),id?: (order_by | null),invite_code?: (order_by | null),invites_aggregate?: (utility_practice_invites_aggregate_order_by | null),is_member?: (order_by | null),is_open?: (order_by | null),is_render?: (order_by | null),last_occupied_at?: (order_by | null),map_changing_at?: (order_by | null),map_name?: (order_by | null),match?: (matches_order_by | null),match_id?: (order_by | null),notify_when_ready?: (order_by | null),playbook?: (utility_playbooks_order_by | null),playbook_id?: (order_by | null),region?: (order_by | null),render_job_name?: (order_by | null),render_seen_at?: (order_by | null),status?: (order_by | null),team?: (teams_order_by | null),team_id?: (order_by | null),updated_at?: (order_by | null)}
 
 
 /** primary key columns input for table: utility_practice_sessions */
@@ -129452,7 +129537,7 @@ export interface utility_practice_sessions_pk_columns_input {id: Scalars['uuid']
 
 
 /** input type for updating data in table "utility_practice_sessions" */
-export interface utility_practice_sessions_set_input {access?: (e_utility_practice_access_enum | null),collection_id?: (Scalars['uuid'] | null),created_at?: (Scalars['timestamptz'] | null),empty_since?: (Scalars['timestamptz'] | null),expires_at?: (Scalars['timestamptz'] | null),failure_reason?: (Scalars['String'] | null),first_joined_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),invite_code?: (Scalars['String'] | null),is_open?: (Scalars['Boolean'] | null),is_render?: (Scalars['Boolean'] | null),last_occupied_at?: (Scalars['timestamptz'] | null),map_changing_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),match_id?: (Scalars['uuid'] | null),notify_when_ready?: (Scalars['Boolean'] | null),playbook_id?: (Scalars['uuid'] | null),region?: (Scalars['String'] | null),status?: (e_utility_practice_statuses_enum | null),team_id?: (Scalars['uuid'] | null),updated_at?: (Scalars['timestamptz'] | null)}
+export interface utility_practice_sessions_set_input {access?: (e_utility_practice_access_enum | null),collection_id?: (Scalars['uuid'] | null),created_at?: (Scalars['timestamptz'] | null),empty_since?: (Scalars['timestamptz'] | null),expires_at?: (Scalars['timestamptz'] | null),failure_reason?: (Scalars['String'] | null),first_joined_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),invite_code?: (Scalars['String'] | null),is_open?: (Scalars['Boolean'] | null),is_render?: (Scalars['Boolean'] | null),last_occupied_at?: (Scalars['timestamptz'] | null),map_changing_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),match_id?: (Scalars['uuid'] | null),notify_when_ready?: (Scalars['Boolean'] | null),playbook_id?: (Scalars['uuid'] | null),region?: (Scalars['String'] | null),render_job_name?: (Scalars['String'] | null),render_seen_at?: (Scalars['timestamptz'] | null),status?: (e_utility_practice_statuses_enum | null),team_id?: (Scalars['uuid'] | null),updated_at?: (Scalars['timestamptz'] | null)}
 
 
 /** aggregate stddev on columns */
@@ -129500,7 +129585,7 @@ ordering?: (cursor_ordering | null)}
 
 
 /** Initial value of the column from where the streaming should start */
-export interface utility_practice_sessions_stream_cursor_value_input {access?: (e_utility_practice_access_enum | null),collection_id?: (Scalars['uuid'] | null),created_at?: (Scalars['timestamptz'] | null),empty_since?: (Scalars['timestamptz'] | null),expires_at?: (Scalars['timestamptz'] | null),failure_reason?: (Scalars['String'] | null),first_joined_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),invite_code?: (Scalars['String'] | null),is_open?: (Scalars['Boolean'] | null),is_render?: (Scalars['Boolean'] | null),last_occupied_at?: (Scalars['timestamptz'] | null),map_changing_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),match_id?: (Scalars['uuid'] | null),notify_when_ready?: (Scalars['Boolean'] | null),playbook_id?: (Scalars['uuid'] | null),region?: (Scalars['String'] | null),status?: (e_utility_practice_statuses_enum | null),team_id?: (Scalars['uuid'] | null),updated_at?: (Scalars['timestamptz'] | null)}
+export interface utility_practice_sessions_stream_cursor_value_input {access?: (e_utility_practice_access_enum | null),collection_id?: (Scalars['uuid'] | null),created_at?: (Scalars['timestamptz'] | null),empty_since?: (Scalars['timestamptz'] | null),expires_at?: (Scalars['timestamptz'] | null),failure_reason?: (Scalars['String'] | null),first_joined_at?: (Scalars['timestamptz'] | null),host_steam_id?: (Scalars['bigint'] | null),id?: (Scalars['uuid'] | null),invite_code?: (Scalars['String'] | null),is_open?: (Scalars['Boolean'] | null),is_render?: (Scalars['Boolean'] | null),last_occupied_at?: (Scalars['timestamptz'] | null),map_changing_at?: (Scalars['timestamptz'] | null),map_name?: (Scalars['String'] | null),match_id?: (Scalars['uuid'] | null),notify_when_ready?: (Scalars['Boolean'] | null),playbook_id?: (Scalars['uuid'] | null),region?: (Scalars['String'] | null),render_job_name?: (Scalars['String'] | null),render_seen_at?: (Scalars['timestamptz'] | null),status?: (e_utility_practice_statuses_enum | null),team_id?: (Scalars['uuid'] | null),updated_at?: (Scalars['timestamptz'] | null)}
 
 
 /** aggregate sum on columns */
@@ -138616,10 +138701,34 @@ export type SubscriptionGenqlSelection = subscription_rootGenqlSelection
     
 
 
+    const UtilityRenderBulkOutput_possibleTypes: string[] = ['UtilityRenderBulkOutput']
+    export const isUtilityRenderBulkOutput = (obj?: { __typename?: any } | null): obj is UtilityRenderBulkOutput => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUtilityRenderBulkOutput"')
+      return UtilityRenderBulkOutput_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const UtilityRenderClearOutput_possibleTypes: string[] = ['UtilityRenderClearOutput']
     export const isUtilityRenderClearOutput = (obj?: { __typename?: any } | null): obj is UtilityRenderClearOutput => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isUtilityRenderClearOutput"')
       return UtilityRenderClearOutput_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const UtilityRenderCoverageOutput_possibleTypes: string[] = ['UtilityRenderCoverageOutput']
+    export const isUtilityRenderCoverageOutput = (obj?: { __typename?: any } | null): obj is UtilityRenderCoverageOutput => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUtilityRenderCoverageOutput"')
+      return UtilityRenderCoverageOutput_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const UtilityRenderGap_possibleTypes: string[] = ['UtilityRenderGap']
+    export const isUtilityRenderGap = (obj?: { __typename?: any } | null): obj is UtilityRenderGap => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUtilityRenderGap"')
+      return UtilityRenderGap_possibleTypes.includes(obj.__typename)
     }
     
 
@@ -162461,6 +162570,7 @@ export const enumDirectMessagesUpdateColumn = {
 }
 
 export const enumDraftGamePicksConstraint = {
+   draft_game_picks_draft_game_id_picked_steam_id_key: 'draft_game_picks_draft_game_id_picked_steam_id_key' as const,
    draft_game_picks_pkey: 'draft_game_picks_pkey' as const
 }
 
@@ -162493,6 +162603,7 @@ export const enumDraftGamePicksUpdateColumn = {
 }
 
 export const enumDraftGamePlayersConstraint = {
+   draft_game_players_captain_lineup_key: 'draft_game_players_captain_lineup_key' as const,
    draft_game_players_pkey: 'draft_game_players_pkey' as const
 }
 
@@ -162527,6 +162638,7 @@ export const enumDraftGamePlayersUpdateColumn = {
 }
 
 export const enumDraftGamesConstraint = {
+   draft_games_invite_code_key: 'draft_games_invite_code_key' as const,
    draft_games_pkey: 'draft_games_pkey' as const
 }
 
@@ -162551,7 +162663,6 @@ export const enumDraftGamesSelectColumn = {
    pick_deadline: 'pick_deadline' as const,
    regions: 'regions' as const,
    require_approval: 'require_approval' as const,
-   scheduled_at: 'scheduled_at' as const,
    status: 'status' as const,
    team_1_id: 'team_1_id' as const,
    team_2_id: 'team_2_id' as const,
@@ -162590,7 +162701,6 @@ export const enumDraftGamesUpdateColumn = {
    pick_deadline: 'pick_deadline' as const,
    regions: 'regions' as const,
    require_approval: 'require_approval' as const,
-   scheduled_at: 'scheduled_at' as const,
    status: 'status' as const,
    team_1_id: 'team_1_id' as const,
    team_2_id: 'team_2_id' as const,
@@ -163161,7 +163271,6 @@ export const enumEMatchPartySourcesConstraint = {
 }
 
 export const enumEMatchPartySourcesEnum = {
-   faceit: 'faceit' as const,
    lobby: 'lobby' as const,
    valve: 'valve' as const
 }
@@ -163257,9 +163366,6 @@ export const enumENotificationTypesEnum = {
    MatchStatsReady: 'MatchStatsReady' as const,
    MatchStatusChange: 'MatchStatusChange' as const,
    MatchSupport: 'MatchSupport' as const,
-   NadeDriftScanFinished: 'NadeDriftScanFinished' as const,
-   NadePracticeInvite: 'NadePracticeInvite' as const,
-   NadePracticeReady: 'NadePracticeReady' as const,
    NameChangeApproved: 'NameChangeApproved' as const,
    NameChangeDenied: 'NameChangeDenied' as const,
    NameChangeRequest: 'NameChangeRequest' as const,
@@ -164396,7 +164502,6 @@ export const enumGameServerNodesSelectColumn = {
    cpu_sockets: 'cpu_sockets' as const,
    cpu_threads_per_core: 'cpu_threads_per_core' as const,
    cpu_warnings: 'cpu_warnings' as const,
-   cs2_launch_options: 'cs2_launch_options' as const,
    cs2_video_settings: 'cs2_video_settings' as const,
    csgo_build_id: 'csgo_build_id' as const,
    demo_network_limiter: 'demo_network_limiter' as const,
@@ -164467,7 +164572,6 @@ export const enumGameServerNodesUpdateColumn = {
    cpu_sockets: 'cpu_sockets' as const,
    cpu_threads_per_core: 'cpu_threads_per_core' as const,
    cpu_warnings: 'cpu_warnings' as const,
-   cs2_launch_options: 'cs2_launch_options' as const,
    cs2_video_settings: 'cs2_video_settings' as const,
    csgo_build_id: 'csgo_build_id' as const,
    demo_network_limiter: 'demo_network_limiter' as const,
@@ -164724,9 +164828,7 @@ export const enumLeagueSeasonsSelectColumn = {
    playoff_seats: 'playoff_seats' as const,
    playoff_stage_type: 'playoff_stage_type' as const,
    playoff_third_place_match: 'playoff_third_place_match' as const,
-   promote_count: 'promote_count' as const,
    regular_season_stage_type: 'regular_season_stage_type' as const,
-   relegate_count: 'relegate_count' as const,
    relegation_down_count: 'relegation_down_count' as const,
    relegation_up_count: 'relegation_up_count' as const,
    roster_lock_at: 'roster_lock_at' as const,
@@ -164757,9 +164859,7 @@ export const enumLeagueSeasonsUpdateColumn = {
    playoff_seats: 'playoff_seats' as const,
    playoff_stage_type: 'playoff_stage_type' as const,
    playoff_third_place_match: 'playoff_third_place_match' as const,
-   promote_count: 'promote_count' as const,
    regular_season_stage_type: 'regular_season_stage_type' as const,
-   relegate_count: 'relegate_count' as const,
    relegation_down_count: 'relegation_down_count' as const,
    relegation_up_count: 'relegation_up_count' as const,
    roster_lock_at: 'roster_lock_at' as const,
@@ -165657,6 +165757,7 @@ export const enumMigrationHashesHashesUpdateColumn = {
 }
 
 export const enumMyFriendsSelectColumn = {
+   allow_message_requests: 'allow_message_requests' as const,
    avatar_url: 'avatar_url' as const,
    country: 'country' as const,
    created_at: 'created_at' as const,
@@ -165668,6 +165769,7 @@ export const enumMyFriendsSelectColumn = {
    faceit_nickname: 'faceit_nickname' as const,
    faceit_player_id: 'faceit_player_id' as const,
    faceit_skill_level: 'faceit_skill_level' as const,
+   faceit_synced_at: 'faceit_synced_at' as const,
    faceit_updated_at: 'faceit_updated_at' as const,
    faceit_url: 'faceit_url' as const,
    friend_steam_id: 'friend_steam_id' as const,
@@ -165697,12 +165799,14 @@ export const enumMyFriendsSelectColumn = {
 }
 
 export const enumMyFriendsSelectColumnMyFriendsAggregateBoolExpBoolAndArgumentsColumns = {
+   allow_message_requests: 'allow_message_requests' as const,
    name_registered: 'name_registered' as const,
    show_match_ready_modal: 'show_match_ready_modal' as const,
    vac_banned: 'vac_banned' as const
 }
 
 export const enumMyFriendsSelectColumnMyFriendsAggregateBoolExpBoolOrArgumentsColumns = {
+   allow_message_requests: 'allow_message_requests' as const,
    name_registered: 'name_registered' as const,
    show_match_ready_modal: 'show_match_ready_modal' as const,
    vac_banned: 'vac_banned' as const
@@ -166886,6 +166990,7 @@ export const enumPlayersSelectColumn = {
    faceit_nickname: 'faceit_nickname' as const,
    faceit_player_id: 'faceit_player_id' as const,
    faceit_skill_level: 'faceit_skill_level' as const,
+   faceit_synced_at: 'faceit_synced_at' as const,
    faceit_updated_at: 'faceit_updated_at' as const,
    faceit_url: 'faceit_url' as const,
    game_ban_count: 'game_ban_count' as const,
@@ -166921,6 +167026,7 @@ export const enumPlayersUpdateColumn = {
    faceit_nickname: 'faceit_nickname' as const,
    faceit_player_id: 'faceit_player_id' as const,
    faceit_skill_level: 'faceit_skill_level' as const,
+   faceit_synced_at: 'faceit_synced_at' as const,
    faceit_updated_at: 'faceit_updated_at' as const,
    faceit_url: 'faceit_url' as const,
    game_ban_count: 'game_ban_count' as const,
@@ -168244,7 +168350,6 @@ export const enumTournamentsSelectColumn = {
    homepage: 'homepage' as const,
    id: 'id' as const,
    invite_only: 'invite_only' as const,
-   is_league: 'is_league' as const,
    latitude: 'latitude' as const,
    location: 'location' as const,
    logo: 'logo' as const,
@@ -168286,7 +168391,6 @@ export const enumTournamentsSelectColumnTournamentsAggregateBoolExpBoolAndArgume
    discord_notify_WaitingForServer: 'discord_notify_WaitingForServer' as const,
    discord_voice_enabled: 'discord_voice_enabled' as const,
    invite_only: 'invite_only' as const,
-   is_league: 'is_league' as const,
    substitutes_enabled: 'substitutes_enabled' as const
 }
 
@@ -168309,7 +168413,6 @@ export const enumTournamentsSelectColumnTournamentsAggregateBoolExpBoolOrArgumen
    discord_notify_WaitingForServer: 'discord_notify_WaitingForServer' as const,
    discord_voice_enabled: 'discord_voice_enabled' as const,
    invite_only: 'invite_only' as const,
-   is_league: 'is_league' as const,
    substitutes_enabled: 'substitutes_enabled' as const
 }
 
@@ -168382,7 +168485,6 @@ export const enumTournamentsUpdateColumn = {
    homepage: 'homepage' as const,
    id: 'id' as const,
    invite_only: 'invite_only' as const,
-   is_league: 'is_league' as const,
    latitude: 'latitude' as const,
    location: 'location' as const,
    logo: 'logo' as const,
@@ -168763,6 +168865,7 @@ export const enumUtilityLineupRendersSelectColumn = {
    map_name: 'map_name' as const,
    paused: 'paused' as const,
    progress: 'progress' as const,
+   render_version: 'render_version' as const,
    requested_by_steam_id: 'requested_by_steam_id' as const,
    session_token: 'session_token' as const,
    skip_reason: 'skip_reason' as const,
@@ -168793,6 +168896,7 @@ export const enumUtilityLineupRendersUpdateColumn = {
    map_name: 'map_name' as const,
    paused: 'paused' as const,
    progress: 'progress' as const,
+   render_version: 'render_version' as const,
    requested_by_steam_id: 'requested_by_steam_id' as const,
    session_token: 'session_token' as const,
    skip_reason: 'skip_reason' as const,
@@ -168932,6 +169036,7 @@ export const enumUtilityLineupsSelectColumn = {
    preview_rendered_at: 'preview_rendered_at' as const,
    preview_stills: 'preview_stills' as const,
    preview_thumbnail: 'preview_thumbnail' as const,
+   preview_version: 'preview_version' as const,
    public_requested_at: 'public_requested_at' as const,
    public_review_note: 'public_review_note' as const,
    public_reviewed_at: 'public_reviewed_at' as const,
@@ -169175,6 +169280,7 @@ export const enumUtilityLineupsUpdateColumn = {
    preview_rendered_at: 'preview_rendered_at' as const,
    preview_stills: 'preview_stills' as const,
    preview_thumbnail: 'preview_thumbnail' as const,
+   preview_version: 'preview_version' as const,
    public_requested_at: 'public_requested_at' as const,
    public_review_note: 'public_review_note' as const,
    public_reviewed_at: 'public_reviewed_at' as const,
@@ -169357,6 +169463,8 @@ export const enumUtilityPracticeSessionsSelectColumn = {
    notify_when_ready: 'notify_when_ready' as const,
    playbook_id: 'playbook_id' as const,
    region: 'region' as const,
+   render_job_name: 'render_job_name' as const,
+   render_seen_at: 'render_seen_at' as const,
    status: 'status' as const,
    team_id: 'team_id' as const,
    updated_at: 'updated_at' as const
@@ -169394,6 +169502,8 @@ export const enumUtilityPracticeSessionsUpdateColumn = {
    notify_when_ready: 'notify_when_ready' as const,
    playbook_id: 'playbook_id' as const,
    region: 'region' as const,
+   render_job_name: 'render_job_name' as const,
+   render_seen_at: 'render_seen_at' as const,
    status: 'status' as const,
    team_id: 'team_id' as const,
    updated_at: 'updated_at' as const

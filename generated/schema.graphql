@@ -1356,8 +1356,35 @@ type UtilityRemineOutput {
   throws: Int!
 }
 
+type UtilityRenderBulkOutput {
+  queued: Int!
+  skipped: Int!
+}
+
 type UtilityRenderClearOutput {
   cleared: Int!
+}
+
+type UtilityRenderCoverageOutput {
+  current: Int!
+  lineups: [UtilityRenderGap!]!
+  missing: Int!
+  outdated: Int!
+  pipeline_version: Int
+  queued: Int!
+  total: Int!
+  unrenderable: Int!
+  version: Int!
+}
+
+type UtilityRenderGap {
+  id: uuid!
+  map_name: String!
+  name: String
+  preview_version: Int
+  reason: String
+  state: String!
+  utility_type: String!
 }
 
 type UtilityRenderQueueOutput {
@@ -7454,6 +7481,11 @@ unique or primary key constraints on table "draft_game_picks"
 """
 enum draft_game_picks_constraint {
   """
+  unique or primary key constraint on columns "draft_game_id", "picked_steam_id"
+  """
+  draft_game_picks_draft_game_id_picked_steam_id_key
+
+  """
   unique or primary key constraint on columns "id"
   """
   draft_game_picks_pkey
@@ -7939,6 +7971,11 @@ input draft_game_players_bool_exp {
 unique or primary key constraints on table "draft_game_players"
 """
 enum draft_game_players_constraint {
+  """
+  unique or primary key constraint on columns "draft_game_id", "lineup"
+  """
+  draft_game_players_captain_lineup_key
+
   """
   unique or primary key constraint on columns "draft_game_id", "steam_id"
   """
@@ -8436,7 +8473,6 @@ type draft_games {
   ): draft_game_players_aggregate!
   regions: [String!]!
   require_approval: Boolean!
-  scheduled_at: timestamptz
   status: e_draft_game_status_enum!
 
   """An object relationship"""
@@ -8591,7 +8627,6 @@ input draft_games_bool_exp {
   players_aggregate: draft_game_players_aggregate_bool_exp
   regions: String_array_comparison_exp
   require_approval: Boolean_comparison_exp
-  scheduled_at: timestamptz_comparison_exp
   status: e_draft_game_status_enum_comparison_exp
   team_1: teams_bool_exp
   team_1_id: uuid_comparison_exp
@@ -8605,6 +8640,11 @@ input draft_games_bool_exp {
 unique or primary key constraints on table "draft_games"
 """
 enum draft_games_constraint {
+  """
+  unique or primary key constraint on columns "invite_code"
+  """
+  draft_games_invite_code_key
+
   """
   unique or primary key constraint on columns "id"
   """
@@ -8657,7 +8697,6 @@ input draft_games_insert_input {
   players: draft_game_players_arr_rel_insert_input
   regions: [String!]
   require_approval: Boolean
-  scheduled_at: timestamptz
   status: e_draft_game_status_enum
   team_1: teams_obj_rel_insert_input
   team_1_id: uuid
@@ -8683,7 +8722,6 @@ type draft_games_max_fields {
   min_elo: Int
   pick_deadline: timestamptz
   regions: [String!]
-  scheduled_at: timestamptz
   team_1_id: uuid
   team_2_id: uuid
   updated_at: timestamptz
@@ -8707,7 +8745,6 @@ input draft_games_max_order_by {
   min_elo: order_by
   pick_deadline: order_by
   regions: order_by
-  scheduled_at: order_by
   team_1_id: order_by
   team_2_id: order_by
   updated_at: order_by
@@ -8729,7 +8766,6 @@ type draft_games_min_fields {
   min_elo: Int
   pick_deadline: timestamptz
   regions: [String!]
-  scheduled_at: timestamptz
   team_1_id: uuid
   team_2_id: uuid
   updated_at: timestamptz
@@ -8753,7 +8789,6 @@ input draft_games_min_order_by {
   min_elo: order_by
   pick_deadline: order_by
   regions: order_by
-  scheduled_at: order_by
   team_1_id: order_by
   team_2_id: order_by
   updated_at: order_by
@@ -8824,7 +8859,6 @@ input draft_games_order_by {
   players_aggregate: draft_game_players_aggregate_order_by
   regions: order_by
   require_approval: order_by
-  scheduled_at: order_by
   status: order_by
   team_1: teams_order_by
   team_1_id: order_by
@@ -8904,9 +8938,6 @@ enum draft_games_select_column {
   require_approval
 
   """column name"""
-  scheduled_at
-
-  """column name"""
   status
 
   """column name"""
@@ -8968,7 +8999,6 @@ input draft_games_set_input {
   pick_deadline: timestamptz
   regions: [String!]
   require_approval: Boolean
-  scheduled_at: timestamptz
   status: e_draft_game_status_enum
   team_1_id: uuid
   team_2_id: uuid
@@ -9069,7 +9099,6 @@ input draft_games_stream_cursor_value_input {
   pick_deadline: timestamptz
   regions: [String!]
   require_approval: Boolean
-  scheduled_at: timestamptz
   status: e_draft_game_status_enum
   team_1_id: uuid
   team_2_id: uuid
@@ -9160,9 +9189,6 @@ enum draft_games_update_column {
 
   """column name"""
   require_approval
-
-  """column name"""
-  scheduled_at
 
   """column name"""
   status
@@ -14208,9 +14234,6 @@ enum e_match_party_sources_constraint {
 }
 
 enum e_match_party_sources_enum {
-  """FACEIT match room party"""
-  faceit
-
   """5stack matchmaking lobby"""
   lobby
 
@@ -14941,15 +14964,6 @@ enum e_notification_types_enum {
 
   """MatchSupport"""
   MatchSupport
-
-  """A nade drift scan finished"""
-  NadeDriftScanFinished
-
-  """You were invited to a nade practice session"""
-  NadePracticeInvite
-
-  """Your nade practice server is ready"""
-  NadePracticeReady
 
   """Your name change request was approved"""
   NameChangeApproved
@@ -27935,10 +27949,6 @@ type game_server_nodes {
     """JSON select path"""
     path: String
   ): jsonb
-  cs2_launch_options(
-    """JSON select path"""
-    path: String
-  ): jsonb!
   cs2_video_settings(
     """JSON select path"""
     path: String
@@ -28153,7 +28163,6 @@ input game_server_nodes_append_input {
   cpu_frequency_info: jsonb
   cpu_governor_info: jsonb
   cpu_warnings: jsonb
-  cs2_launch_options: jsonb
   cs2_video_settings: jsonb
   gpu_info: jsonb
   shader_bake_status_history: jsonb
@@ -28234,7 +28243,6 @@ input game_server_nodes_bool_exp {
   cpu_sockets: Int_comparison_exp
   cpu_threads_per_core: Int_comparison_exp
   cpu_warnings: jsonb_comparison_exp
-  cs2_launch_options: jsonb_comparison_exp
   cs2_video_settings: jsonb_comparison_exp
   csgo_build_id: Int_comparison_exp
   demo_network_limiter: Int_comparison_exp
@@ -28299,7 +28307,6 @@ input game_server_nodes_delete_at_path_input {
   cpu_frequency_info: [String!]
   cpu_governor_info: [String!]
   cpu_warnings: [String!]
-  cs2_launch_options: [String!]
   cs2_video_settings: [String!]
   gpu_info: [String!]
   shader_bake_status_history: [String!]
@@ -28312,7 +28319,6 @@ input game_server_nodes_delete_elem_input {
   cpu_frequency_info: Int
   cpu_governor_info: Int
   cpu_warnings: Int
-  cs2_launch_options: Int
   cs2_video_settings: Int
   gpu_info: Int
   shader_bake_status_history: Int
@@ -28325,7 +28331,6 @@ input game_server_nodes_delete_key_input {
   cpu_frequency_info: String
   cpu_governor_info: String
   cpu_warnings: String
-  cs2_launch_options: String
   cs2_video_settings: String
   gpu_info: String
   shader_bake_status_history: String
@@ -28361,7 +28366,6 @@ input game_server_nodes_insert_input {
   cpu_sockets: Int
   cpu_threads_per_core: Int
   cpu_warnings: jsonb
-  cs2_launch_options: jsonb
   cs2_video_settings: jsonb
   csgo_build_id: Int
   demo_network_limiter: Int
@@ -28591,7 +28595,6 @@ input game_server_nodes_order_by {
   cpu_sockets: order_by
   cpu_threads_per_core: order_by
   cpu_warnings: order_by
-  cs2_launch_options: order_by
   cs2_video_settings: order_by
   csgo_build_id: order_by
   demo_network_limiter: order_by
@@ -28647,7 +28650,6 @@ input game_server_nodes_prepend_input {
   cpu_frequency_info: jsonb
   cpu_governor_info: jsonb
   cpu_warnings: jsonb
-  cs2_launch_options: jsonb
   cs2_video_settings: jsonb
   gpu_info: jsonb
   shader_bake_status_history: jsonb
@@ -28680,9 +28682,6 @@ enum game_server_nodes_select_column {
 
   """column name"""
   cpu_warnings
-
-  """column name"""
-  cs2_launch_options
 
   """column name"""
   cs2_video_settings
@@ -28866,7 +28865,6 @@ input game_server_nodes_set_input {
   cpu_sockets: Int
   cpu_threads_per_core: Int
   cpu_warnings: jsonb
-  cs2_launch_options: jsonb
   cs2_video_settings: jsonb
   csgo_build_id: Int
   demo_network_limiter: Int
@@ -29069,7 +29067,6 @@ input game_server_nodes_stream_cursor_value_input {
   cpu_sockets: Int
   cpu_threads_per_core: Int
   cpu_warnings: jsonb
-  cs2_launch_options: jsonb
   cs2_video_settings: jsonb
   csgo_build_id: Int
   demo_network_limiter: Int
@@ -29182,9 +29179,6 @@ enum game_server_nodes_update_column {
 
   """column name"""
   cpu_warnings
-
-  """column name"""
-  cs2_launch_options
 
   """column name"""
   cs2_video_settings
@@ -32827,9 +32821,7 @@ type league_seasons {
   playoff_seats: Int!
   playoff_stage_type: e_tournament_stage_types_enum!
   playoff_third_place_match: Boolean!
-  promote_count: Int!
   regular_season_stage_type: e_tournament_stage_types_enum!
-  relegate_count: Int!
   relegation_down_count: Int!
 
   """An array relationship"""
@@ -33031,8 +33023,6 @@ type league_seasons_avg_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -33077,9 +33067,7 @@ input league_seasons_bool_exp {
   playoff_seats: Int_comparison_exp
   playoff_stage_type: e_tournament_stage_types_enum_comparison_exp
   playoff_third_place_match: Boolean_comparison_exp
-  promote_count: Int_comparison_exp
   regular_season_stage_type: e_tournament_stage_types_enum_comparison_exp
-  relegate_count: Int_comparison_exp
   relegation_down_count: Int_comparison_exp
   relegation_playoffs: league_relegation_playoffs_bool_exp
   relegation_playoffs_aggregate: league_relegation_playoffs_aggregate_bool_exp
@@ -33157,8 +33145,6 @@ input league_seasons_inc_input {
   min_roster_size: Int
   playoff_best_of: Int
   playoff_seats: Int
-  promote_count: Int
-  relegate_count: Int
   relegation_down_count: Int
   relegation_up_count: Int
   season_number: Int
@@ -33192,9 +33178,7 @@ input league_seasons_insert_input {
   playoff_seats: Int
   playoff_stage_type: e_tournament_stage_types_enum
   playoff_third_place_match: Boolean
-  promote_count: Int
   regular_season_stage_type: e_tournament_stage_types_enum
-  relegate_count: Int
   relegation_down_count: Int
   relegation_playoffs: league_relegation_playoffs_arr_rel_insert_input
   relegation_up_count: Int
@@ -33226,8 +33210,6 @@ type league_seasons_max_fields {
   name: String
   playoff_best_of: Int
   playoff_seats: Int
-  promote_count: Int
-  relegate_count: Int
   relegation_down_count: Int
   relegation_up_count: Int
   roster_lock_at: timestamptz
@@ -33253,8 +33235,6 @@ type league_seasons_min_fields {
   name: String
   playoff_best_of: Int
   playoff_seats: Int
-  promote_count: Int
-  relegate_count: Int
   relegation_down_count: Int
   relegation_up_count: Int
   roster_lock_at: timestamptz
@@ -33324,9 +33304,7 @@ input league_seasons_order_by {
   playoff_seats: order_by
   playoff_stage_type: order_by
   playoff_third_place_match: order_by
-  promote_count: order_by
   regular_season_stage_type: order_by
-  relegate_count: order_by
   relegation_down_count: order_by
   relegation_playoffs_aggregate: league_relegation_playoffs_aggregate_order_by
   relegation_up_count: order_by
@@ -33412,13 +33390,7 @@ enum league_seasons_select_column {
   playoff_third_place_match
 
   """column name"""
-  promote_count
-
-  """column name"""
   regular_season_stage_type
-
-  """column name"""
-  relegate_count
 
   """column name"""
   relegation_down_count
@@ -33470,9 +33442,7 @@ input league_seasons_set_input {
   playoff_seats: Int
   playoff_stage_type: e_tournament_stage_types_enum
   playoff_third_place_match: Boolean
-  promote_count: Int
   regular_season_stage_type: e_tournament_stage_types_enum
-  relegate_count: Int
   relegation_down_count: Int
   relegation_up_count: Int
   roster_lock_at: timestamptz
@@ -33496,8 +33466,6 @@ type league_seasons_stddev_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -33515,8 +33483,6 @@ type league_seasons_stddev_pop_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -33534,8 +33500,6 @@ type league_seasons_stddev_samp_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -33572,9 +33536,7 @@ input league_seasons_stream_cursor_value_input {
   playoff_seats: Int
   playoff_stage_type: e_tournament_stage_types_enum
   playoff_third_place_match: Boolean
-  promote_count: Int
   regular_season_stage_type: e_tournament_stage_types_enum
-  relegate_count: Int
   relegation_down_count: Int
   relegation_up_count: Int
   roster_lock_at: timestamptz
@@ -33598,8 +33560,6 @@ type league_seasons_sum_fields {
   min_roster_size: Int
   playoff_best_of: Int
   playoff_seats: Int
-  promote_count: Int
-  relegate_count: Int
   relegation_down_count: Int
   relegation_up_count: Int
   season_number: Int
@@ -33664,13 +33624,7 @@ enum league_seasons_update_column {
   playoff_third_place_match
 
   """column name"""
-  promote_count
-
-  """column name"""
   regular_season_stage_type
-
-  """column name"""
-  relegate_count
 
   """column name"""
   relegation_down_count
@@ -33744,8 +33698,6 @@ type league_seasons_var_pop_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -33763,8 +33715,6 @@ type league_seasons_var_samp_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -33782,8 +33732,6 @@ type league_seasons_variance_fields {
   min_roster_size: Float
   playoff_best_of: Float
   playoff_seats: Float
-  promote_count: Float
-  relegate_count: Float
   relegation_down_count: Float
   relegation_up_count: Float
   season_number: Float
@@ -55769,6 +55717,11 @@ type mutation_root {
   renderUtilityLineupPreview(utility_lineup_id: uuid!): UtilityRenderQueueOutput
 
   """
+  Queue a preview render for every public lineup that is missing one or has an outdated one
+  """
+  renderUtilityLineupPreviews(map_name: String, scope: String!): UtilityRenderBulkOutput
+
+  """
   execute VOLATILE function "reorder_league_divisions" which returns "league_divisions"
   """
   reorder_league_divisions(
@@ -64141,6 +64094,7 @@ type mutation_root {
 columns and relationships of "v_my_friends"
 """
 type my_friends {
+  allow_message_requests: Boolean
   avatar_url: String
   country: String
   created_at: timestamptz
@@ -64155,6 +64109,7 @@ type my_friends {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   friend_steam_id: bigint
@@ -64306,6 +64261,7 @@ input my_friends_bool_exp {
   _and: [my_friends_bool_exp!]
   _not: my_friends_bool_exp
   _or: [my_friends_bool_exp!]
+  allow_message_requests: Boolean_comparison_exp
   avatar_url: String_comparison_exp
   country: String_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -64317,6 +64273,7 @@ input my_friends_bool_exp {
   faceit_nickname: String_comparison_exp
   faceit_player_id: String_comparison_exp
   faceit_skill_level: Int_comparison_exp
+  faceit_synced_at: timestamptz_comparison_exp
   faceit_updated_at: timestamptz_comparison_exp
   faceit_url: String_comparison_exp
   friend_steam_id: bigint_comparison_exp
@@ -64389,6 +64346,7 @@ input my_friends_inc_input {
 input type for inserting data into table "v_my_friends"
 """
 input my_friends_insert_input {
+  allow_message_requests: Boolean
   avatar_url: String
   country: String
   created_at: timestamptz
@@ -64400,6 +64358,7 @@ input my_friends_insert_input {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   friend_steam_id: bigint
@@ -64441,6 +64400,7 @@ type my_friends_max_fields {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   friend_steam_id: bigint
@@ -64477,6 +64437,7 @@ input my_friends_max_order_by {
   faceit_nickname: order_by
   faceit_player_id: order_by
   faceit_skill_level: order_by
+  faceit_synced_at: order_by
   faceit_updated_at: order_by
   faceit_url: order_by
   friend_steam_id: order_by
@@ -64511,6 +64472,7 @@ type my_friends_min_fields {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   friend_steam_id: bigint
@@ -64547,6 +64509,7 @@ input my_friends_min_order_by {
   faceit_nickname: order_by
   faceit_player_id: order_by
   faceit_skill_level: order_by
+  faceit_synced_at: order_by
   faceit_updated_at: order_by
   faceit_url: order_by
   friend_steam_id: order_by
@@ -64582,6 +64545,7 @@ type my_friends_mutation_response {
 
 """Ordering options when selecting data from "v_my_friends"."""
 input my_friends_order_by {
+  allow_message_requests: order_by
   avatar_url: order_by
   country: order_by
   created_at: order_by
@@ -64593,6 +64557,7 @@ input my_friends_order_by {
   faceit_nickname: order_by
   faceit_player_id: order_by
   faceit_skill_level: order_by
+  faceit_synced_at: order_by
   faceit_updated_at: order_by
   faceit_url: order_by
   friend_steam_id: order_by
@@ -64633,6 +64598,9 @@ select columns of table "v_my_friends"
 """
 enum my_friends_select_column {
   """column name"""
+  allow_message_requests
+
+  """column name"""
   avatar_url
 
   """column name"""
@@ -64664,6 +64632,9 @@ enum my_friends_select_column {
 
   """column name"""
   faceit_skill_level
+
+  """column name"""
+  faceit_synced_at
 
   """column name"""
   faceit_updated_at
@@ -64749,6 +64720,9 @@ select "my_friends_aggregate_bool_exp_bool_and_arguments_columns" columns of tab
 """
 enum my_friends_select_column_my_friends_aggregate_bool_exp_bool_and_arguments_columns {
   """column name"""
+  allow_message_requests
+
+  """column name"""
   name_registered
 
   """column name"""
@@ -64763,6 +64737,9 @@ select "my_friends_aggregate_bool_exp_bool_or_arguments_columns" columns of tabl
 """
 enum my_friends_select_column_my_friends_aggregate_bool_exp_bool_or_arguments_columns {
   """column name"""
+  allow_message_requests
+
+  """column name"""
   name_registered
 
   """column name"""
@@ -64776,6 +64753,7 @@ enum my_friends_select_column_my_friends_aggregate_bool_exp_bool_or_arguments_co
 input type for updating data in table "v_my_friends"
 """
 input my_friends_set_input {
+  allow_message_requests: Boolean
   avatar_url: String
   country: String
   created_at: timestamptz
@@ -64787,6 +64765,7 @@ input my_friends_set_input {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   friend_steam_id: bigint
@@ -64912,6 +64891,7 @@ input my_friends_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input my_friends_stream_cursor_value_input {
+  allow_message_requests: Boolean
   avatar_url: String
   country: String
   created_at: timestamptz
@@ -64923,6 +64903,7 @@ input my_friends_stream_cursor_value_input {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   friend_steam_id: bigint
@@ -71207,7 +71188,7 @@ type player_elo_variance_fields {
 columns and relationships of "player_faceit_rank_history"
 """
 type player_faceit_rank_history {
-  elo: Int
+  elo: Int!
   id: uuid!
 
   """An object relationship"""
@@ -71218,7 +71199,7 @@ type player_faceit_rank_history {
   """An object relationship"""
   player: players!
   previous_rank: Int
-  skill_level: Int!
+  skill_level: Int
   steam_id: bigint!
 }
 
@@ -84349,6 +84330,7 @@ type players {
     where: player_faceit_rank_history_bool_exp
   ): player_faceit_rank_history_aggregate!
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
 
@@ -85636,6 +85618,7 @@ input players_bool_exp {
   faceit_rank_history: player_faceit_rank_history_bool_exp
   faceit_rank_history_aggregate: player_faceit_rank_history_aggregate_bool_exp
   faceit_skill_level: Int_comparison_exp
+  faceit_synced_at: timestamptz_comparison_exp
   faceit_updated_at: timestamptz_comparison_exp
   faceit_url: String_comparison_exp
   flashed_by_players: player_flashes_bool_exp
@@ -85798,6 +85781,7 @@ input players_insert_input {
   faceit_player_id: String
   faceit_rank_history: player_faceit_rank_history_arr_rel_insert_input
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   flashed_by_players: player_flashes_arr_rel_insert_input
@@ -85871,6 +85855,7 @@ type players_max_fields {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   game_ban_count: Int
@@ -85975,6 +85960,7 @@ type players_min_fields {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   game_ban_count: Int
@@ -86115,6 +86101,7 @@ input players_order_by {
   faceit_player_id: order_by
   faceit_rank_history_aggregate: player_faceit_rank_history_aggregate_order_by
   faceit_skill_level: order_by
+  faceit_synced_at: order_by
   faceit_updated_at: order_by
   faceit_url: order_by
   flashed_by_players_aggregate: player_flashes_aggregate_order_by
@@ -86233,6 +86220,9 @@ enum players_select_column {
   faceit_skill_level
 
   """column name"""
+  faceit_synced_at
+
+  """column name"""
   faceit_updated_at
 
   """column name"""
@@ -86311,6 +86301,7 @@ input players_set_input {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   game_ban_count: Int
@@ -86556,6 +86547,7 @@ input players_stream_cursor_value_input {
   faceit_nickname: String
   faceit_player_id: String
   faceit_skill_level: Int
+  faceit_synced_at: timestamptz
   faceit_updated_at: timestamptz
   faceit_url: String
   game_ban_count: Int
@@ -86681,6 +86673,9 @@ enum players_update_column {
 
   """column name"""
   faceit_skill_level
+
+  """column name"""
+  faceit_synced_at
 
   """column name"""
   faceit_updated_at
@@ -96924,6 +96919,11 @@ type query_root {
 
   """Which way everybody misses one lineup, from their practice throws"""
   utilityLineupMissPattern(utility_lineup_id: uuid!): UtilityMissPatternOutput
+
+  """
+  Which public lineups have no preview, or one filmed by an older render version
+  """
+  utilityLineupRenderCoverage(map_name: String): UtilityRenderCoverageOutput
 
   """Report a player's mined utility throws for a match"""
   utilityMatchUtilityReport(match_id: uuid!, steam_id: String): UtilityUtilityReportOutput
@@ -132863,7 +132863,6 @@ type tournaments {
   homepage: String
   id: uuid!
   invite_only: Boolean!
-  is_league: Boolean!
 
   """
   A computed field, executes function "is_tournament_organizer"
@@ -133474,7 +133473,6 @@ input tournaments_bool_exp {
   homepage: String_comparison_exp
   id: uuid_comparison_exp
   invite_only: Boolean_comparison_exp
-  is_league: Boolean_comparison_exp
   is_organizer: Boolean_comparison_exp
   joined_tournament: Boolean_comparison_exp
   latitude: float8_comparison_exp
@@ -133598,7 +133596,6 @@ input tournaments_insert_input {
   homepage: String
   id: uuid
   invite_only: Boolean
-  is_league: Boolean
   latitude: float8
   league_season_division: league_season_divisions_obj_rel_insert_input
   location: String
@@ -133898,7 +133895,6 @@ input tournaments_order_by {
   homepage: order_by
   id: order_by
   invite_only: order_by
-  is_league: order_by
   is_organizer: order_by
   joined_tournament: order_by
   latitude: order_by
@@ -134042,9 +134038,6 @@ enum tournaments_select_column {
   invite_only
 
   """column name"""
-  is_league
-
-  """column name"""
   latitude
 
   """column name"""
@@ -134160,9 +134153,6 @@ enum tournaments_select_column_tournaments_aggregate_bool_exp_bool_and_arguments
   invite_only
 
   """column name"""
-  is_league
-
-  """column name"""
   substitutes_enabled
 }
 
@@ -134223,9 +134213,6 @@ enum tournaments_select_column_tournaments_aggregate_bool_exp_bool_or_arguments_
 
   """column name"""
   invite_only
-
-  """column name"""
-  is_league
 
   """column name"""
   substitutes_enabled
@@ -134355,7 +134342,6 @@ input tournaments_set_input {
   homepage: String
   id: uuid
   invite_only: Boolean
-  is_league: Boolean
   latitude: float8
   location: String
   logo: String
@@ -134565,7 +134551,6 @@ input tournaments_stream_cursor_value_input {
   homepage: String
   id: uuid
   invite_only: Boolean
-  is_league: Boolean
   latitude: float8
   location: String
   logo: String
@@ -134733,9 +134718,6 @@ enum tournaments_update_column {
 
   """column name"""
   invite_only
-
-  """column name"""
-  is_league
 
   """column name"""
   latitude
@@ -139046,6 +139028,7 @@ type utility_lineup_renders {
   """An object relationship"""
   practice_session: utility_practice_sessions
   progress: numeric
+  render_version: Int
 
   """An object relationship"""
   requested_by: players
@@ -139155,6 +139138,7 @@ input utility_lineup_renders_arr_rel_insert_input {
 type utility_lineup_renders_avg_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139165,6 +139149,7 @@ order by avg() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_avg_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139189,6 +139174,7 @@ input utility_lineup_renders_bool_exp {
   paused: Boolean_comparison_exp
   practice_session: utility_practice_sessions_bool_exp
   progress: numeric_comparison_exp
+  render_version: Int_comparison_exp
   requested_by: players_bool_exp
   requested_by_steam_id: bigint_comparison_exp
   session_token: String_comparison_exp
@@ -139246,6 +139232,7 @@ input type for incrementing numeric columns in table "utility_lineup_renders"
 input utility_lineup_renders_inc_input {
   duration_ms: Int
   progress: numeric
+  render_version: Int
   requested_by_steam_id: bigint
   sort_index: Int
 }
@@ -139267,6 +139254,7 @@ input utility_lineup_renders_insert_input {
   paused: Boolean
   practice_session: utility_practice_sessions_obj_rel_insert_input
   progress: numeric
+  render_version: Int
   requested_by: players_obj_rel_insert_input
   requested_by_steam_id: bigint
   session_token: String
@@ -139290,6 +139278,7 @@ type utility_lineup_renders_max_fields {
   last_status_at: timestamptz
   map_name: String
   progress: numeric
+  render_version: Int
   requested_by_steam_id: bigint
   session_token: String
   skip_reason: String
@@ -139312,6 +139301,7 @@ input utility_lineup_renders_max_order_by {
   last_status_at: order_by
   map_name: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   session_token: order_by
   skip_reason: order_by
@@ -139332,6 +139322,7 @@ type utility_lineup_renders_min_fields {
   last_status_at: timestamptz
   map_name: String
   progress: numeric
+  render_version: Int
   requested_by_steam_id: bigint
   session_token: String
   skip_reason: String
@@ -139354,6 +139345,7 @@ input utility_lineup_renders_min_order_by {
   last_status_at: order_by
   map_name: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   session_token: order_by
   skip_reason: order_by
@@ -139398,6 +139390,7 @@ input utility_lineup_renders_order_by {
   paused: order_by
   practice_session: utility_practice_sessions_order_by
   progress: order_by
+  render_version: order_by
   requested_by: players_order_by
   requested_by_steam_id: order_by
   session_token: order_by
@@ -139454,6 +139447,9 @@ enum utility_lineup_renders_select_column {
 
   """column name"""
   progress
+
+  """column name"""
+  render_version
 
   """column name"""
   requested_by_steam_id
@@ -139513,6 +139509,7 @@ input utility_lineup_renders_set_input {
   map_name: String
   paused: Boolean
   progress: numeric
+  render_version: Int
   requested_by_steam_id: bigint
   session_token: String
   skip_reason: String
@@ -139528,6 +139525,7 @@ input utility_lineup_renders_set_input {
 type utility_lineup_renders_stddev_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139538,6 +139536,7 @@ order by stddev() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_stddev_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139546,6 +139545,7 @@ input utility_lineup_renders_stddev_order_by {
 type utility_lineup_renders_stddev_pop_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139556,6 +139556,7 @@ order by stddev_pop() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_stddev_pop_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139564,6 +139565,7 @@ input utility_lineup_renders_stddev_pop_order_by {
 type utility_lineup_renders_stddev_samp_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139574,6 +139576,7 @@ order by stddev_samp() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_stddev_samp_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139601,6 +139604,7 @@ input utility_lineup_renders_stream_cursor_value_input {
   map_name: String
   paused: Boolean
   progress: numeric
+  render_version: Int
   requested_by_steam_id: bigint
   session_token: String
   skip_reason: String
@@ -139616,6 +139620,7 @@ input utility_lineup_renders_stream_cursor_value_input {
 type utility_lineup_renders_sum_fields {
   duration_ms: Int
   progress: numeric
+  render_version: Int
   requested_by_steam_id: bigint
   sort_index: Int
 }
@@ -139626,6 +139631,7 @@ order by sum() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_sum_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139663,6 +139669,9 @@ enum utility_lineup_renders_update_column {
 
   """column name"""
   progress
+
+  """column name"""
+  render_version
 
   """column name"""
   requested_by_steam_id
@@ -139728,6 +139737,7 @@ input utility_lineup_renders_updates {
 type utility_lineup_renders_var_pop_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139738,6 +139748,7 @@ order by var_pop() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_var_pop_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139746,6 +139757,7 @@ input utility_lineup_renders_var_pop_order_by {
 type utility_lineup_renders_var_samp_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139756,6 +139768,7 @@ order by var_samp() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_var_samp_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -139764,6 +139777,7 @@ input utility_lineup_renders_var_samp_order_by {
 type utility_lineup_renders_variance_fields {
   duration_ms: Float
   progress: Float
+  render_version: Float
   requested_by_steam_id: Float
   sort_index: Float
 }
@@ -139774,6 +139788,7 @@ order by variance() on columns of table "utility_lineup_renders"
 input utility_lineup_renders_variance_order_by {
   duration_ms: order_by
   progress: order_by
+  render_version: order_by
   requested_by_steam_id: order_by
   sort_index: order_by
 }
@@ -140984,6 +140999,7 @@ type utility_lineups {
   A computed field, executes function "utility_lineup_preview_url"
   """
   preview_url: String
+  preview_version: Int
 
   """An array relationship"""
   progress(
@@ -141357,6 +141373,7 @@ type utility_lineups_avg_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -141393,6 +141410,7 @@ input utility_lineups_avg_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -141463,6 +141481,7 @@ input utility_lineups_bool_exp {
   preview_thumbnail: String_comparison_exp
   preview_thumbnail_url: String_comparison_exp
   preview_url: String_comparison_exp
+  preview_version: Int_comparison_exp
   progress: utility_lineup_progress_bool_exp
   progress_aggregate: utility_lineup_progress_aggregate_bool_exp
   public_requested_at: timestamptz_comparison_exp
@@ -141570,6 +141589,7 @@ input utility_lineups_inc_input {
   practice_players: Int
   practice_successes: Int
   preview_duration_ms: Int
+  preview_version: Int
   public_reviewed_by: bigint
   source_grenade_id: Int
   trajectory_size: Int
@@ -141626,6 +141646,7 @@ input utility_lineups_insert_input {
   preview_rendered_at: timestamptz
   preview_stills: jsonb
   preview_thumbnail: String
+  preview_version: Int
   progress: utility_lineup_progress_arr_rel_insert_input
   public_requested_at: timestamptz
   public_review_note: String
@@ -141718,6 +141739,7 @@ type utility_lineups_max_fields {
   A computed field, executes function "utility_lineup_preview_url"
   """
   preview_url: String
+  preview_version: Int
   public_requested_at: timestamptz
   public_review_note: String
   public_reviewed_at: timestamptz
@@ -141779,6 +141801,7 @@ input utility_lineups_max_order_by {
   preview_file: order_by
   preview_rendered_at: order_by
   preview_thumbnail: order_by
+  preview_version: order_by
   public_requested_at: order_by
   public_review_note: order_by
   public_reviewed_at: order_by
@@ -141858,6 +141881,7 @@ type utility_lineups_min_fields {
   A computed field, executes function "utility_lineup_preview_url"
   """
   preview_url: String
+  preview_version: Int
   public_requested_at: timestamptz
   public_review_note: String
   public_reviewed_at: timestamptz
@@ -141919,6 +141943,7 @@ input utility_lineups_min_order_by {
   preview_file: order_by
   preview_rendered_at: order_by
   preview_thumbnail: order_by
+  preview_version: order_by
   public_requested_at: order_by
   public_review_note: order_by
   public_reviewed_at: order_by
@@ -142024,6 +142049,7 @@ input utility_lineups_order_by {
   preview_thumbnail: order_by
   preview_thumbnail_url: order_by
   preview_url: order_by
+  preview_version: order_by
   progress_aggregate: utility_lineup_progress_aggregate_order_by
   public_requested_at: order_by
   public_review_note: order_by
@@ -142191,6 +142217,9 @@ enum utility_lineups_select_column {
 
   """column name"""
   preview_thumbnail
+
+  """column name"""
+  preview_version
 
   """column name"""
   public_requested_at
@@ -142801,6 +142830,7 @@ input utility_lineups_set_input {
   preview_rendered_at: timestamptz
   preview_stills: jsonb
   preview_thumbnail: String
+  preview_version: Int
   public_requested_at: timestamptz
   public_review_note: String
   public_reviewed_at: timestamptz
@@ -142858,6 +142888,7 @@ type utility_lineups_stddev_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -142894,6 +142925,7 @@ input utility_lineups_stddev_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -142933,6 +142965,7 @@ type utility_lineups_stddev_pop_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -142969,6 +143002,7 @@ input utility_lineups_stddev_pop_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -143008,6 +143042,7 @@ type utility_lineups_stddev_samp_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -143044,6 +143079,7 @@ input utility_lineups_stddev_samp_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -143106,6 +143142,7 @@ input utility_lineups_stream_cursor_value_input {
   preview_rendered_at: timestamptz
   preview_stills: jsonb
   preview_thumbnail: String
+  preview_version: Int
   public_requested_at: timestamptz
   public_review_note: String
   public_reviewed_at: timestamptz
@@ -143163,6 +143200,7 @@ type utility_lineups_sum_fields {
   practice_players: Int
   practice_successes: Int
   preview_duration_ms: Int
+  preview_version: Int
   public_reviewed_by: bigint
   source_grenade_id: Int
   trajectory_size: Int
@@ -143199,6 +143237,7 @@ input utility_lineups_sum_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -143326,6 +143365,9 @@ enum utility_lineups_update_column {
 
   """column name"""
   preview_thumbnail
+
+  """column name"""
+  preview_version
 
   """column name"""
   public_requested_at
@@ -143467,6 +143509,7 @@ type utility_lineups_var_pop_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -143503,6 +143546,7 @@ input utility_lineups_var_pop_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -143542,6 +143586,7 @@ type utility_lineups_var_samp_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -143578,6 +143623,7 @@ input utility_lineups_var_samp_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -143617,6 +143663,7 @@ type utility_lineups_variance_fields {
   practice_players: Float
   practice_successes: Float
   preview_duration_ms: Float
+  preview_version: Float
   public_reviewed_by: Float
   source_grenade_id: Float
   trajectory_size: Float
@@ -143653,6 +143700,7 @@ input utility_lineups_variance_order_by {
   practice_players: order_by
   practice_successes: order_by
   preview_duration_ms: order_by
+  preview_version: order_by
   public_reviewed_by: order_by
   source_grenade_id: order_by
   trajectory_size: order_by
@@ -145584,6 +145632,8 @@ type utility_practice_sessions {
   playbook: utility_playbooks
   playbook_id: uuid
   region: String
+  render_job_name: String
+  render_seen_at: timestamptz
   status: e_utility_practice_statuses_enum!
 
   """An object relationship"""
@@ -145721,6 +145771,8 @@ input utility_practice_sessions_bool_exp {
   playbook: utility_playbooks_bool_exp
   playbook_id: uuid_comparison_exp
   region: String_comparison_exp
+  render_job_name: String_comparison_exp
+  render_seen_at: timestamptz_comparison_exp
   status: e_utility_practice_statuses_enum_comparison_exp
   team: teams_bool_exp
   team_id: uuid_comparison_exp
@@ -145788,6 +145840,8 @@ input utility_practice_sessions_insert_input {
   playbook: utility_playbooks_obj_rel_insert_input
   playbook_id: uuid
   region: String
+  render_job_name: String
+  render_seen_at: timestamptz
   status: e_utility_practice_statuses_enum
   team: teams_obj_rel_insert_input
   team_id: uuid
@@ -145821,6 +145875,8 @@ type utility_practice_sessions_max_fields {
   match_id: uuid
   playbook_id: uuid
   region: String
+  render_job_name: String
+  render_seen_at: timestamptz
   team_id: uuid
   updated_at: timestamptz
 }
@@ -145844,6 +145900,8 @@ input utility_practice_sessions_max_order_by {
   match_id: order_by
   playbook_id: order_by
   region: order_by
+  render_job_name: order_by
+  render_seen_at: order_by
   team_id: order_by
   updated_at: order_by
 }
@@ -145875,6 +145933,8 @@ type utility_practice_sessions_min_fields {
   match_id: uuid
   playbook_id: uuid
   region: String
+  render_job_name: String
+  render_seen_at: timestamptz
   team_id: uuid
   updated_at: timestamptz
 }
@@ -145898,6 +145958,8 @@ input utility_practice_sessions_min_order_by {
   match_id: order_by
   playbook_id: order_by
   region: order_by
+  render_job_name: order_by
+  render_seen_at: order_by
   team_id: order_by
   updated_at: order_by
 }
@@ -145964,6 +146026,8 @@ input utility_practice_sessions_order_by {
   playbook: utility_playbooks_order_by
   playbook_id: order_by
   region: order_by
+  render_job_name: order_by
+  render_seen_at: order_by
   status: order_by
   team: teams_order_by
   team_id: order_by
@@ -146037,6 +146101,12 @@ enum utility_practice_sessions_select_column {
   region
 
   """column name"""
+  render_job_name
+
+  """column name"""
+  render_seen_at
+
+  """column name"""
   status
 
   """column name"""
@@ -146097,6 +146167,8 @@ input utility_practice_sessions_set_input {
   notify_when_ready: Boolean
   playbook_id: uuid
   region: String
+  render_job_name: String
+  render_seen_at: timestamptz
   status: e_utility_practice_statuses_enum
   team_id: uuid
   updated_at: timestamptz
@@ -146170,6 +146242,8 @@ input utility_practice_sessions_stream_cursor_value_input {
   notify_when_ready: Boolean
   playbook_id: uuid
   region: String
+  render_job_name: String
+  render_seen_at: timestamptz
   status: e_utility_practice_statuses_enum
   team_id: uuid
   updated_at: timestamptz
@@ -146247,6 +146321,12 @@ enum utility_practice_sessions_update_column {
 
   """column name"""
   region
+
+  """column name"""
+  render_job_name
+
+  """column name"""
+  render_seen_at
 
   """column name"""
   status
