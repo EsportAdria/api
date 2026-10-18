@@ -125,6 +125,12 @@ describe("SystemService.setVersions", () => {
     postgres.query.mockResolvedValue(
       stored === undefined ? [] : [{ value: stored }],
     );
+    jest
+      .spyOn(system as any, "updateSourceDocument")
+      .mockResolvedValue({
+        source: { version: 1, mode: "installed" },
+        installed: null,
+      });
     jest.spyOn(system, "getPanelVersion").mockResolvedValue("abc123");
     jest
       .spyOn(system as any, "getLatestPanelVersion")

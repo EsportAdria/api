@@ -5,6 +5,7 @@ on:
     branches:
       - "main"
       - "test/amd-panel-security-20261017"
+      - "feature/update-source-policy"
   workflow_dispatch:
 
 concurrency:
@@ -12,7 +13,7 @@ concurrency:
   cancel-in-progress: true
   
 env:
-  CHANNEL: ${{ github.ref_name == 'main' && 'latest' || 'amd-panel-security' }}
+  CHANNEL: ${{ github.ref_name == 'main' && 'latest' || github.ref_name == 'feature/update-source-policy' && 'update-source' || 'amd-panel-security' }}
 
 jobs:
   tests:
